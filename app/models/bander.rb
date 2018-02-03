@@ -4,10 +4,7 @@ class Bander < ActiveRecord::Base
     has_many :species, through: :birds
 
     def slug
-        slug = self.name.downcase.gsub(/[\+]/, " plus ")
-        slug = slug.gsub(/['.]/, "")
-        slug = slug.gsub(/[^a-z0-9]+/, '-')
-        slug = slug.gsub(/-$/, "")
+        Helpers.slugify(self.name)
     end
 
     def self.find_by_slug(slug)
