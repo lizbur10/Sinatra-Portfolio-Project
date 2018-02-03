@@ -1,0 +1,8 @@
+<h1>Update Bander Information</h1>
+<form action='/banders/<%=@bander.slug%>' method='POST'>
+<input id="hidden" type="hidden" name="_method" value="patch">
+<h2>Name: <input type="text" name="bander[name]" value="<%=@bander.name %>"></h2>
+<h2>Email: <input type="text" name="bander[email]" value="<%=@bander.email %>"></h2>
+<h2>Password: <input type="text" name="bander[password]" value="<%=@bander.password %>"></h2>
+<input type="submit" value="Update">
+</form>
