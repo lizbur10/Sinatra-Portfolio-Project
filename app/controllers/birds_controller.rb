@@ -7,26 +7,30 @@ class BirdsController < ApplicationController
     end
 
     post '/birds' do
+
+        session[:date] = params[:date] if !session[:date]
+        @session = session #this won't work here - needs to move to bander login
         params[:bird][:number_banded].to_i.times do
-            @session = session
-            @session[:date] = params[:date]
             @bird = Bird.new(:banding_date => params[:date])
             if find_species
                 # @bird.bander = session[:bander_id]
                 @bird.species = find_species
             else 
-                @species = Species.new(params[:bird])
                 # do you want to add this species?
                 #redirect to '/species/new'
+                @species = Species.new(params[:bird][:species])
+                @species.code = @species.code.upcase
+                @species.save
+                @bird.species = @species
             end
             @bird.save
         end
-        redirect to '/birds'
+        redirect to "/birds/#{date_slug(params[:date])}"
     end
 
 
     # C[Read]UD - ALL BIRDS
-    get '/birds' do
+    get '/birds/:date' do
         @birds=Bird.all.find_all { |bird| bird.banding_date == session[:date] }
         binding.pry
         ## BY DATE
@@ -51,7 +55,11 @@ class BirdsController < ApplicationController
     #  HELPERS
     helpers do
         def find_species
-            Species.find_by_code(params[:bird][:code])
+            Species.find_by_code(params[:bird][:species][:code])
+        end
+
+        def date_slug(date)
+            Helpers.slugify(date)
         end
     end
 
