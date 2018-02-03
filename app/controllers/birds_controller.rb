@@ -6,10 +6,10 @@ class BirdsController < ApplicationController
         erb :'/birds/new'
     end
 
-    post '/birds'
-
+    post '/birds' do
+        binding.pry
         redirect to '/birds'
-    do
+    end
 
 
     # C[Read]UD - ALL BIRDS
