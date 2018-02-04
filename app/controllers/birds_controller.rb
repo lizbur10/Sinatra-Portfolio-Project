@@ -39,9 +39,12 @@ class BirdsController < ApplicationController
         erb :'/birds/show'
     end
 
-    # C[Read]UD - SPECIFIC BIRDS
-    # N/A
 
+    #ADD NARRATIVE function
+    get '/birds/:date/add_narrative' do
+
+        erb :'/birds/add_narrative'
+    end
 
     # CR[Update]D
     ## THIS IS GOING TO BE UPDATING A SET OF BIRDS (FOR A GIVEN DATE) RATHER THAN AN INDIVIDUAL; 
