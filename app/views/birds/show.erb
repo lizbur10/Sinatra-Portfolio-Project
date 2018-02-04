@@ -1,6 +1,5 @@
 <% ## SHOW BY DATE RATHER THAN INDIVIDUAL BIRDS %>
-
-<h1>Birds Banded on <%= @date%></h1>
+<h1>Birds Banded on <%= @session[:date_string]%></h1>
 <table>
 <tr><th>Alpha Code</th><th>Species</th><th>Number Banded</th></tr>
 <%@count_by_species.each do |key,value| %>
