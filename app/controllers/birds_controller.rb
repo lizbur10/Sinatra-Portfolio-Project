@@ -2,13 +2,13 @@ class BirdsController < ApplicationController
 
     # [Create]RUD
     get '/birds/new' do
+        @session = session
 
         erb :'/birds/new'
     end
 
     post '/birds' do
-
-        session[:date] = params[:date] if !session[:date]
+        session[:date] = set_date(params[:date]) if !session[:date]
         @session = session
         params[:bird][:number_banded].to_i.times do
             @bird = Bird.new(:banding_date => params[:date])
@@ -31,12 +31,10 @@ class BirdsController < ApplicationController
 
     # C[Read]UD - ALL BIRDS
     get '/birds/:date' do
-        # @histogram = {}
+        @date = params[:date]
+        #
         @session = session
-        @count_by_species = Bird.group("species").where("banding_date = ?", @session[:date]).count
-        # count_by_species.each do |key, value|
-        #     @histogram[key.name] = value
-        # end
+        @count_by_species = Bird.group("species").where("banding_date = ?", @date).count
 
         erb :'/birds/show'
     end
@@ -64,6 +62,22 @@ class BirdsController < ApplicationController
 
         def date_slug(date)
             Helpers.slugify(date)
+        end
+
+        def set_date(date_string)
+            year = Time.now.year
+            month_string = parse_month(date_string)
+            month = Date::MONTHNAMES.index(month_string) || Date::ABBR_MONTHNAMES.index(month_string)
+            day = parse_day(date_string)
+            Time.new(year, month, day)
+        end
+
+        def parse_month(date_string)
+            month_string = date_string.gsub(/[^a-zA-Z]/, "")
+        end
+
+        def parse_day(date_string)
+            date_string.gsub(/\s?[a-zA-Z]\s?/, "")
         end
     end
 
