@@ -2,7 +2,6 @@ class BirdsController < ApplicationController
 
     # [Create]RUD
     get '/birds/new' do
-        binding.pry
         @session = session
 
         erb :'/birds/new'
@@ -10,8 +9,8 @@ class BirdsController < ApplicationController
 
     post '/birds' do
         # Add warning if params[:date] != session[:date] && session[:date] exists
-        session[:date] = set_date(params[:date])
         session[:date_string] = params[:date]
+        session[:date] = set_date(session[:date_string])
         @session = session
         params[:bird][:number_banded].to_i.times do
             @bird = Bird.new(:banding_date => params[:date])
@@ -27,7 +26,6 @@ class BirdsController < ApplicationController
                 @bird.species = @species
             end
             @bird.save
-            binding.pry
         end
         redirect to "/birds/#{date_slug(@session[:date])}"
     end
@@ -35,7 +33,6 @@ class BirdsController < ApplicationController
 
     # C[Read]UD - ALL BIRDS
     get '/birds/:date' do
-        binding.pry
         @session = session
         @count_by_species = Bird.group("species").where("banding_date = ?", @session[:date_string]).count
 
