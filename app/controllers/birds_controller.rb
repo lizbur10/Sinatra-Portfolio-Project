@@ -9,7 +9,7 @@ class BirdsController < ApplicationController
     post '/birds' do
 
         session[:date] = params[:date] if !session[:date]
-        @session = session #this won't work here - needs to move to bander login
+        @session = session
         params[:bird][:number_banded].to_i.times do
             @bird = Bird.new(:banding_date => params[:date])
             if find_species
@@ -31,10 +31,14 @@ class BirdsController < ApplicationController
 
     # C[Read]UD - ALL BIRDS
     get '/birds/:date' do
-        @birds=Bird.all.find_all { |bird| bird.banding_date == session[:date] }
-        binding.pry
-        ## BY DATE
-        erb :'/birds/index'
+        # @histogram = {}
+        @session = session
+        @count_by_species = Bird.group("species").where("banding_date = ?", @session[:date]).count
+        # count_by_species.each do |key, value|
+        #     @histogram[key.name] = value
+        # end
+
+        erb :'/birds/show'
     end
 
     # C[Read]UD - SPECIFIC BIRDS

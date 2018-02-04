@@ -1,1 +1,10 @@
-NOT APPLICABLE
+<% ## SHOW BY DATE RATHER THAN INDIVIDUAL BIRDS %>
+
+<h1>Birds Banded on <%= @session[:date]%></h1>
+<table>
+<tr><th>Alpha Code</th><th>Species</th><th>Number Banded</th></tr>
+<%@count_by_species.each do |key,value| %>
+<tr><td><%=key.code%></td><td><%=key.name%></td><td><%=value%></td>
+</tr>
+<%end%>
+</table>
