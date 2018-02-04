@@ -34,6 +34,7 @@ class BirdsController < ApplicationController
     # C[Read]UD - ALL BIRDS
     get '/birds/:date' do
         @session = session
+        @date_slug = date_slug(@session[:date])
         @count_by_species = Bird.group("species").where("banding_date = ?", @session[:date_string]).count
 
         erb :'/birds/show'
@@ -42,8 +43,21 @@ class BirdsController < ApplicationController
 
     #ADD NARRATIVE function
     get '/birds/:date/add_narrative' do
-
+        @session = session
         erb :'/birds/add_narrative'
+    end
+
+    post '/birds/:date/report' do
+        @session = session
+        @count_by_species = Bird.group("species").where("banding_date = ?", @session[:date_string]).count
+        @narrative=params[:narrative]
+        redirect to :"/birds/#{date_slug(@session[:date])}/report"
+    end
+
+    get '/birds/:date/report' do
+        @session = session
+        @count_by_species = Bird.group("species").where("banding_date = ?", @session[:date_string]).count
+        erb :'/birds/report'
     end
 
     # CR[Update]D
@@ -65,12 +79,6 @@ class BirdsController < ApplicationController
 
         def date_slug(date)
             date.strftime("%b-%d").downcase
-        end
-
-        def date_unslug(date_slug)
-            day_string = date_slug.gsub(/[a-zA-Z]+\W/,"")
-            month_string = date_slug.gsub(/\W[0-9]+/,"").capitalize
-            date_string = "#{month_string} #{day_string}"
         end
 
         def set_date(date_string)

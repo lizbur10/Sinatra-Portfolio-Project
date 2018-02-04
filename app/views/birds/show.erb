@@ -7,12 +7,13 @@
 </tr>
 <%end%>
 </table>
+
 <form action="/birds/new">
     <input type="submit" value="Add more birds" />
 </form>
-<form action="/birds/:date/add_narrative">
+<form action="/birds/<%=@date_slug%>/add_narrative">
     <input type="submit" value="Add narrative" />
 </form>
-<form action="/birds/:date/report">
+<form action="/birds/<%=@date_slug%>/report">
     <input type="submit" value="Generate report" />
 </form>

@@ -1,0 +1,13 @@
+<h1>Birds Banded Report for <%=@session[:date_string]%></h1>
+<table>
+<tr><th>Alpha Code</th><th>Species</th><th>Number Banded</th></tr>
+<%@count_by_species.each do |key,value| %>
+<tr><td><%=key.code%></td><td><%=key.name%></td><td><%=value%></td>
+</tr>
+<%end%>
+</table>
+<%if @narrative%>
+    <h2>Description</h2>
+    <p><%=@narrative%></p>
+<%end%>
+<%# NEED TO FIGURE OUT HOW TO RETAIN PARAGRAPHS %>
