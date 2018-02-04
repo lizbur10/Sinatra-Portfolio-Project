@@ -25,14 +25,14 @@ class BirdsController < ApplicationController
             end
             @bird.save
         end
-        redirect to "/birds/#{date_slug(params[:date])}"
+        redirect to "/birds/#{date_slug(@session[:date])}"
     end
 
 
     # C[Read]UD - ALL BIRDS
     get '/birds/:date' do
-        @date = params[:date]
-        #
+        binding.pry
+        @date = date_unslug(params[:date])
         @session = session
         @count_by_species = Bird.group("species").where("banding_date = ?", @date).count
 
@@ -61,7 +61,13 @@ class BirdsController < ApplicationController
         end
 
         def date_slug(date)
-            Helpers.slugify(date)
+            date.strftime("%b-%d").downcase
+        end
+
+        def date_unslug(date_slug)
+            day_string = date_slug.gsub(/[a-zA-Z]+\W/,"")
+            month_string = date_slug.gsub(/\W[0-9]+/,"").capitalize
+            date_string = "#{month_string} #{day_string}"
         end
 
         def set_date(date_string)
