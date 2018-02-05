@@ -11,8 +11,14 @@
 <form action="/birds/new">
     <input type="submit" value="Add more birds" />
 </form>
+<form action="/birds/<%=@date_slug%>/edit">
+    <input type="submit" value="Edit" />
+</form>
+<br>
+<br>
+
 <form action="/birds/<%=@date_slug%>/add_narrative">
-    <input type="submit" value="Add narrative" />
+    <input type="submit" value="Add narrative (opt.)" />
 </form>
 <form action="/birds/<%=@date_slug%>/report">
     <input type="submit" value="Generate report" />

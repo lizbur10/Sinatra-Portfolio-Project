@@ -4,13 +4,11 @@
 <tr><th>Alpha Code</th><th>Species</th><th>Number Banded</th></tr>
 <form action="/birds" method="POST">
 <input id="hidden" type="hidden" name="_method" value="patch">
-<% count = 0%>
 <%@count_by_species.each do |species,value| %>
-    <%count += 1%>
 <tr>
-    <td><input type="text" name="species<%=count%>[code]" value="<%=species.code%>"</td>
-    <td><input type="text" name="species<%=count%>[name]" value="<%=species.name%>"</td>
-    <td><input type="number" name="number_banded<%=count%>" value="<%=value%>"</td>
+    <td><%=species.code%></td>
+    <td><%=species.name%></td>
+    <td><input type="number" name="species[<%=species.code%>]" value="<%=value%>"</td>
 </tr>
 <%end%>
 </table>

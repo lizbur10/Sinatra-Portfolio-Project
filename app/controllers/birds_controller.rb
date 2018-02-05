@@ -34,7 +34,6 @@ class BirdsController < ApplicationController
 
     # C[Read]UD - ALL BIRDS
     get '/birds/:date' do
-        binding.pry
         @session = session
         @date_slug = date_slug(@session[:date])
         @date_string = date_string
@@ -74,12 +73,17 @@ class BirdsController < ApplicationController
     get '/birds/:date/edit' do
         @session = session
         @count_by_species = count_by_species
-        
         erb :'/birds/edit'
     end
 
     patch '/birds' do
         binding.pry
+        @current_counts = count_by_species
+        params[:species].each do |code, number|
+            Bird.group("species").where("banding_date = ?, code=?", date_string, "MAWA").count
+            species_in_db = Species.find_by(:code => code)
+            puts species_in_db
+        end
         redirect to :"/birds/#{date_slug(@session[:date])}"
     end
 
