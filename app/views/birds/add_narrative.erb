@@ -1,7 +1,7 @@
 <h1>Add a Description</h1>
 <form action="/birds/<%=@session[:date_string]%>/report" method="POST" id="narrative">
  <h2><label>Description:</label></h2>
- <textarea cols="100" rows="20" name="narrative" form="narrative"></textarea> 
+ <textarea cols="100" rows="20" name="narrative[content]" form="narrative"></textarea> 
  <br>
 <input type="submit" value="Generate report">
 </form>

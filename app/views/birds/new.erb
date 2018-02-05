@@ -1,6 +1,6 @@
 <h1>Enter Birds Banded</h1>
 <form action='/birds' method="POST">
-<% date = @session[:date].strftime("%b %d") || Time.now.strftime("%b %d")%>
+<% @session[:date] ? date = @session[:date].strftime("%b %d") : date = Time.now.strftime("%b %d")%>
 <h2><label>Enter date: </label><input type="text" name=date value="<%=date%>"></h2>
 <h2><label>Enter alpha code: </label><input type="text" name="bird[species][code]" ></h2>
 <h2><label>Enter species name: </label><input type="text" name="bird[species][name]" ></h2>
