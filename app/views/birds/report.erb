@@ -6,9 +6,8 @@
 </tr>
 <%end%>
 </table>
-<%binding.pry%>
 <%if @narrative%>
     <h2>Description</h2>
-    <p><%=@narrative%></p>
+    <p><%=@narrative.content%></p>
 <%end%>
 <%# NEED TO FIGURE OUT HOW TO RETAIN PARAGRAPHS %>

@@ -57,7 +57,6 @@ class BirdsController < ApplicationController
     end
 
     get '/birds/:date/report' do
-        binding.pry
         @session = session
         @narrative = Narrative.find_by(:date => date_string)
         @count_by_species = Bird.group("species").where("banding_date = ?", @session[:date_string]).count
@@ -85,6 +84,7 @@ class BirdsController < ApplicationController
         end
 
         def count_by_species
+            #NOT IMPLEMENTED YET!!
             Bird.group("species").where("banding_date = ?", @session[:date_string]).count
         end
 
