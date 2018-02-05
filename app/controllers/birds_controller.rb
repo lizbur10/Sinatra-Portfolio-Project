@@ -34,6 +34,7 @@ class BirdsController < ApplicationController
 
     # C[Read]UD - ALL BIRDS
     get '/birds/:date' do
+        binding.pry
         @session = session
         @date_slug = date_slug(@session[:date])
         @date_string = date_string
@@ -54,6 +55,7 @@ class BirdsController < ApplicationController
     post '/birds/:date/report' do
         @session = session
         @count_by_species = count_by_species
+        ## THROW WARNING IF NARRATIVE ALREADY EXISTS FOR DATE
         narrative=Narrative.create(:content => params[:narrative][:content], :date => params[:date])
         redirect to :"/birds/#{date_slug(@session[:date])}/report"
     end
