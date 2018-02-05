@@ -1,4 +1,8 @@
-<h1>Birds Banded Report for <%=@session[:date_string]%></h1>
+<h1>Birds Banded Report for <%=@date_string%></h1>
+<h2>Posted by: <%=@bander%></h2>
+<%if @narrative%>
+    <p><%=@narrative.content%></p>
+<%end%>
 <table>
 <tr><th>Alpha Code</th><th>Species</th><th>Number Banded</th></tr>
 <%@count_by_species.each do |key,value| %>
@@ -6,8 +10,4 @@
 </tr>
 <%end%>
 </table>
-<%if @narrative%>
-    <h2>Description</h2>
-    <p><%=@narrative.content%></p>
-<%end%>
 <%# NEED TO FIGURE OUT HOW TO RETAIN PARAGRAPHS %>

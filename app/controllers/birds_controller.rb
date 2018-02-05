@@ -37,29 +37,33 @@ class BirdsController < ApplicationController
         @session = session
         @date_slug = date_slug(@session[:date])
         @date_string = date_string
-        @count_by_species = Bird.group("species").where("banding_date = ?", @session[:date_string]).count
+        @count_by_species = count_by_species
 
         erb :'/birds/show'
     end
 
 
-    #ADD NARRATIVE function
+    #ADD NARRATIVE FUNCTION
     get '/birds/:date/add_narrative' do
         @session = session
+        @date_string = date_string
         erb :'/birds/add_narrative'
     end
 
+    ## GENERATE REPORT FUNCTION
     post '/birds/:date/report' do
         @session = session
-        @count_by_species = Bird.group("species").where("banding_date = ?", @session[:date_string]).count
+        @count_by_species = count_by_species
         narrative=Narrative.create(:content => params[:narrative][:content], :date => params[:date])
         redirect to :"/birds/#{date_slug(@session[:date])}/report"
     end
 
     get '/birds/:date/report' do
         @session = session
+        @bander ="David" ## HARD CODED UNTIL IMPLEMENT BANDER LOGIN
         @narrative = Narrative.find_by(:date => date_string)
-        @count_by_species = Bird.group("species").where("banding_date = ?", @session[:date_string]).count
+        @date_string = date_string
+        @count_by_species = count_by_species
         erb :'/birds/report'
     end
 
@@ -67,13 +71,13 @@ class BirdsController < ApplicationController
     ## THIS IS GOING TO BE UPDATING A SET OF BIRDS (FOR A GIVEN DATE) RATHER THAN AN INDIVIDUAL; 
     get '/birds/:date/edit' do
         @session = session
-        @count_by_species = Bird.group("species").where("banding_date = ?", @session[:date_string]).count
+        @count_by_species = count_by_species
         
         erb :'/birds/edit'
     end
 
     patch '/birds' do
-        
+        binding.pry
         redirect to :"/birds/#{date_slug(@session[:date])}"
     end
 
@@ -84,8 +88,7 @@ class BirdsController < ApplicationController
         end
 
         def count_by_species
-            #NOT IMPLEMENTED YET!!
-            Bird.group("species").where("banding_date = ?", @session[:date_string]).count
+            Bird.group("species").where("banding_date = ?", date_string).count
         end
 
         def date_slug(date)
@@ -109,7 +112,7 @@ class BirdsController < ApplicationController
         end
 
         def date_string
-            @session[:date].strftime("%b %d")
+            session[:date].strftime("%b %d")
         end
     end
 
