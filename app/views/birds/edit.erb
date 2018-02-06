@@ -1,7 +1,7 @@
 <% ## SHOW BY DATE RATHER THAN INDIVIDUAL BIRDS %>
 <h1>Birds Banded on <%= @session[:date_string]%></h1>
 <table>
-<tr><th>Alpha Code</th><th>Species</th><th>Number Banded</th></tr>
+<tr><th>Alpha Code</th><th>Species</th><th>Number Banded</th><th>Delete</th></tr>
 <form action="/birds" method="POST">
 <input id="hidden" type="hidden" name="_method" value="patch">
 <%@count_by_species.each do |species,value| %>
@@ -9,6 +9,8 @@
     <td><%=species.code%></td>
     <td><%=species.name%></td>
     <td><input type="number" name="species[<%=species.code%>]" value="<%=value%>"</td>
+    <td><input type="checkbox" name="delete[<%=species.code%>]"></td>
+
 </tr>
 <%end%>
 </table>

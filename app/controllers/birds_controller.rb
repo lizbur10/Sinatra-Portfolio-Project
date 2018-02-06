@@ -81,6 +81,14 @@ class BirdsController < ApplicationController
     end
 
     patch '/birds' do
+        binding.pry
+        if params[:delete]
+            ## NEED TO FIX SO IT DELETES ALL 
+            ## CREATE A METHOD TO FIND SPECIES WITH CURRENT DATE
+            params[:delete].each do | code, value |
+                delete_species_from_db(code)
+            end
+        end
         count_by_species.each do |species, count_from_db|
             number_change = params[:species][species.code].to_i - count_from_db
             if number_change > 0
@@ -91,9 +99,10 @@ class BirdsController < ApplicationController
                 end
             elsif number_change < 0
                 number_change.abs.times do
-                    delete_species = Species.find_by_code(species.code)
-                    delete_bird = Bird.find_by(:banding_date => date_string, :species_id => delete_species.id) 
-                    delete_bird.delete
+                    # species_to_delete = Species.find_by_code(species.code)
+                    # bird_to_delete = Bird.find_by(:banding_date => date_string, :species_id => species_to_delete.id) 
+                    # bird_to_delete.delete
+                    delete_species_from_db(species.code)
                 end
             end
         end
@@ -118,6 +127,13 @@ class BirdsController < ApplicationController
 
         def count_by_species
             Bird.group("species").where("banding_date = ?", date_string).count
+        end
+
+        def delete_species_from_db(code)
+            species_to_delete = Species.find_by_code(code)
+            bird_to_delete = Bird.find_by(:banding_date => date_string, :species_id => species_to_delete.id) 
+            bird_to_delete.delete
+
         end
 
         def date_slug(date)
