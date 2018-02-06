@@ -101,6 +101,7 @@ class BirdsController < ApplicationController
 
     ## SUBMIT
     post 'birds/submit' do
+        "Hello World"
         binding.pry
         session[:date].clear
         redirect to :'/'
