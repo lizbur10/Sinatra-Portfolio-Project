@@ -77,7 +77,6 @@ class BirdsController < ApplicationController
     end
 
     patch '/birds' do
-        binding.pry
         count_by_species.each do |species, count_from_db|
             number_change = params[:species][species.code].to_i - count_from_db
             if number_change > 0
@@ -87,10 +86,15 @@ class BirdsController < ApplicationController
                     add_bird.save
                 end
             elsif number_change < 0
-                ## delete number_change birds
+                number_change.abs.times do
+                    delete_species = Species.find_by_code(species.code)
+                    delete_bird = Bird.find_by(:banding_date => date_string, :species_id => delete_species.id) 
+                    delete_bird.delete
+                end
             end
         end
-        redirect to :"/birds/#{date_slug(@session[:date])}"
+        
+        redirect to :"/birds/#{date_slug(session[:date])}"
     end
 
     #  HELPERS
