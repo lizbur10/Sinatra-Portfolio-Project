@@ -3,7 +3,6 @@ class BirdsController < ApplicationController
     # [Create]RUD
     get '/birds/new' do
         @session = session
-        binding.pry
         erb :'/birds/new'
     end
 
@@ -100,10 +99,8 @@ class BirdsController < ApplicationController
     ## EDIT NARRATIVE 
 
     ## SUBMIT
-    post 'birds/submit' do
-        "Hello World"
-        binding.pry
-        session[:date].clear
+    post '/birds/submit' do
+        session.delete("date")
         redirect to :'/'
     end
     
