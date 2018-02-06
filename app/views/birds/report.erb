@@ -2,7 +2,13 @@
 <h2>Posted by: <%=@bander%></h2>
 <%if @narrative%>
     <p><%=@narrative.content%></p>
+    <% ##if logged_in?%>
+    <form action="/birds/<%=@date_slug%>/edit_narrative">
+        <input type="submit" value="Edit narrative" />
+    </form>
+    <% ##end%>
 <%end%>
+<br><br>
 <table>
 <tr><th>Alpha Code</th><th>Species</th><th>Number Banded</th></tr>
 <%@count_by_species.each do |key,value| %>
@@ -10,4 +16,15 @@
 </tr>
 <%end%>
 </table>
+
+<% ##if logged_in?%>
+<form action="/birds/<%=@date_slug%>/edit">
+    <input type="submit" value="Edit banded list" />
+</form>
+<br><br>
+<form action="/birds/submit" method="post">
+    <input type="submit" value="Finished" />
+</form>
+<% ##end%>
+
 <%# NEED TO FIGURE OUT HOW TO RETAIN PARAGRAPHS %>

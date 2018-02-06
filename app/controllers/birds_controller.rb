@@ -3,7 +3,7 @@ class BirdsController < ApplicationController
     # [Create]RUD
     get '/birds/new' do
         @session = session
-
+        binding.pry
         erb :'/birds/new'
     end
 
@@ -43,14 +43,14 @@ class BirdsController < ApplicationController
     end
 
 
-    #ADD NARRATIVE FUNCTION
+    #ADD NARRATIVE
     get '/birds/:date/add_narrative' do
         @session = session
         @date_string = date_string
         erb :'/birds/add_narrative'
     end
 
-    ## GENERATE REPORT FUNCTION
+    ## GENERATE REPORT
     post '/birds/:date/report' do
         @session = session
         @count_by_species = count_by_species
@@ -96,6 +96,16 @@ class BirdsController < ApplicationController
         
         redirect to :"/birds/#{date_slug(session[:date])}"
     end
+
+    ## EDIT NARRATIVE 
+
+    ## SUBMIT
+    post 'birds/submit' do
+        binding.pry
+        session[:date].clear
+        redirect to :'/'
+    end
+    
 
     #  HELPERS
     helpers do
