@@ -78,11 +78,17 @@ class BirdsController < ApplicationController
 
     patch '/birds' do
         binding.pry
-        @current_counts = count_by_species
-        params[:species].each do |code, number|
-            Bird.group("species").where("banding_date = ?, code=?", date_string, "MAWA").count
-            species_in_db = Species.find_by(:code => code)
-            puts species_in_db
+        count_by_species.each do |species, count_from_db|
+            number_change = params[:species][species.code].to_i - count_from_db
+            if number_change > 0
+                number_change.times do
+                    add_bird = Bird.create(:banding_date => date_string)
+                    add_bird.species = Species.find_by_code(species.code)
+                    add_bird.save
+                end
+            elsif number_change < 0
+                ## delete number_change birds
+            end
         end
         redirect to :"/birds/#{date_slug(@session[:date])}"
     end
