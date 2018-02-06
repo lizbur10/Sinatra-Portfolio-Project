@@ -20,10 +20,15 @@ class BirdsController < ApplicationController
                 ## SPECIES DOESN'T NEED TO BE INSTANCE VAR
                 # do you want to add this species?
                 # redirect to '/species/new'
+                binding.pry
                 @species = Species.new(params[:bird][:species])
                 @species.code = @species.code.upcase
-                @species.save
-                @bird.species = @species
+                if @species.save
+                    @bird.species = @species
+                else 
+                    ## THROW ERROR MESSAGE
+                    redirect to '/birds/new'
+                end
             end
             @bird.save
         end
