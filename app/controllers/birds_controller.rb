@@ -61,7 +61,6 @@ class BirdsController < ApplicationController
     ## GENERATE REPORT
     post '/birds/:date/report' do
         ## THROW WARNING IF NARRATIVE ALREADY EXISTS FOR DATE
-        binding.pry
         if params[:narrative][:content] && params[:narrative][:content] !=""
             narrative=Narrative.create(:content => params[:narrative][:content], :date => params[:date])
         end
@@ -70,7 +69,7 @@ class BirdsController < ApplicationController
 
     get '/birds/:date/report' do
         @session = session
-        @bander ="David" ## HARD CODED UNTIL IMPLEMENT BANDER LOGIN
+        @bander ="Anthony" ## HARD CODED UNTIL IMPLEMENT BANDER LOGIN
         @narrative = Narrative.find_by(:date => date_string)
         @date_string = date_string
         @date_slug = date_slug(@session[:date])
@@ -89,8 +88,9 @@ class BirdsController < ApplicationController
     end
 
     patch '/birds' do
-        if params[:redirect]
-            redirect to '/birds/new'
+        binding.pry
+        if params[:narrative][:content]
+            Narrative.find_by(:date => date_string).update(:content => params[:narrative][:content])
         end
         if params[:delete]
             params[:delete].each do | code, value |
@@ -115,14 +115,18 @@ class BirdsController < ApplicationController
                 end
             end
         end
-        
-        redirect to :"/birds/#{date_slug(session[:date])}/report"
+        if params[:add_more_birds]
+            redirect to '/birds/new'
+        else
+            redirect to :"/birds/#{date_slug(session[:date])}/report"
+        end
     end
 
 
     ## SUBMIT
     post '/birds/submit' do
         session.delete("date")
+        
         redirect to :'/'
     end
     

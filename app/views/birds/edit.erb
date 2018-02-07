@@ -1,18 +1,18 @@
 <% ## SHOW BY DATE RATHER THAN INDIVIDUAL BIRDS %>
 <h1>Banding report for <%= @date_string%></h1>
+<form action="/birds" method="POST" id="update_report">
+<input id="hidden" type="hidden" name="_method" value="patch">
  <%if @narrative%>
      <h2><label>Edit your description:</label></h2>
-     <textarea cols="100" rows="10" name="narrative[content]" form="narrative"><%=@narrative.content%></textarea> 
+     <textarea cols="100" rows="10" name="narrative[content]" form="update_report"><%=@narrative.content%></textarea> 
  <%else%>
      <h2><label>Add a description (optional):</label></h2> 
-     <textarea cols="100" rows="20" name="narrative[content]" form="narrative"></textarea> 
+     <textarea cols="100" rows="20" name="narrative[content]" form="update_report"></textarea> 
  <%end%>
 <br><br>
 <h2>Edit banded list:</h2>
 <table>
 <tr><th>Alpha Code</th><th>Species</th><th>Number Banded</th><th>Delete</th></tr>
-<form action="/birds" method="POST">
-<input id="hidden" type="hidden" name="_method" value="patch">
 <%@count_by_species.each do |species,value| %>
 <tr>
     <td><%=species.code%></td>
@@ -23,13 +23,12 @@
 </tr>
 <%end%>
 </table>
+<input type="submit" name="add_more_birds" value="Add more birds" />
+
 <br><br>
 <input type="submit" value="Submit Changes">
-<br>
 <input type="submit" value="Cancel">
 <br><br>
-<form action="/birds/new">
-    <input type="submit" name="redirect" value="Add more birds" />
 </form>
 
-</form>
+
