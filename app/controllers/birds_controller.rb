@@ -68,6 +68,10 @@ class BirdsController < ApplicationController
     end
 
     get '/birds/:date/report' do
+        binding.pry
+        if params[:date] != date_slug(session[:date])
+            session[:date] = set_date(params[:date])
+        end
         @session = session
         @bander ="Anthony" ## HARD CODED UNTIL IMPLEMENT BANDER LOGIN
         @narrative = Narrative.find_by(:date => date_string)
@@ -126,7 +130,7 @@ class BirdsController < ApplicationController
     ## SUBMIT
     post '/birds/submit' do
         session.delete("date")
-        
+
         redirect to :'/'
     end
     
@@ -154,7 +158,7 @@ class BirdsController < ApplicationController
 
         def set_date(date_string)
             year = Time.now.year
-            month_string = parse_month(date_string)
+            month_string = parse_month(date_string).capitalize
             month = Date::MONTHNAMES.index(month_string) || Date::ABBR_MONTHNAMES.index(month_string)
             day = parse_day(date_string)
             Time.new(year, month, day)
@@ -165,7 +169,8 @@ class BirdsController < ApplicationController
         end
 
         def parse_day(date_string)
-            date_string.gsub(/\s?[a-zA-Z]\s?/, "")
+            str=date_string.gsub(/\s?[a-zA-Z]\s?/, "")
+            str.gsub(/[-]/, "")
         end
 
         def date_string
