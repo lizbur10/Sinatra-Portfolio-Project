@@ -1,5 +1,14 @@
 <% ## SHOW BY DATE RATHER THAN INDIVIDUAL BIRDS %>
-<h1>Birds Banded on <%= @date_string%></h1>
+<h1>Banding report for <%= @date_string%></h1>
+ <%if @narrative%>
+     <h2><label>Edit your description:</label></h2>
+     <textarea cols="100" rows="20" name="narrative[content]" form="narrative"><%=@narrative.content%></textarea> 
+ <%else%>
+     <h2><label>Add a description (optional):</label></h2> 
+     <textarea cols="100" rows="20" name="narrative[content]" form="narrative"></textarea> 
+ <%end%>
+<br><br>
+<h2>Edit banded list:</h2>
 <table>
 <tr><th>Alpha Code</th><th>Species</th><th>Number Banded</th><th>Delete</th></tr>
 <form action="/birds" method="POST">
@@ -14,7 +23,7 @@
 </tr>
 <%end%>
 </table>
-
+<br><br>
 <input type="submit" value="Submit Changes">
 <br><br>
 <form action="/birds/new">
