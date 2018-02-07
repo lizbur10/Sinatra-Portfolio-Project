@@ -21,10 +21,10 @@ class BirdsController < ApplicationController
                 # do you want to add this species?
                 # redirect to '/species/new'
                 binding.pry
-                @species = Species.new(params[:bird][:species])
-                @species.code = @species.code.upcase
-                if @species.save
-                    @bird.species = @species
+                species = Species.new(params[:bird][:species])
+                species.code = species.code.upcase
+                if species.save
+                    @bird.species = species
                 else 
                     ## THROW ERROR MESSAGE
                     redirect to '/birds/new'
@@ -56,11 +56,9 @@ class BirdsController < ApplicationController
 
     ## GENERATE REPORT
     post '/birds/:date/report' do
-        @session = session
-        @count_by_species = count_by_species
         ## THROW WARNING IF NARRATIVE ALREADY EXISTS FOR DATE
         narrative=Narrative.create(:content => params[:narrative][:content], :date => params[:date])
-        redirect to :"/birds/#{date_slug(@session[:date])}/report"
+        redirect to :"/birds/#{date_slug(session[:date])}/report"
     end
 
     get '/birds/:date/report' do
@@ -76,6 +74,7 @@ class BirdsController < ApplicationController
     ## THIS IS GOING TO BE UPDATING A SET OF BIRDS (FOR A GIVEN DATE) RATHER THAN AN INDIVIDUAL; 
     get '/birds/:date/edit' do
         @session = session
+        @date_string = date_string
         @count_by_species = count_by_species
         erb :'/birds/edit'
     end
@@ -86,7 +85,11 @@ class BirdsController < ApplicationController
             ## NEED TO FIX SO IT DELETES ALL 
             ## CREATE A METHOD TO FIND SPECIES WITH CURRENT DATE
             params[:delete].each do | code, value |
-                delete_species_from_db(code)
+                count_by_species.each do |species, count_from_db|
+                    if species.code == code
+                        count_from_db.times { delete_species(code) }
+                    end
+                end
             end
         end
         count_by_species.each do |species, count_from_db|
@@ -99,10 +102,7 @@ class BirdsController < ApplicationController
                 end
             elsif number_change < 0
                 number_change.abs.times do
-                    # species_to_delete = Species.find_by_code(species.code)
-                    # bird_to_delete = Bird.find_by(:banding_date => date_string, :species_id => species_to_delete.id) 
-                    # bird_to_delete.delete
-                    delete_species_from_db(species.code)
+                    delete_species(species.code)
                 end
             end
         end
@@ -129,7 +129,7 @@ class BirdsController < ApplicationController
             Bird.group("species").where("banding_date = ?", date_string).count
         end
 
-        def delete_species_from_db(code)
+        def delete_species(code)
             species_to_delete = Species.find_by_code(code)
             bird_to_delete = Bird.find_by(:banding_date => date_string, :species_id => species_to_delete.id) 
             bird_to_delete.delete
