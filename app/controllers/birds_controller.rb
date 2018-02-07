@@ -10,10 +10,10 @@ class BirdsController < ApplicationController
     post '/birds' do
         # Add warning if params[:date] != session[:date] && session[:date] exists
         ## create report here and assign to bander
-        binding.pry
         session[:date] = set_date(params[:date])
         report = Report.find_by(:date => date_string) || report = Report.create(:date => date_string)
         #report.bander = current_bander
+        #report.save
         @session = session
         @date_string = date_string
         params[:bird][:number_banded].to_i.times do
@@ -52,7 +52,6 @@ class BirdsController < ApplicationController
 
     #ADD NARRATIVE
     get '/birds/:date/add_narrative' do
-        binding.pry
         @session = session
         @date_string = date_string
         report = Report.find_by(:date => date_string)
