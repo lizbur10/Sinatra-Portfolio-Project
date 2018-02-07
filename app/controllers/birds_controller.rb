@@ -93,14 +93,13 @@ class BirdsController < ApplicationController
         @session = session
         @date_string = date_string
         @count_by_species = count_by_species
-        @narrative = Narrative.find_by(:date => @date_string)
+        @narrative = Report.find_by(:date => date_string).content
         erb :'/birds/edit'
     end
 
     patch '/birds' do
-        binding.pry
         if params[:narrative][:content]
-            Narrative.find_by(:date => date_string).update(:content => params[:narrative][:content])
+            Report.find_by(:date => date_string).update(:content => params[:narrative][:content])
         end
         if params[:delete]
             params[:delete].each do | code, value |
@@ -135,6 +134,7 @@ class BirdsController < ApplicationController
 
     ## SUBMIT
     post '/birds/submit' do
+        report = Report.find_by(:date => date_string).update(:status => "posted")
         session.delete("date")
 
         redirect to :'/'

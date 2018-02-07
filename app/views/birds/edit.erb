@@ -4,7 +4,7 @@
 <input id="hidden" type="hidden" name="_method" value="patch">
  <%if @narrative%>
      <h2><label>Edit your description:</label></h2>
-     <textarea cols="100" rows="10" name="narrative[content]" form="update_report"><%=@narrative.content%></textarea> 
+     <textarea cols="100" rows="10" name="narrative[content]" form="update_report"><%=@narrative%></textarea> 
  <%else%>
      <h2><label>Add a description (optional):</label></h2> 
      <textarea cols="100" rows="20" name="narrative[content]" form="update_report"></textarea> 
