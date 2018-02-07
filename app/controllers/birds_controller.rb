@@ -20,7 +20,6 @@ class BirdsController < ApplicationController
                 ## SPECIES DOESN'T NEED TO BE INSTANCE VAR
                 # do you want to add this species?
                 # redirect to '/species/new'
-                binding.pry
                 species = Species.new(params[:bird][:species])
                 species.code = species.code.upcase
                 if species.save
@@ -50,11 +49,11 @@ class BirdsController < ApplicationController
     #ADD NARRATIVE
     get '/birds/:date/add_narrative' do
         @session = session
+        @date_string = date_string
         if Narrative.find_by(:date => date_string)
             redirect to :"/birds/#{date_slug(session[:date])}/report"
         else
-            @date_string = date_string
-            erb :'/birds/add_narrative'
+            erb :'/birds/narrative'
         end
     end
 
@@ -62,7 +61,10 @@ class BirdsController < ApplicationController
     ## GENERATE REPORT
     post '/birds/:date/report' do
         ## THROW WARNING IF NARRATIVE ALREADY EXISTS FOR DATE
-        narrative=Narrative.create(:content => params[:narrative][:content], :date => params[:date])
+        binding.pry
+        if params[:narrative][:content] && params[:narrative][:content] !=""
+            narrative=Narrative.create(:content => params[:narrative][:content], :date => params[:date])
+        end
         redirect to :"/birds/#{date_slug(session[:date])}/report"
     end
 
@@ -87,7 +89,6 @@ class BirdsController < ApplicationController
     end
 
     patch '/birds' do
-        binding.pry
         if params[:redirect]
             redirect to '/birds/new'
         end
