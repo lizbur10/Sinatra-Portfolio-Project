@@ -81,6 +81,10 @@ class BirdsController < ApplicationController
     end
 
     patch '/birds' do
+        binding.pry
+        if params[:redirect]
+            redirect to '/birds/new'
+        end
         if params[:delete]
             params[:delete].each do | code, value |
                 count_by_species.each do |species, count_from_db|
