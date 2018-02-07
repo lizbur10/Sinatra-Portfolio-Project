@@ -1,0 +1,8 @@
+<h1>Edit Description for <%=@date_string %></h1>
+<form action="/birds/<%=@date_string%>/report" method="POST" id="narrative">
+<input id="hidden" type="hidden" name="_method" value="patch">
+ <h2><label>Description:</label></h2>
+ <textarea cols="100" rows="20" name="narrative[content]" form="narrative"><%=@narrative.content%></textarea> 
+ <br>
+<input type="submit" value="Update">
+</form>

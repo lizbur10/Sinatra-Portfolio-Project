@@ -66,6 +66,7 @@ class BirdsController < ApplicationController
         @bander ="David" ## HARD CODED UNTIL IMPLEMENT BANDER LOGIN
         @narrative = Narrative.find_by(:date => date_string)
         @date_string = date_string
+        @date_slug = date_slug(@session[:date])
         @count_by_species = count_by_species
         erb :'/birds/report'
     end
@@ -80,10 +81,7 @@ class BirdsController < ApplicationController
     end
 
     patch '/birds' do
-        binding.pry
         if params[:delete]
-            ## NEED TO FIX SO IT DELETES ALL 
-            ## CREATE A METHOD TO FIND SPECIES WITH CURRENT DATE
             params[:delete].each do | code, value |
                 count_by_species.each do |species, count_from_db|
                     if species.code == code
@@ -111,6 +109,16 @@ class BirdsController < ApplicationController
     end
 
     ## EDIT NARRATIVE 
+    get '/birds/:date/edit_narrative' do
+        binding.pry
+        @date_string = date_string
+        @narrative = Narrative.find_by(:date => @date_string)
+        erb :'/birds/edit_narrative'
+    end
+
+    patch '/birds/:date/narrative' do
+
+    end
 
     ## SUBMIT
     post '/birds/submit' do
