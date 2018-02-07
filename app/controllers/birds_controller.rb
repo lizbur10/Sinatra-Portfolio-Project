@@ -63,23 +63,24 @@ class BirdsController < ApplicationController
     end
 
 
-    ## GENERATE REPORT
+    ## ADD NARRATIVE TO REPORT
     post '/birds/:date/report' do
+        report = Report.find_by(:date => date_string)
         ## THROW WARNING IF NARRATIVE ALREADY EXISTS FOR DATE
-        if params[:narrative][:content] && params[:narrative][:content] !=""
-            narrative=Narrative.create(:content => params[:narrative][:content], :date => params[:date])
+        if params[:narrative][:content] && params[:narrative][:content] != ""
+            report.content = params[:narrative][:content]
+            report.save
         end
         redirect to :"/birds/#{date_slug(session[:date])}/report"
     end
 
     get '/birds/:date/report' do
-        binding.pry
         if params[:date] != date_slug(session[:date])
             session[:date] = set_date(params[:date])
         end
         @session = session
         @bander ="Anthony" ## HARD CODED UNTIL IMPLEMENT BANDER LOGIN
-        @narrative = Narrative.find_by(:date => date_string)
+        @narrative = Report.find_by(:date => date_string).content
         @date_string = date_string
         @date_slug = date_slug(@session[:date])
         @count_by_species = count_by_species
