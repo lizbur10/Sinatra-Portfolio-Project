@@ -50,9 +50,14 @@ class BirdsController < ApplicationController
     #ADD NARRATIVE
     get '/birds/:date/add_narrative' do
         @session = session
-        @date_string = date_string
-        erb :'/birds/add_narrative'
+        if Narrative.find_by(:date => date_string)
+            redirect to :"/birds/#{date_slug(session[:date])}/report"
+        else
+            @date_string = date_string
+            erb :'/birds/add_narrative'
+        end
     end
+
 
     ## GENERATE REPORT
     post '/birds/:date/report' do
@@ -110,24 +115,9 @@ class BirdsController < ApplicationController
             end
         end
         
-        redirect to :"/birds/#{date_slug(session[:date])}"
+        redirect to :"/birds/#{date_slug(session[:date])}/report"
     end
 
-    ## EDIT NARRATIVE -- OBSOLETE
-    
-    # get '/birds/:date/edit_narrative' do
-    #     @date_string = date_string
-    #     @date_slug = date_slug(session[:date])
-    #     @narrative = Narrative.find_by(:date => @date_string)
-    #     erb :'/birds/edit_narrative'
-    # end
-
-    # patch '/birds/:date/narrative' do
-    #     @narrative = Narrative.find_by(:date => date_string)
-    #     @narrative.update(:content => params[:narrative][:content])
-    #     @date_slug = date_slug(session[:date])        
-    #     redirect to "/birds/#{@date_slug}/report"
-    # end
 
     ## SUBMIT
     post '/birds/submit' do

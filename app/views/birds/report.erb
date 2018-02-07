@@ -3,9 +3,6 @@
 <%if @narrative%>
     <p><%=@narrative.content%></p>
     <% ##if logged_in?%>
-    <form action="/birds/<%=@date_slug%>/edit_narrative">
-        <input type="submit" value="Edit narrative" />
-    </form>
     <% ##end%>
 <%end%>
 <br><br>

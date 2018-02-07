@@ -2,7 +2,7 @@
 <h1>Banding report for <%= @date_string%></h1>
  <%if @narrative%>
      <h2><label>Edit your description:</label></h2>
-     <textarea cols="100" rows="20" name="narrative[content]" form="narrative"><%=@narrative.content%></textarea> 
+     <textarea cols="100" rows="10" name="narrative[content]" form="narrative"><%=@narrative.content%></textarea> 
  <%else%>
      <h2><label>Add a description (optional):</label></h2> 
      <textarea cols="100" rows="20" name="narrative[content]" form="narrative"></textarea> 
@@ -25,6 +25,8 @@
 </table>
 <br><br>
 <input type="submit" value="Submit Changes">
+<br>
+<input type="submit" value="Cancel">
 <br><br>
 <form action="/birds/new">
     <input type="submit" name="redirect" value="Add more birds" />
