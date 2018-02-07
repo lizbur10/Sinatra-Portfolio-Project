@@ -110,14 +110,17 @@ class BirdsController < ApplicationController
 
     ## EDIT NARRATIVE 
     get '/birds/:date/edit_narrative' do
-        binding.pry
         @date_string = date_string
+        @date_slug = date_slug(session[:date])
         @narrative = Narrative.find_by(:date => @date_string)
         erb :'/birds/edit_narrative'
     end
 
     patch '/birds/:date/narrative' do
-
+        @narrative = Narrative.find_by(:date => date_string)
+        @narrative.update(:content => params[:narrative][:content])
+        @date_slug = date_slug(session[:date])        
+        redirect to "/birds/#{@date_slug}/report"
     end
 
     ## SUBMIT
