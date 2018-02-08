@@ -16,12 +16,12 @@
 
 <% ##if logged_in?%>
 <br>
-<form action="/birds/<%=@date_slug%>/edit">
+<form action="/reports/<%=@date_slug%>/edit">
     <input type="submit" value="Edit report" />
 </form>
 <br><br>
-<form action="/birds/submit" method="post">
-    <input type="submit" value="Finished" />
+<form action="/reports/submit" method="post">
+    <input type="submit" value="Post Report" />
 </form>
 <% ##end%>
 

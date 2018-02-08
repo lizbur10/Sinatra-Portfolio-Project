@@ -16,6 +16,15 @@ class ReportsController < ApplicationController
         end
     end
 
+    ## SUBMIT REPORT
+    post '/reports/submit' do
+        report = Report.find_by(:date => date_string).update(:status => "posted", :date_slug => slugify_date_string(date_string))
+        session.delete("date")
+
+        redirect to :'/reports'
+    end
+
+
     ## ADD NARRATIVE TO REPORT
     post '/reports/:date' do
         report = Report.find_by(:date => date_string)
@@ -40,7 +49,7 @@ class ReportsController < ApplicationController
         erb :'/reports/show'
     end
 
-    
+
 
     helpers do
         def count_by_species
