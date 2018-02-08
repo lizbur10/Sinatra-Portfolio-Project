@@ -1,4 +1,5 @@
-<h1>Birds Banded Report for <%=@date_string%></h1>
+<h1>Step 3: Post the Report</h1> 
+<h2>Birds Banded Report for <%=@date_string%></h2>
 <h2>Posted by: <%=@bander%></h2>
 <%if @narrative%>
     <p><%=@narrative%></p>
@@ -23,6 +24,7 @@
 <form action="/reports/submit" method="post">
     <input type="submit" value="Post Report" />
 </form>
+<% #CONFIRM READY TO POST %>
 <% ##end%>
 
 <%# NEED TO FIGURE OUT HOW TO RETAIN PARAGRAPHS %>

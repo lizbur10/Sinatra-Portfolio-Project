@@ -1,10 +1,20 @@
 class ReportsController < ApplicationController
+
+    ## C[READ]UD - SHOW ALL REPORTS; LINK TO CREATE A NEW REPORT
     get '/reports' do
         @reports = Report.all.where(:status => "posted")
         erb :'/reports/index'
     end
 
-    #ADD NARRATIVE
+    ## SUBMIT REPORT
+    post '/reports/submit' do
+        report = Report.find_by(:date => date_string).update(:status => "posted", :date_slug => slugify_date_string(date_string))
+        session.delete("date")
+
+        redirect to :'/reports'
+    end
+
+    ## [CREATE]RUD - CREATE NARRATIVE
     get '/reports/:date/add_narrative' do
         @session = session
         @date_string = date_string
@@ -16,16 +26,7 @@ class ReportsController < ApplicationController
         end
     end
 
-    ## SUBMIT REPORT
-    post '/reports/submit' do
-        report = Report.find_by(:date => date_string).update(:status => "posted", :date_slug => slugify_date_string(date_string))
-        session.delete("date")
-
-        redirect to :'/reports'
-    end
-
-
-    ## ADD NARRATIVE TO REPORT
+    ## [CREATE]RUD - ADD NARRATIVE TO REPORT
     post '/reports/:date' do
         report = Report.find_by(:date => date_string)
         ## THROW WARNING IF NARRATIVE ALREADY EXISTS FOR DATE
@@ -36,6 +37,7 @@ class ReportsController < ApplicationController
         redirect to :"/reports/#{slugify_date_string(report[:date])}"
     end
 
+    ## C[READ]UD - SHOW SPECIFIC REPORT
     get '/reports/:date' do
         if !session[:date] || params[:date] != slugify_date(session[:date])
             session[:date] = set_date(params[:date])
@@ -49,6 +51,7 @@ class ReportsController < ApplicationController
         erb :'/reports/show'
     end
 
+    ## CR[UPDATE]D - EDIT REPORT
     get '/reports/:date/edit' do
         session[:date] = set_date(params[:date]) if !session[:date] 
         @session = session
