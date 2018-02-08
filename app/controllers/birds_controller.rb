@@ -59,35 +59,9 @@ class BirdsController < ApplicationController
 
     patch '/birds' do
         if !params[:cancel_changes]
-            @date_string = date_string(session[:date])
-            ## MAKE METHOD IN BIRD CLASS
+            @date_string = Helpers.date_string(session[:date])
             Helpers.update_banding_numbers(params,@date_string)
             
-            # if params[:delete]
-            #     params[:delete].each do | code, value |
-            #         Helpers.count_by_species(@date_string).each do |species, count_from_db|
-            #             if species.code == code
-            #                 count_from_db.times { delete_species(code) }
-            #             end
-            #         end
-            #     end
-            # end
-            # Helpers.count_by_species.each do |species, count_from_db|
-            #     number_change = params[:species][species.code].to_i - count_from_db
-            #     if number_change > 0
-            #         number_change.times do
-            #             add_bird = Bird.create(:banding_date => @date_string)
-            #             add_bird.species = Species.find_by_code(species.code)
-            #             add_bird.save
-            #         end
-            #     elsif number_change < 0
-            #         number_change.abs.times do
-            #             delete_species(species.code)
-            #         end
-            #     end
-            # end
-        end
-        ## END MAKE METHOD IN BIRD CLASS
         if params[:add_more_birds]
             redirect to '/birds/new'
         else
@@ -99,44 +73,10 @@ class BirdsController < ApplicationController
 
     #  HELPERS
     helpers do
-        ## OKAY HERE
         def find_species
             Species.find_by_code(params[:bird][:species][:code])
         end
 
-#########  MOVE TO HELPER MODEL
-        def delete_species(code)
-            species_to_delete = Species.find_by_code(code)
-            bird_to_delete = Bird.find_by(:banding_date => date_string(@date), :species_id => species_to_delete.id) 
-            bird_to_delete.delete
-
-        end
-        
-        # def slugify_date(date)
-        #     date.strftime("%b-%d").downcase
-        # end
-
-        # def set_date(date_string)
-        #     year = Time.now.year
-        #     month_string = parse_month(date_string).capitalize
-        #     month = Date::MONTHNAMES.index(month_string) || Date::ABBR_MONTHNAMES.index(month_string)
-        #     day = parse_day(date_string)
-        #     Time.new(year, month, day)
-        # end
-
-        # def parse_month(date_string)
-        #     month_string = date_string.gsub(/[^a-zA-Z]/, "")
-        # end
-
-        # def parse_day(date_string)
-        #     str=date_string.gsub(/\s?[a-zA-Z]\s?/, "")
-        #     str.gsub(/[-]/, "")
-        # end
-
-        # def date_string
-        #     session[:date].strftime("%b %d")
-        # end
-######### END MOVE TO HELPER MODEL
     end
 
 end
