@@ -10,6 +10,33 @@ class Helpers
         Bird.group("species").where("banding_date = ?", date_string).count
     end
 
+    def self.update_banding_numbers(passed_params, date_string)
+        if passed_params[:delete]
+            passed_params[:delete].each do | code, value |
+                count_by_species(date_string).each do |species, count_from_db|
+                    if species.code == code
+                        count_from_db.times { self.delete_species(code) }
+                    end
+                end
+            end
+        end
+        self.count_by_species(date_string).each do |species, count_from_db|
+            number_change = passed_params[:species][species.code].to_i - count_from_db
+            if number_change > 0
+                number_change.times do
+                    add_bird = Bird.create(:banding_date => date_string)
+                    add_bird.species = Species.find_by_code(species.code)
+                    add_bird.save
+                end
+            elsif number_change < 0
+                number_change.abs.times do
+                    self.delete_species(species.code)
+                end
+            end
+        end
+    end
+
+
     def self.delete_species(code)
         species_to_delete = Species.find_by_code(code)
         bird_to_delete = Bird.find_by(:banding_date => date_string, :species_id => species_to_delete.id) 

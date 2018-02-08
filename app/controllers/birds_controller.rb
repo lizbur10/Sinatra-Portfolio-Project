@@ -61,29 +61,31 @@ class BirdsController < ApplicationController
         if !params[:cancel_changes]
             @date_string = date_string(session[:date])
             ## MAKE METHOD IN BIRD CLASS
-            if params[:delete]
-                params[:delete].each do | code, value |
-                    Helpers.count_by_species(@date_string).each do |species, count_from_db|
-                        if species.code == code
-                            count_from_db.times { delete_species(code) }
-                        end
-                    end
-                end
-            end
-            Helpers.count_by_species.each do |species, count_from_db|
-                number_change = params[:species][species.code].to_i - count_from_db
-                if number_change > 0
-                    number_change.times do
-                        add_bird = Bird.create(:banding_date => @date_string)
-                        add_bird.species = Species.find_by_code(species.code)
-                        add_bird.save
-                    end
-                elsif number_change < 0
-                    number_change.abs.times do
-                        delete_species(species.code)
-                    end
-                end
-            end
+            Helpers.update_banding_numbers(params,@date_string)
+            
+            # if params[:delete]
+            #     params[:delete].each do | code, value |
+            #         Helpers.count_by_species(@date_string).each do |species, count_from_db|
+            #             if species.code == code
+            #                 count_from_db.times { delete_species(code) }
+            #             end
+            #         end
+            #     end
+            # end
+            # Helpers.count_by_species.each do |species, count_from_db|
+            #     number_change = params[:species][species.code].to_i - count_from_db
+            #     if number_change > 0
+            #         number_change.times do
+            #             add_bird = Bird.create(:banding_date => @date_string)
+            #             add_bird.species = Species.find_by_code(species.code)
+            #             add_bird.save
+            #         end
+            #     elsif number_change < 0
+            #         number_change.abs.times do
+            #             delete_species(species.code)
+            #         end
+            #     end
+            # end
         end
         ## END MAKE METHOD IN BIRD CLASS
         if params[:add_more_birds]
