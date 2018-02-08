@@ -35,14 +35,14 @@ class BirdsController < ApplicationController
             end
             @bird.save
         end
-        redirect to "/birds/#{date_slug(@session[:date])}"
+        redirect to "/birds/#{slugify_date(@session[:date])}"
     end
 
 
     # C[Read]UD - ALL BIRDS
     get '/birds/:date' do
         @session = session
-        @date_slug = date_slug(@session[:date])
+        @date_slug = slugify_date(@session[:date])
         @date_string = date_string
         @count_by_species = count_by_species
 
@@ -56,7 +56,7 @@ class BirdsController < ApplicationController
         @date_string = date_string
         report = Report.find_by(:date => date_string)
         if report.content && report.content != ""
-            redirect to :"/birds/#{date_slug(session[:date])}/report"
+            redirect to :"/birds/#{slugify_date(session[:date])}/report"
         else
             erb :'/birds/narrative'
         end
@@ -71,18 +71,18 @@ class BirdsController < ApplicationController
             report.content = params[:narrative][:content]
             report.save
         end
-        redirect to :"/birds/#{date_slug(session[:date])}/report"
+        redirect to :"/birds/#{slugify_date(session[:date])}/report"
     end
 
     get '/birds/:date/report' do
-        if params[:date] != date_slug(session[:date])
+        if params[:date] != slugify_date(session[:date])
             session[:date] = set_date(params[:date])
         end
         @session = session
         @bander ="Anthony" ## HARD CODED UNTIL IMPLEMENT BANDER LOGIN
         @narrative = Report.find_by(:date => date_string).content
         @date_string = date_string
-        @date_slug = date_slug(@session[:date])
+        @date_slug = slugify_date(@session[:date])
         @count_by_species = count_by_species
         erb :'/birds/report'
     end
@@ -127,7 +127,7 @@ class BirdsController < ApplicationController
         if params[:add_more_birds]
             redirect to '/birds/new'
         else
-            redirect to :"/birds/#{date_slug(session[:date])}/report"
+            redirect to :"/birds/#{slugify_date(session[:date])}/report"
         end
     end
 
@@ -158,9 +158,13 @@ class BirdsController < ApplicationController
 
         end
 
-        def date_slug(date)
+        def slugify_date(date)
             date.strftime("%b-%d").downcase
         end
+
+        # def slugify_date_string(date_string)
+        #     date_string.downcase.gsub(/\s/,"-")
+        # end
 
         def set_date(date_string)
             year = Time.now.year

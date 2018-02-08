@@ -1,3 +1,4 @@
-ReportsController < ApplicationController
+class ReportsController < ApplicationController
 
+    
 end

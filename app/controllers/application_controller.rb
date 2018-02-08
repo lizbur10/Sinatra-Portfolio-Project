@@ -10,6 +10,7 @@ class ApplicationController < Sinatra::Base
   end
 
   get '/' do
+    binding.pry
     @reports = Report.all
     erb :index
   end
