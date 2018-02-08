@@ -114,12 +114,6 @@ class BirdsController < ApplicationController
         #     date.strftime("%b-%d").downcase
         # end
 
-        
-        def slugify_date_string(date_string)
-            Helpers.slugify(date_string)
-            # date_string.downcase.gsub(/\s/,"-")
-        end
-
         def set_date(date_string)
             year = Time.now.year
             month_string = parse_month(date_string).capitalize

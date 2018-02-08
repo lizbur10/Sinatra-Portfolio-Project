@@ -8,7 +8,7 @@ class ReportsController < ApplicationController
 
     ## SUBMIT REPORT
     post '/reports/submit' do
-        report = Report.find_by(:date => date_string).update(:status => "posted", :date_slug => slugify_date_string(date_string))
+        report = Report.find_by(:date => date_string).update(:status => "posted", :date_slug => Helpers.slugify_date_string(date_string))
         session.delete("date")
 
         redirect to :'/reports'
@@ -34,7 +34,7 @@ class ReportsController < ApplicationController
             report.content = params[:narrative][:content]
             report.save
         end
-        redirect to :"/reports/#{slugify_date_string(report[:date])}"
+        redirect to :"/reports/#{Helpers.slugify_date_string(report[:date])}"
     end
 
     ## C[READ]UD - SHOW SPECIFIC REPORT
@@ -136,10 +136,10 @@ class ReportsController < ApplicationController
         #     session[:date].strftime("%b %d")
         # end
 
-        def slugify_date_string(date_string)
-            Helpers.slugify(date_string)
-            # date_string.downcase.gsub(/\s/,"-")
-        end
+        # def slugify_date_string(date_string)
+        #     Helpers.slugify(date_string)
+        #     # date_string.downcase.gsub(/\s/,"-")
+        # end
 
         # def slugify_date(date)
         #     date.strftime("%b-%d").downcase
