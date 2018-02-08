@@ -137,7 +137,7 @@ class BirdsController < ApplicationController
         report = Report.find_by(:date => date_string).update(:status => "posted", :date_slug => slugify_date_string(date_string))
         session.delete("date")
 
-        redirect to :'/'
+        redirect to :'/reports'
     end
     
 

@@ -10,8 +10,6 @@ class ApplicationController < Sinatra::Base
   end
 
   get '/' do
-    @reports = Report.all.where(:status => "posted")
-    binding.pry
     erb :'/index'
   end
 

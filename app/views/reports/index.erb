@@ -1,0 +1,13 @@
+<h1>AIMS Daily Report Generator</h1>
+<h2>Step 1: Enter the day's banding list</h2>
+<h2>Step 2: Add your narrative report (optional)</h2>
+<h2>Step 3: Submit the Daily Report</h2>
+<br>
+<h2><a href="/birds/new">Start a new report</a></h2>
+<br>
+<h2>Or view an existing report:</h2>
+<%@reports.each do |report|%>
+    <%if report.status == "posted"%>
+        <h3><a href="/birds/<%=report.date_slug%>/report"><%=report.date%></a></h3>
+    <%end%>
+<%end%>
