@@ -9,7 +9,6 @@ class BirdsController < ApplicationController
 
     post '/birds' do
         # Add warning if params[:date] != session[:date] && session[:date] exists
-        ## create report here and assign to bander
         session[:date] = set_date(params[:date])
         report = Report.find_by(:date => date_string) || report = Report.create(:date => date_string)
         #report.bander = current_bander
@@ -49,7 +48,7 @@ class BirdsController < ApplicationController
         erb :'/birds/show'
     end
 
-
+########  MOVE TO REPORTS
     #ADD NARRATIVE
     get '/birds/:date/add_narrative' do
         @session = session
@@ -86,6 +85,8 @@ class BirdsController < ApplicationController
         @count_by_species = count_by_species
         erb :'/birds/report'
     end
+
+#### END MOVE TO REPORTS
 
     # CR[Update]D
     ## THIS IS GOING TO BE UPDATING A SET OF BIRDS (FOR A GIVEN DATE) RATHER THAN AN INDIVIDUAL; 
@@ -131,6 +132,7 @@ class BirdsController < ApplicationController
         end
     end
 
+#########  MOVE TO REPORTS
 
     ## SUBMIT
     post '/birds/submit' do
@@ -139,6 +141,8 @@ class BirdsController < ApplicationController
 
         redirect to :'/reports'
     end
+
+#########  END MOVE TO REPORTS
     
 
     #  HELPERS
@@ -162,10 +166,13 @@ class BirdsController < ApplicationController
             date.strftime("%b-%d").downcase
         end
 
+#########  MOVE TO REPORTS ?
+        
         def slugify_date_string(date_string)
             Helpers.slugify(date_string)
             # date_string.downcase.gsub(/\s/,"-")
         end
+#########  END MOVE TO REPORTS
 
         def set_date(date_string)
             year = Time.now.year
