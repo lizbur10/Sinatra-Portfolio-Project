@@ -1,6 +1,6 @@
 <% ## SHOW BY DATE RATHER THAN INDIVIDUAL BIRDS %>
 <h1>Banding report for <%= @date_string%></h1>
-<form action="/birds" method="POST" id="update_report">
+<form action="/reports" method="POST" id="update_report">
 <input id="hidden" type="hidden" name="_method" value="patch">
  <%if @narrative%>
      <h2><label>Edit your description:</label></h2>
@@ -27,6 +27,6 @@
 
 <br><br>
 <input type="submit" value="Submit Changes">
-<input type="submit" value="Cancel">
+<input type="submit" value="Cancel Changes">
 <br><br>
 </form>
