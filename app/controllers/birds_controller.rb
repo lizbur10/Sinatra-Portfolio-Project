@@ -75,7 +75,7 @@ class BirdsController < ApplicationController
     end
 
     get '/birds/:date/report' do
-        if params[:date] != slugify_date(session[:date])
+        if !session[:date] || params[:date] != slugify_date(session[:date])
             session[:date] = set_date(params[:date])
         end
         @session = session
@@ -134,7 +134,7 @@ class BirdsController < ApplicationController
 
     ## SUBMIT
     post '/birds/submit' do
-        report = Report.find_by(:date => date_string).update(:status => "posted")
+        report = Report.find_by(:date => date_string).update(:status => "posted", :date_slug => slugify_date_string(date_string))
         session.delete("date")
 
         redirect to :'/'
@@ -162,9 +162,10 @@ class BirdsController < ApplicationController
             date.strftime("%b-%d").downcase
         end
 
-        # def slugify_date_string(date_string)
-        #     date_string.downcase.gsub(/\s/,"-")
-        # end
+        def slugify_date_string(date_string)
+            Helpers.slugify(date_string)
+            # date_string.downcase.gsub(/\s/,"-")
+        end
 
         def set_date(date_string)
             year = Time.now.year

@@ -8,6 +8,6 @@
 <h2>Or view an existing report:</h2>
 <%@reports.each do |report|%>
     <%if report.status == "posted"%>
-        <h3><a href="/birds/<%=report.slug)%>/report"><%=report.slug%></a></h3>
+        <h3><a href="/birds/<%=report.date_slug%>/report"><%=report.date%></a></h3>
     <%end%>
 <%end%>

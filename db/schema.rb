@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180207203812) do
+ActiveRecord::Schema.define(version: 20180208123202) do
 
   create_table "all_species", force: :cascade do |t|
     t.string "code"
@@ -34,6 +34,7 @@ ActiveRecord::Schema.define(version: 20180207203812) do
     t.integer "bander_id"
     t.text "content"
     t.text "status"
+    t.text "date_slug"
   end
 
 end

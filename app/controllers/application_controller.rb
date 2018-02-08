@@ -10,9 +10,15 @@ class ApplicationController < Sinatra::Base
   end
 
   get '/' do
+    @reports = Report.all.where(:status => "posted")
     binding.pry
-    @reports = Report.all
-    erb :index
+    erb :'/index'
+  end
+
+  helpers do
+    def slugify_date_string(date_string)
+        Helpers.slugify(date_string)
+    end
   end
 
 end
