@@ -43,7 +43,7 @@ class BirdsController < ApplicationController
         @session = session
         @date_slug = slugify_date(@session[:date])
         @date_string = date_string
-        @count_by_species = count_by_species
+        @count_by_species = Helpers.count_by_species(@date_string)
 
         erb :'/birds/index'
     end
@@ -53,23 +53,24 @@ class BirdsController < ApplicationController
     get '/birds/:date/edit' do
         session[:date] = set_date(params[:date]) if !session[:date] 
         @date_string = date_string
-        @count_by_species = count_by_species
+        @count_by_species = Helpers.count_by_species(@date_string)
         erb :'/birds/edit'
     end
 
     patch '/birds' do
         if !params[:cancel_changes]
             ## MAKE METHOD IN BIRD CLASS
+            @date_string = date_string
             if params[:delete]
                 params[:delete].each do | code, value |
-                    count_by_species.each do |species, count_from_db|
+                    Helpers.count_by_species(@date_string).each do |species, count_from_db|
                         if species.code == code
                             count_from_db.times { delete_species(code) }
                         end
                     end
                 end
             end
-            count_by_species.each do |species, count_from_db|
+            Helpers.count_by_species(@date_string).each do |species, count_from_db|
                 number_change = params[:species][species.code].to_i - count_from_db
                 if number_change > 0
                     number_change.times do
@@ -109,9 +110,9 @@ class BirdsController < ApplicationController
         end
 
 
-        def count_by_species
-            Bird.group("species").where("banding_date = ?", date_string).count
-        end
+        # def count_by_species
+        #     Bird.group("species").where("banding_date = ?", date_string).count
+        # end
 
         
         def slugify_date(date)

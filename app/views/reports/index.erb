@@ -5,9 +5,11 @@
 <br>
 <h2><a href="/birds/new">Start a new report</a></h2>
 <br>
-<h2>Or view an existing report:</h2>
+<h2>Or continue working on an existing report:</h2>
+<ul>
 <%@reports.each do |report|%>
-    <%if report.status == "posted"%>
-        <h3><a href="/reports/<%=report.date_slug%>"><%=report.date%></a></h3>
+    <%if report.status == nil %>
+        <h3><li><a href="/reports/<%=report.date_slug%>"><%=report.date%></a></li></h3>
     <%end%>
 <%end%>
+</ul>
