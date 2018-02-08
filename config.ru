@@ -7,6 +7,7 @@ end
 use Rack::MethodOverride
 use BandersController
 use BirdsController
-use SpeciesController
+use ReportsController
 use SessionsController
+use SpeciesController
 run ApplicationController

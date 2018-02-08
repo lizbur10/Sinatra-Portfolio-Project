@@ -10,7 +10,7 @@ class ApplicationController < Sinatra::Base
   end
 
   get '/' do
-
+    @reports = Report.all
     erb :index
   end
 

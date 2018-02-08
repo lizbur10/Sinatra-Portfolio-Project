@@ -1,9 +1,9 @@
-<h1>Enter Birds Banded</h1>
+<h1>Step 1: Enter the Day's Banding List</h1>
 <form action='/birds' method="POST">
 <% @session[:date] ? date = @session[:date].strftime("%b %d") : date = Time.now.strftime("%b %d")%>
 <h2><label>Date: </label><input type="text" name=date value="<%=date%>"></h2>
 <h2><label>Alpha code: </label><input type="text" name="bird[species][code]" ></h2>
 <h2><label>Species name: </label><input type="text" name="bird[species][name]" ></h2>
 <h2><label>Number banded: </label><input type="integer" name="bird[number_banded]" ></h2>
-<input type="submit" value="Continue">
+<input type="submit" value="Save">
 </form>
