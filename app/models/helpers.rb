@@ -18,9 +18,9 @@ class Helpers
 
     def self.set_date(date_string)
         year = Time.now.year
-        month_string = parse_month(date_string).capitalize
+        month_string = self.parse_month(date_string).capitalize
         month = Date::MONTHNAMES.index(month_string) || Date::ABBR_MONTHNAMES.index(month_string)
-        day = parse_day(date_string)
+        day = self.parse_day(date_string)
         Time.new(year, month, day)
     end
 

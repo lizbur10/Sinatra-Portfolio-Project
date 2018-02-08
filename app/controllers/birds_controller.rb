@@ -9,7 +9,7 @@ class BirdsController < ApplicationController
 
     post '/birds' do
         # Add warning if params[:date] != session[:date] && session[:date] exists
-        session[:date] = set_date(params[:date])
+        session[:date] = Helpers.set_date(params[:date])
         @session = session
         @date_string = Helpers.date_string(session[:date])
         report = Report.find_by(:date => @date_string) || report = Report.create(:date => @date_string)
@@ -51,7 +51,7 @@ class BirdsController < ApplicationController
 
     ## CR[Update]D - EDIT BIRDS
     get '/birds/:date/edit' do
-        session[:date] = set_date(params[:date]) if !session[:date] 
+        session[:date] = Helpers.set_date(params[:date]) if !session[:date] 
         @date_string = Helpers.date_string(session[:date])
         @count_by_species = Helpers.count_by_species(@date_string)
         erb :'/birds/edit'
@@ -114,22 +114,22 @@ class BirdsController < ApplicationController
         #     date.strftime("%b-%d").downcase
         # end
 
-        def set_date(date_string)
-            year = Time.now.year
-            month_string = parse_month(date_string).capitalize
-            month = Date::MONTHNAMES.index(month_string) || Date::ABBR_MONTHNAMES.index(month_string)
-            day = parse_day(date_string)
-            Time.new(year, month, day)
-        end
+        # def set_date(date_string)
+        #     year = Time.now.year
+        #     month_string = parse_month(date_string).capitalize
+        #     month = Date::MONTHNAMES.index(month_string) || Date::ABBR_MONTHNAMES.index(month_string)
+        #     day = parse_day(date_string)
+        #     Time.new(year, month, day)
+        # end
 
-        def parse_month(date_string)
-            month_string = date_string.gsub(/[^a-zA-Z]/, "")
-        end
+        # def parse_month(date_string)
+        #     month_string = date_string.gsub(/[^a-zA-Z]/, "")
+        # end
 
-        def parse_day(date_string)
-            str=date_string.gsub(/\s?[a-zA-Z]\s?/, "")
-            str.gsub(/[-]/, "")
-        end
+        # def parse_day(date_string)
+        #     str=date_string.gsub(/\s?[a-zA-Z]\s?/, "")
+        #     str.gsub(/[-]/, "")
+        # end
 
         # def date_string
         #     session[:date].strftime("%b %d")
