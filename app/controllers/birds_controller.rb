@@ -50,16 +50,16 @@ class BirdsController < ApplicationController
 
 ########  MOVE TO REPORTS
     #ADD NARRATIVE
-    get '/birds/:date/add_narrative' do
-        @session = session
-        @date_string = date_string
-        report = Report.find_by(:date => date_string)
-        if report.content && report.content != ""
-            redirect to :"/birds/#{slugify_date(session[:date])}/report"
-        else
-            erb :'/birds/narrative'
-        end
-    end
+    # get '/birds/:date/add_narrative' do
+    #     @session = session
+    #     @date_string = date_string
+    #     report = Report.find_by(:date => date_string)
+    #     if report.content && report.content != ""
+    #         redirect to :"/birds/#{slugify_date(session[:date])}/report"
+    #     else
+    #         erb :'/birds/narrative'
+    #     end
+    # end
 
 
     ## ADD NARRATIVE TO REPORT
@@ -174,6 +174,8 @@ class BirdsController < ApplicationController
         end
 #########  END MOVE TO REPORTS
 
+
+######### MOVE TO HELPER MODEL
         def set_date(date_string)
             year = Time.now.year
             month_string = parse_month(date_string).capitalize
@@ -194,6 +196,7 @@ class BirdsController < ApplicationController
         def date_string
             session[:date].strftime("%b %d")
         end
+######### END MOVE TO HELPER MODEL
     end
 
 end

@@ -16,6 +16,18 @@ class ReportsController < ApplicationController
         end
     end
 
+    ## ADD NARRATIVE TO REPORT
+    post '/reports/:date' do
+        report = Report.find_by(:date => date_string)
+        ## THROW WARNING IF NARRATIVE ALREADY EXISTS FOR DATE
+        if params[:narrative][:content] && params[:narrative][:content] != ""
+            report.content = params[:narrative][:content]
+            report.save
+        end
+        redirect to :"/reports/#{slugify_date_string(report[:date])}"
+    end
+    
+
     helpers do
         def set_date(date_string)
             year = Time.now.year
@@ -37,6 +49,12 @@ class ReportsController < ApplicationController
         def date_string
             session[:date].strftime("%b %d")
         end
+
+        def slugify_date_string(date_string)
+            Helpers.slugify(date_string)
+            # date_string.downcase.gsub(/\s/,"-")
+        end
+
     end
     
 end
