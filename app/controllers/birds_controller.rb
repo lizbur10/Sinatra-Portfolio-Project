@@ -14,7 +14,8 @@ class BirdsController < ApplicationController
         #report.bander = current_bander
         #report.save
         @session = session
-        @date_string = date_string
+        @date = session[:date]
+        @date_string = date_string(@date)
         params[:bird][:number_banded].to_i.times do
             @bird = Bird.new(:banding_date => params[:date])
             if find_species
@@ -41,8 +42,8 @@ class BirdsController < ApplicationController
     # C[Read]UD - ALL BIRDS FOR A GIVEN DATE
     get '/birds/:date' do
         @session = session
-        @date_slug = slugify_date(@session[:date])
-        @date_string = date_string
+        @date_slug = slugify_date(@date)
+        @date_string = Helpers.date_string(session[:date])
         @count_by_species = Helpers.count_by_species(@date_string)
 
         erb :'/birds/index'
@@ -52,15 +53,15 @@ class BirdsController < ApplicationController
     ## CR[Update]D - EDIT BIRDS
     get '/birds/:date/edit' do
         session[:date] = set_date(params[:date]) if !session[:date] 
-        @date_string = date_string
+        @date_string = Helpers.date_string(session[:date])
         @count_by_species = Helpers.count_by_species(@date_string)
         erb :'/birds/edit'
     end
 
     patch '/birds' do
         if !params[:cancel_changes]
+            @date_string = date_string(session[:date])
             ## MAKE METHOD IN BIRD CLASS
-            @date_string = date_string
             if params[:delete]
                 params[:delete].each do | code, value |
                     Helpers.count_by_species(@date_string).each do |species, count_from_db|
@@ -70,11 +71,11 @@ class BirdsController < ApplicationController
                     end
                 end
             end
-            Helpers.count_by_species(@date_string).each do |species, count_from_db|
+            Helpers.count_by_species.each do |species, count_from_db|
                 number_change = params[:species][species.code].to_i - count_from_db
                 if number_change > 0
                     number_change.times do
-                        add_bird = Bird.create(:banding_date => date_string)
+                        add_bird = Bird.create(:banding_date => @date_string)
                         add_bird.species = Species.find_by_code(species.code)
                         add_bird.save
                     end
@@ -104,16 +105,10 @@ class BirdsController < ApplicationController
 #########  MOVE TO HELPER MODEL
         def delete_species(code)
             species_to_delete = Species.find_by_code(code)
-            bird_to_delete = Bird.find_by(:banding_date => date_string, :species_id => species_to_delete.id) 
+            bird_to_delete = Bird.find_by(:banding_date => date_string(@date), :species_id => species_to_delete.id) 
             bird_to_delete.delete
 
         end
-
-
-        # def count_by_species
-        #     Bird.group("species").where("banding_date = ?", date_string).count
-        # end
-
         
         def slugify_date(date)
             date.strftime("%b-%d").downcase
@@ -142,9 +137,9 @@ class BirdsController < ApplicationController
             str.gsub(/[-]/, "")
         end
 
-        def date_string
-            session[:date].strftime("%b %d")
-        end
+        # def date_string
+        #     session[:date].strftime("%b %d")
+        # end
 ######### END MOVE TO HELPER MODEL
     end
 

@@ -33,9 +33,9 @@ class Helpers
         str.gsub(/[-]/, "")
     end
 
-    # def self.date_string
-    #     session[:date].strftime("%b %d")
-    # end
+    def self.date_string(date)
+        date.strftime("%b %d")
+    end
 
     def self.slugify_date_string(date_string)
         slugify(date_string)

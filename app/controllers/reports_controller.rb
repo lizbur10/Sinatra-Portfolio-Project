@@ -44,10 +44,11 @@ class ReportsController < ApplicationController
         end
         @session = session
         @bander ="Anthony" ## HARD CODED UNTIL IMPLEMENT BANDER LOGIN
-        @narrative = Report.find_by(:date => date_string).content
-        @date_string = date_string
+        @date = session[:date]
+        @date_string = Helpers.date_string(@date)
+        @narrative = Report.find_by(:date => @date_string).content
         @date_slug = slugify_date(@session[:date])
-        @count_by_species = count_by_species
+        @count_by_species = Helpers.count_by_species(@date_string)
         erb :'/reports/show'
     end
 
@@ -56,7 +57,7 @@ class ReportsController < ApplicationController
         session[:date] = set_date(params[:date]) if !session[:date] 
         @session = session
         @date_string = date_string
-        @count_by_species = count_by_species
+        @count_by_species = Helpers.count_by_species(@date_string)
         @narrative = Report.find_by(:date => date_string).content
         erb :'/reports/edit'
     end
@@ -131,9 +132,9 @@ class ReportsController < ApplicationController
             str.gsub(/[-]/, "")
         end
 
-        def date_string
-            session[:date].strftime("%b %d")
-        end
+        # def date_string
+        #     session[:date].strftime("%b %d")
+        # end
 
         def slugify_date_string(date_string)
             Helpers.slugify(date_string)
