@@ -20,7 +20,7 @@ class ReportsController < ApplicationController
         @date_string = date_string
         report = Report.find_by(:date => date_string)
         if report.content && report.content != ""
-            redirect to :"/reports/#{slugify_date(session[:date])}"
+            redirect to :"/reports/#{Helpers.slugify_date(session[:date])}"
         else
             erb :'/reports/narrative'
         end
@@ -39,7 +39,7 @@ class ReportsController < ApplicationController
 
     ## C[READ]UD - SHOW SPECIFIC REPORT
     get '/reports/:date' do
-        if !session[:date] || params[:date] != slugify_date(session[:date])
+        if !session[:date] || params[:date] != Helpers.slugify_date(session[:date])
             session[:date] = set_date(params[:date])
         end
         @session = session
@@ -47,7 +47,7 @@ class ReportsController < ApplicationController
         @date = session[:date]
         @date_string = Helpers.date_string(@date)
         @narrative = Report.find_by(:date => @date_string).content
-        @date_slug = slugify_date(@session[:date])
+        @date_slug = Helpers.slugify_date(@session[:date])
         @count_by_species = Helpers.count_by_species(@date_string)
         erb :'/reports/show'
     end
@@ -97,7 +97,7 @@ class ReportsController < ApplicationController
         if params[:add_more_birds]
             redirect to '/birds/new'
         else
-            redirect to :"/reports/#{slugify_date(session[:date])}"
+            redirect to :"/reports/#{Helpers.slugify_date(session[:date])}"
         end
     end
 
@@ -141,9 +141,9 @@ class ReportsController < ApplicationController
             # date_string.downcase.gsub(/\s/,"-")
         end
 
-        def slugify_date(date)
-            date.strftime("%b-%d").downcase
-        end
+        # def slugify_date(date)
+        #     date.strftime("%b-%d").downcase
+        # end
 
 
     end

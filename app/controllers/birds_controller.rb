@@ -10,12 +10,11 @@ class BirdsController < ApplicationController
     post '/birds' do
         # Add warning if params[:date] != session[:date] && session[:date] exists
         session[:date] = set_date(params[:date])
-        report = Report.find_by(:date => date_string) || report = Report.create(:date => date_string)
+        @session = session
+        @date_string = Helpers.date_string(session[:date])
+        report = Report.find_by(:date => @date_string) || report = Report.create(:date => @date_string)
         #report.bander = current_bander
         #report.save
-        @session = session
-        @date = session[:date]
-        @date_string = date_string(@date)
         params[:bird][:number_banded].to_i.times do
             @bird = Bird.new(:banding_date => params[:date])
             if find_species
@@ -35,14 +34,14 @@ class BirdsController < ApplicationController
             end
             @bird.save
         end
-        redirect to "/birds/#{slugify_date(@session[:date])}"
+        redirect to "/birds/#{Helpers.slugify_date(@session[:date])}"
     end
 
 
     # C[Read]UD - ALL BIRDS FOR A GIVEN DATE
     get '/birds/:date' do
         @session = session
-        @date_slug = slugify_date(@date)
+        @date_slug = Helpers.slugify_date(session[:date])
         @date_string = Helpers.date_string(session[:date])
         @count_by_species = Helpers.count_by_species(@date_string)
 
@@ -90,7 +89,7 @@ class BirdsController < ApplicationController
         if params[:add_more_birds]
             redirect to '/birds/new'
         else
-            redirect to :"/birds/#{slugify_date(session[:date])}" ## HAVE TO THINK ABOUT THIS
+            redirect to :"/birds/#{Helpers.slugify_date(session[:date])}" ## HAVE TO THINK ABOUT THIS
         end
     end
 
@@ -98,6 +97,7 @@ class BirdsController < ApplicationController
 
     #  HELPERS
     helpers do
+        ## OKAY HERE
         def find_species
             Species.find_by_code(params[:bird][:species][:code])
         end
@@ -110,9 +110,9 @@ class BirdsController < ApplicationController
 
         end
         
-        def slugify_date(date)
-            date.strftime("%b-%d").downcase
-        end
+        # def slugify_date(date)
+        #     date.strftime("%b-%d").downcase
+        # end
 
         
         def slugify_date_string(date_string)
