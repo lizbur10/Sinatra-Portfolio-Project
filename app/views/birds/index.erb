@@ -1,5 +1,6 @@
 <% ## SHOW BY DATE RATHER THAN INDIVIDUAL BIRDS %>
-<h1>Birds Banded on <%= @date_string%></h1>
+<h1>Step 1: Create the Day's Banding List</h1>
+<h2>Date: <%= @date_string%></h2>
 <table>
 <tr><th>Alpha Code</th><th>Species</th><th>Number Banded</th></tr>
 <%@count_by_species.each do |key,value| %>
@@ -16,6 +17,6 @@
 </form>
 <br><br>
 <form action="/reports/<%=@date_slug%>/add_narrative">
-    <input type="submit" value="Continue to Step 2" />
+    <input type="submit" value="Banding List Complete" />
 </form>
 

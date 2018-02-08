@@ -38,7 +38,7 @@ class BirdsController < ApplicationController
     end
 
 
-    # C[Read]UD - ALL BIRDS
+    # C[Read]UD - ALL BIRDS FOR A GIVEN DATE
     get '/birds/:date' do
         @session = session
         @date_slug = slugify_date(@session[:date])
@@ -48,63 +48,6 @@ class BirdsController < ApplicationController
         erb :'/birds/index'
     end
 
-    # CR[Update]D
-    ## THIS IS GOING TO BE UPDATING A SET OF BIRDS (FOR A GIVEN DATE) RATHER THAN AN INDIVIDUAL; 
-    # get '/birds/:date/edit' do
-    #     session[:date] = set_date(params[:date]) if !session[:date] 
-    #     @session = session
-    #     @date_string = date_string
-    #     @count_by_species = count_by_species
-    #     @narrative = Report.find_by(:date => date_string).content
-    #     erb :'/birds/edit'
-    # end
-
-    # patch '/birds' do
-    #     if params[:narrative][:content]
-    #         Report.find_by(:date => date_string).update(:content => params[:narrative][:content])
-    #     end
-    #     if params[:delete]
-    #         params[:delete].each do | code, value |
-    #             count_by_species.each do |species, count_from_db|
-    #                 if species.code == code
-    #                     count_from_db.times { delete_species(code) }
-    #                 end
-    #             end
-    #         end
-    #     end
-    #     count_by_species.each do |species, count_from_db|
-    #         number_change = params[:species][species.code].to_i - count_from_db
-    #         if number_change > 0
-    #             number_change.times do
-    #                 add_bird = Bird.create(:banding_date => date_string)
-    #                 add_bird.species = Species.find_by_code(species.code)
-    #                 add_bird.save
-    #             end
-    #         elsif number_change < 0
-    #             number_change.abs.times do
-    #                 delete_species(species.code)
-    #             end
-    #         end
-    #     end
-    #     if params[:add_more_birds]
-    #         redirect to '/birds/new'
-    #     else
-    #         redirect to :"/birds/#{slugify_date(session[:date])}/report"
-    #     end
-    # end
-
-#########  MOVE TO REPORTS
-
-    ## SUBMIT
-    # post '/birds/submit' do
-    #     report = Report.find_by(:date => date_string).update(:status => "posted", :date_slug => slugify_date_string(date_string))
-    #     session.delete("date")
-
-    #     redirect to :'/reports'
-    # end
-
-#########  END MOVE TO REPORTS
-    
 
     #  HELPERS
     helpers do
@@ -112,6 +55,7 @@ class BirdsController < ApplicationController
             Species.find_by_code(params[:bird][:species][:code])
         end
 
+#########  MOVE TO HELPER MODEL
         def delete_species(code)
             species_to_delete = Species.find_by_code(code)
             bird_to_delete = Bird.find_by(:banding_date => date_string, :species_id => species_to_delete.id) 
@@ -120,7 +64,6 @@ class BirdsController < ApplicationController
         end
 
 
-#########  MOVE TO HELPER MODEL
         def count_by_species
             Bird.group("species").where("banding_date = ?", date_string).count
         end
