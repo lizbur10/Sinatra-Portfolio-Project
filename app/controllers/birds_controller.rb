@@ -52,18 +52,13 @@ class BirdsController < ApplicationController
     ## CR[Update]D - EDIT BIRDS
     get '/birds/:date/edit' do
         session[:date] = set_date(params[:date]) if !session[:date] 
-        @session = session
         @date_string = date_string
         @count_by_species = count_by_species
         erb :'/birds/edit'
     end
 
-    patch '/reports' do
+    patch '/birds' do
         if !params[:cancel_changes]
-            if params[:narrative][:content]
-                Report.find_by(:date => date_string).update(:content => params[:narrative][:content])
-            end
-
             ## MAKE METHOD IN BIRD CLASS
             if params[:delete]
                 params[:delete].each do | code, value |
@@ -93,7 +88,7 @@ class BirdsController < ApplicationController
         if params[:add_more_birds]
             redirect to '/birds/new'
         else
-            redirect to :"/reports/#{slugify_date(session[:date])}"
+            redirect to :"/birds/#{slugify_date(session[:date])}" ## HAVE TO THINK ABOUT THIS
         end
     end
 
