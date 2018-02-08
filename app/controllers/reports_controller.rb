@@ -26,9 +26,27 @@ class ReportsController < ApplicationController
         end
         redirect to :"/reports/#{slugify_date_string(report[:date])}"
     end
+
+    get '/reports/:date' do
+        if !session[:date] || params[:date] != slugify_date(session[:date])
+            session[:date] = set_date(params[:date])
+        end
+        @session = session
+        @bander ="Anthony" ## HARD CODED UNTIL IMPLEMENT BANDER LOGIN
+        @narrative = Report.find_by(:date => date_string).content
+        @date_string = date_string
+        @date_slug = slugify_date(@session[:date])
+        @count_by_species = count_by_species
+        erb :'/reports/show'
+    end
+
     
 
     helpers do
+        def count_by_species
+            Bird.group("species").where("banding_date = ?", date_string).count
+        end
+
         def set_date(date_string)
             year = Time.now.year
             month_string = parse_month(date_string).capitalize
@@ -54,6 +72,11 @@ class ReportsController < ApplicationController
             Helpers.slugify(date_string)
             # date_string.downcase.gsub(/\s/,"-")
         end
+
+        def slugify_date(date)
+            date.strftime("%b-%d").downcase
+        end
+
 
     end
     

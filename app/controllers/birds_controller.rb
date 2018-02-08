@@ -63,15 +63,15 @@ class BirdsController < ApplicationController
 
 
     ## ADD NARRATIVE TO REPORT
-    post '/birds/:date/report' do
-        report = Report.find_by(:date => date_string)
-        ## THROW WARNING IF NARRATIVE ALREADY EXISTS FOR DATE
-        if params[:narrative][:content] && params[:narrative][:content] != ""
-            report.content = params[:narrative][:content]
-            report.save
-        end
-        redirect to :"/birds/#{slugify_date(session[:date])}/report"
-    end
+    # post '/birds/:date/report' do
+    #     report = Report.find_by(:date => date_string)
+    #     ## THROW WARNING IF NARRATIVE ALREADY EXISTS FOR DATE
+    #     if params[:narrative][:content] && params[:narrative][:content] != ""
+    #         report.content = params[:narrative][:content]
+    #         report.save
+    #     end
+    #     redirect to :"/birds/#{slugify_date(session[:date])}/report"
+    # end
 
     get '/birds/:date/report' do
         if !session[:date] || params[:date] != slugify_date(session[:date])
@@ -151,10 +151,6 @@ class BirdsController < ApplicationController
             Species.find_by_code(params[:bird][:species][:code])
         end
 
-        def count_by_species
-            Bird.group("species").where("banding_date = ?", date_string).count
-        end
-
         def delete_species(code)
             species_to_delete = Species.find_by_code(code)
             bird_to_delete = Bird.find_by(:banding_date => date_string, :species_id => species_to_delete.id) 
@@ -162,20 +158,23 @@ class BirdsController < ApplicationController
 
         end
 
+
+#########  MOVE TO HELPER MODEL
+        def count_by_species
+            Bird.group("species").where("banding_date = ?", date_string).count
+        end
+
+        
         def slugify_date(date)
             date.strftime("%b-%d").downcase
         end
 
-#########  MOVE TO REPORTS ?
         
         def slugify_date_string(date_string)
             Helpers.slugify(date_string)
             # date_string.downcase.gsub(/\s/,"-")
         end
-#########  END MOVE TO REPORTS
 
-
-######### MOVE TO HELPER MODEL
         def set_date(date_string)
             year = Time.now.year
             month_string = parse_month(date_string).capitalize
