@@ -1,1 +1,21 @@
-<h1>All birds for a given date</h1>
+<% ## SHOW BY DATE RATHER THAN INDIVIDUAL BIRDS %>
+<h1>Birds Banded on <%= @date_string%></h1>
+<table>
+<tr><th>Alpha Code</th><th>Species</th><th>Number Banded</th></tr>
+<%@count_by_species.each do |key,value| %>
+<tr><td><%=key.code%></td><td><%=key.name%></td><td><%=value%></td>
+</tr>
+<%end%>
+</table>
+<form action="/birds/<%=@date_slug%>/edit">
+    <input type="submit" value="Edit" />
+</form>
+<br>
+<form action="/birds/new">
+    <input type="submit" value="Add more birds" />
+</form>
+<br><br>
+<form action="/reports/<%=@date_slug%>/add_narrative">
+    <input type="submit" value="Continue to Step 2" />
+</form>
+

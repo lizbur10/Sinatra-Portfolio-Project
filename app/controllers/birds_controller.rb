@@ -45,7 +45,7 @@ class BirdsController < ApplicationController
         @date_string = date_string
         @count_by_species = count_by_species
 
-        erb :'/birds/show'
+        erb :'/birds/index'
     end
 
 ########  MOVE TO REPORTS
@@ -73,18 +73,18 @@ class BirdsController < ApplicationController
     #     redirect to :"/birds/#{slugify_date(session[:date])}/report"
     # end
 
-    get '/birds/:date/report' do
-        if !session[:date] || params[:date] != slugify_date(session[:date])
-            session[:date] = set_date(params[:date])
-        end
-        @session = session
-        @bander ="Anthony" ## HARD CODED UNTIL IMPLEMENT BANDER LOGIN
-        @narrative = Report.find_by(:date => date_string).content
-        @date_string = date_string
-        @date_slug = slugify_date(@session[:date])
-        @count_by_species = count_by_species
-        erb :'/birds/report'
-    end
+    # get '/birds/:date/report' do
+    #     if !session[:date] || params[:date] != slugify_date(session[:date])
+    #         session[:date] = set_date(params[:date])
+    #     end
+    #     @session = session
+    #     @bander ="Anthony" ## HARD CODED UNTIL IMPLEMENT BANDER LOGIN
+    #     @narrative = Report.find_by(:date => date_string).content
+    #     @date_string = date_string
+    #     @date_slug = slugify_date(@session[:date])
+    #     @count_by_species = count_by_species
+    #     erb :'/birds/report'
+    # end
 
 #### END MOVE TO REPORTS
 
