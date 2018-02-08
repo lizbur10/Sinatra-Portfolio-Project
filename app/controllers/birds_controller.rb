@@ -13,6 +13,7 @@ class BirdsController < ApplicationController
         @session = session
         @date_string = Helpers.date_string(session[:date])
         report = Report.find_by(:date => @date_string) || report = Report.create(:date => @date_string)
+        report.update(:date_slug => Helpers.slugify_date_string(@date_string)) if !report.date_slug
         #report.bander = current_bander
         #report.save
         params[:bird][:number_banded].to_i.times do
@@ -62,10 +63,11 @@ class BirdsController < ApplicationController
             @date_string = Helpers.date_string(session[:date])
             Helpers.update_banding_numbers(params,@date_string)
             
-        if params[:add_more_birds]
-            redirect to '/birds/new'
-        else
-            redirect to :"/birds/#{Helpers.slugify_date(session[:date])}" ## HAVE TO THINK ABOUT THIS
+            if params[:add_more_birds]
+                redirect to '/birds/new'
+            else
+                redirect to :"/birds/#{Helpers.slugify_date(session[:date])}" ## HAVE TO THINK ABOUT THIS
+            end
         end
     end
 

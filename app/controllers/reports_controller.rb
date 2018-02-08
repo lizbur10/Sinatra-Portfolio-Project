@@ -8,7 +8,7 @@ class ReportsController < ApplicationController
 
     ## SUBMIT REPORT
     post '/reports/submit' do
-        report = Report.find_by(:date => date_string).update(:status => "posted", :date_slug => Helpers.slugify_date_string(date_string))
+        report = Report.find_by(:date => date_string).update(:status => "posted")
         session.delete("date")
 
         redirect to :'/reports'
