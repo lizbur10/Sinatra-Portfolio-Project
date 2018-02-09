@@ -1,4 +1,6 @@
 class ReportsController < ApplicationController
+    require 'rack-flash'
+    use Rack::Flash
 
     ## C[READ]UD - SHOW ALL REPORTS; LINK TO CREATE A NEW REPORT
     get '/reports' do

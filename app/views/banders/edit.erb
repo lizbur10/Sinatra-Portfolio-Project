@@ -1,8 +1,11 @@
 <h1>Update Bander Information</h1>
+<% if flash.has?(:message) %>
+  <h3 style="color:red"><%= flash[:message] %><h3>
+<% end %>
 <form action='/banders/<%=@bander.slug%>' method='POST'>
 <input id="hidden" type="hidden" name="_method" value="patch">
 <h2>Name: <input type="text" name="bander[name]" value="<%=@bander.name %>"></h2>
 <h2>Email: <input type="email" name="bander[email]" value="<%=@bander.email %>"></h2>
-<h2>Password: <input type="text" name="bander[password]" value="<%=@bander.password %>"></h2>
-<input type="submit" value="Update">
+<h2>Password: <input type="password" name="bander[password]" value="<%=@bander.password %>"></h2>
+<input type="submit" value="Submit changes">
 </form>

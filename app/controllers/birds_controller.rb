@@ -1,4 +1,6 @@
 class BirdsController < ApplicationController
+    require 'rack-flash'
+    use Rack::Flash
 
     # [Create]RUD
     get '/birds/new' do

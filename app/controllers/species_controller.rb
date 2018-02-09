@@ -1,4 +1,6 @@
 class SpeciesController < ApplicationController
+    require 'rack-flash'
+    use Rack::Flash
 
     # [Create]RUD
     get '/species/new' do

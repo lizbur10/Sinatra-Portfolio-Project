@@ -16,3 +16,4 @@ gem 'shotgun'
 gem "tux"
 gem 'shotgun'
 gem 'bcrypt'
+gem 'rack-flash3'

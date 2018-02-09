@@ -1,5 +1,7 @@
 class BandersController < ApplicationController
-
+    require 'rack-flash'
+    use Rack::Flash
+    
     # [Create]RUD
     get '/banders/new' do
 
@@ -10,10 +12,10 @@ class BandersController < ApplicationController
         # CHECK THAT NAME/EMAIL ARE NOT TAKEN
         # VALIDATE PASSWORD?
         if !Helpers.validate_email(params[:bander][:email])
-            ## FLASH MESSAGE: PLEASE ENTER A VALID EMAIL ADDRESS
+            flash[:message] = "Please enter a valid email address."
             redirect to '/banders/new'
         elsif bander_exists
-            ## FLASH MESSAGE: THERE IS ALREADY AN ACCOUNT UNDER THAT NAME OR EMAIL ADDRESS
+            flash[:message] = "Error: there is already an account under that name or email address."
             redirect to '/banders/new'
         end
         bander = Bander.new(params[:bander])
@@ -46,10 +48,15 @@ class BandersController < ApplicationController
     end
 
     patch '/banders/:slug' do
-        binding.pry
-        @bander = find_bander
-        @bander.update(params[:bander])
-        redirect to "/banders/#{@bander.slug}"
+        if !Helpers.validate_email(params[:bander][:email])
+            flash[:message] = "Please enter a valid email address."
+            redirect to "/banders/#{params[:slug]}/edit"
+        else
+            @bander = find_bander
+            @bander.update(params[:bander])
+
+            redirect to "/banders/#{@bander.slug}"
+        end
     end
 
     # CRU[Delete]

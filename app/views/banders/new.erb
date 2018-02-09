@@ -1,4 +1,7 @@
 <h1>Register as a Bander</h1>
+<% if flash.has?(:message) %>
+  <h3 style="color:red"><%= flash[:message] %><h3>
+<% end %>
 <form action='/banders' method='POST'>
 <h2>Name: <input type="text" name="bander[name]"></h2>
 <h2>Email: <input type="text" name="bander[email]"></h2>
