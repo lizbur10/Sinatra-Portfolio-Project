@@ -3,6 +3,10 @@ class Helpers
     def self.validate_email(email)
         /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/.match?(email.downcase)
     end
+
+    def self.validate_alpha_code(code)
+        /[A-Z]{4}/.match?(code.upcase)
+    end
     
     def self.slugify(input)
         slug = input.downcase.gsub(/['.]/, "")

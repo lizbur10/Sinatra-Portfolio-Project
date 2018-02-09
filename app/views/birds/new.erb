@@ -1,5 +1,8 @@
 <h1>Step 1: Create the Day's Banding List</h1>
 <h2>Enter species and number banded:</h2>
+<% if flash.has?(:message) %>
+  <h3 style="color:red"><%= flash[:message] %><h3>
+<% end %>
 <form action='/birds' method="POST">
 <% @session[:date] ? date = @session[:date].strftime("%b %d") : date = Time.now.strftime("%b %d")%>
 <h2><label>Date: </label><input type="text" name=date value="<%=date%>"></h2>

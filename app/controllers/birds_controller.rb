@@ -10,7 +10,16 @@ class BirdsController < ApplicationController
     end
 
     post '/birds' do
+        binding.pry
         # Add warning if params[:date] != session[:date] && session[:date] exists
+        if !Helpers.validate_alpha_code(params[:bird][:species][:code])
+            flash[:message] = "Please enter a valid alpha code."
+            redirect to '/birds/new'
+        elsif params[:bird][:number_banded].to_i <= 0
+            flash[:message] = "Number banded must be greater than zero."
+            redirect to '/birds/new'
+            
+        end
         Helpers.check_date(params, session)
         @session = session
         @date_string = Helpers.date_string(session[:date])
