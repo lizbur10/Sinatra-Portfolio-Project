@@ -12,6 +12,7 @@ class ReportsController < ApplicationController
     post '/reports/submit' do
         @date_string = Helpers.date_string(session[:date])
         report = Report.find_by(:date => @date_string).update(:status => "posted")
+        flash[:message] = "***Success! Your report was successfully posted***"
         session.delete("date")
 
         redirect to :'/reports'
