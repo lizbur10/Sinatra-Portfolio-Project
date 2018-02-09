@@ -8,9 +8,17 @@ class BandersController < ApplicationController
 
     post '/banders' do
         # CHECK THAT NAME/EMAIL ARE NOT TAKEN
-        # VALIDATE EMAIL ADDRESS
         # VALIDATE PASSWORD?
+        if !Helpers.validate_email(params[:bander][:email])
+            ## FLASH MESSAGE: PLEASE ENTER A VALID EMAIL ADDRESS
+            redirect to '/banders/new'
+        elsif bander_exists
+            ## FLASH MESSAGE: THERE IS ALREADY AN ACCOUNT UNDER THAT NAME OR EMAIL ADDRESS
+            redirect to '/banders/new'
+        end
         bander = Bander.new(params[:bander])
+        bander.name = bander.name.titleize
+        bander.email = bander.email.downcase
         if bander.save
             redirect to '/banders'
         else
@@ -52,6 +60,10 @@ class BandersController < ApplicationController
     helpers do
         def find_bander
             Bander.find_by_slug(params[:slug])
+        end
+
+        def bander_exists
+            Bander.find_by(:name => params[:bander][:name].titleize) || Bander.find_by(:email => params[:bander][:email].downcase)
         end
     end
 end
