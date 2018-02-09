@@ -10,7 +10,6 @@ class BirdsController < ApplicationController
     end
 
     post '/birds' do
-        binding.pry
         # Add warning if params[:date] != session[:date] && session[:date] exists
         if !Helpers.validate_alpha_code(params[:bird][:species][:code])
             flash[:message] = "Please enter a valid alpha code."
@@ -74,6 +73,12 @@ class BirdsController < ApplicationController
     patch '/birds' do
         if !params[:cancel_changes]
             @date_string = Helpers.date_string(session[:date])
+            params[:species].each do |species, value|
+                if value.to_i < 0
+                    flash[:message] = "Number banded cannot be negative."
+                    redirect to "/birds/#{slugify_date_string(@date_string)}/edit"
+                end
+            end
             Helpers.update_banding_numbers(params,@date_string)
             
             if params[:add_more_birds]
