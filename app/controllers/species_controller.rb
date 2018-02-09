@@ -9,6 +9,10 @@ class SpeciesController < ApplicationController
     end
 
     post '/species' do
+        if !Helpers.validate_alpha_code(params[:species][:code])
+            flash[:message] = "Please enter a valid alpha code."
+            redirect to '/species/new'
+        end
         species = Species.new(params[:species])
         species.code = species.code.upcase
         if species.save

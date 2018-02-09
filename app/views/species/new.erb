@@ -1,4 +1,8 @@
 <h1>Add a Species</h1>
+<% if flash.has?(:message) %>
+  <h3 style="color:red"><%= flash[:message] %><h3>
+<% end %>
+
 <form action='/species' method='POST'>
 <h2>Species Name: <input type="text" name="species[name]"></h2>
 <h2>Alpha Code: <input type="text" name="species[code]"></h2>
