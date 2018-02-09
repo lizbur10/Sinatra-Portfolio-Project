@@ -25,6 +25,7 @@ class BirdsController < ApplicationController
                 # do you want to add this species?
                 # redirect to '/species/new'
                 species = Species.new(params[:bird][:species])
+                species.name = species.name.titleize
                 species.code = species.code.upcase
                 if species.save
                     @bird.species = species
@@ -69,6 +70,8 @@ class BirdsController < ApplicationController
             else
                 redirect to :"/birds/#{Helpers.slugify_date(session[:date])}" ## HAVE TO THINK ABOUT THIS
             end
+        else
+            redirect to :"/birds/#{Helpers.slugify_date(session[:date])}"
         end
     end
 

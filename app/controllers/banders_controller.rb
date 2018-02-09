@@ -8,11 +8,13 @@ class BandersController < ApplicationController
 
     post '/banders' do
         # CHECK THAT NAME/EMAIL ARE NOT TAKEN
+        # VALIDATE EMAIL ADDRESS
+        # VALIDATE PASSWORD?
         bander = Bander.new(params[:bander])
         if bander.save
             redirect to '/banders'
         else
-            #flash message here
+            #flash message here - email or name missing
             erb :'/banders/new'
         end
     end

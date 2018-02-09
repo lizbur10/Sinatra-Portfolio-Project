@@ -8,7 +8,8 @@ class ReportsController < ApplicationController
 
     ## SUBMIT REPORT
     post '/reports/submit' do
-        report = Report.find_by(:date => date_string).update(:status => "posted")
+        @date_string = Helpers.date_string(session[:date])
+        report = Report.find_by(:date => @date_string).update(:status => "posted")
         session.delete("date")
 
         redirect to :'/reports'

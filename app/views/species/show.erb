@@ -1,1 +1,6 @@
-<h1><%= @species.name%> (<%= @species.code%>)</h1>
+<h2>Species: <%= @species.name%> </h2>
+<h2>Alpha code: <%= @species.code%></h2>
+<form action="/species/<%= @species.code%>/edit">
+    <input type="submit" value="Edit species" />
+</form>
+

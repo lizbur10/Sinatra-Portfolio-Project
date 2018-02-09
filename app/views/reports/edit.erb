@@ -2,7 +2,7 @@
 <h1>Banding report for <%= @date_string%></h1>
 <form action="/reports" method="POST" id="update_report">
 <input id="hidden" type="hidden" name="_method" value="patch">
- <%if @narrative%>
+ <%if @narrative && @narrative != ""%>
      <h2><label>Edit your description:</label></h2>
      <textarea cols="100" rows="10" name="narrative[content]" form="update_report"><%=@narrative%></textarea> 
  <%else%>
