@@ -16,6 +16,7 @@ class ReportsController < ApplicationController
 
     ## [CREATE]RUD - CREATE NARRATIVE
     get '/reports/:date/add_narrative' do
+        Helpers.check_date(params, session)
         @date_string = Helpers.date_string(session[:date])
         report = Report.find_by(:date => @date_string)
         if report.content && report.content != ""
@@ -27,6 +28,7 @@ class ReportsController < ApplicationController
 
     ## [CREATE]RUD - ADD NARRATIVE TO REPORT
     post '/reports/:date' do
+        Helpers.check_date(params, session)
         @date_string = Helpers.date_string(session[:date])
         report = Report.find_by(:date => @date_string)
         ## THROW WARNING IF NARRATIVE ALREADY EXISTS FOR DATE
@@ -39,9 +41,7 @@ class ReportsController < ApplicationController
 
     ## C[READ]UD - SHOW SPECIFIC REPORT
     get '/reports/:date' do
-        if !session[:date] || params[:date] != Helpers.slugify_date(session[:date])
-            session[:date] = Helpers.set_date(params[:date])
-        end
+        Helpers.check_date(params, session)
         @session = session
         @bander ="Anthony" ## HARD CODED UNTIL IMPLEMENT BANDER LOGIN
         @date_string = Helpers.date_string(session[:date])
@@ -53,7 +53,7 @@ class ReportsController < ApplicationController
 
     ## CR[UPDATE]D - EDIT REPORT
     get '/reports/:date/edit' do
-        session[:date] = Helpers.set_date(params[:date]) if !session[:date] 
+        Helpers.check_date(params, session)
         @session = session
         @date_string = Helpers.date_string(session[:date])
         @count_by_species = Helpers.count_by_species(@date_string)

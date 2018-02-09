@@ -42,6 +42,15 @@ class Helpers
         bird_to_delete.delete
     end
 
+    def self.check_date(passed_params, session)
+        if !session[:date]
+            session[:date] = self.set_date(passed_params[:date])
+        elsif self.slugify_date(session[:date]) != passed_params[:date]
+            ## throw warning - want to switch dates?
+            session[:date] = self.set_date(passed_params[:date])
+        end
+    end
+
     def self.set_date(date_string)
         year = Time.now.year
         month_string = self.parse_month(date_string).capitalize

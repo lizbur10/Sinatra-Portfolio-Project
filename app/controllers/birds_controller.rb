@@ -9,7 +9,7 @@ class BirdsController < ApplicationController
 
     post '/birds' do
         # Add warning if params[:date] != session[:date] && session[:date] exists
-        session[:date] = Helpers.set_date(params[:date])
+        Helpers.check_date(params, session)
         @session = session
         @date_string = Helpers.date_string(session[:date])
         report = Report.find_by(:date => @date_string) || report = Report.create(:date => @date_string)
@@ -41,6 +41,7 @@ class BirdsController < ApplicationController
 
     # C[Read]UD - ALL BIRDS FOR A GIVEN DATE
     get '/birds/:date' do
+        Helpers.check_date(params, session)
         @session = session
         @date_slug = Helpers.slugify_date(session[:date])
         @date_string = Helpers.date_string(session[:date])
@@ -52,7 +53,7 @@ class BirdsController < ApplicationController
 
     ## CR[Update]D - EDIT BIRDS
     get '/birds/:date/edit' do
-        session[:date] = Helpers.set_date(params[:date]) if !session[:date] 
+        Helpers.check_date(params, session)
         @date_string = Helpers.date_string(session[:date])
         @count_by_species = Helpers.count_by_species(@date_string)
         erb :'/birds/edit'
