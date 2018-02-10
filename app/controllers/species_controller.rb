@@ -22,11 +22,8 @@ class SpeciesController < ApplicationController
             flash[:message] = "There is already a species in the database with this alpha code; please verify the species name"
         ## END VALIDATIONS
         else
-            species=Species.new(params[:species])
-            species.code = species.code.upcase
-            species.name = species.name.titleize
-            species.save
-            flash[:message] = "Species successfully added"
+            Helpers.create_species(params[:species])
+            flash[:message] = "Species successfully added"        
             redirect to '/species'
         end
         redirect to '/species/new'
@@ -40,13 +37,13 @@ class SpeciesController < ApplicationController
 
     # C[Read]UD - SPECIFIC SPECIES
     get '/species/:code' do
-        @species = find_species
+        @species = find_species_by_code
         erb :'/species/show'
     end
 
     # CR[Update]D
     get '/species/:code/edit' do
-        @species = find_species
+        @species = find_species_by_code
         erb :'/species/edit'
     end
 
@@ -63,7 +60,7 @@ class SpeciesController < ApplicationController
 
     # HELPER METHODS
     helpers do
-        def find_species
+        def find_species_by_code
             Species.find_by_code(params[:code])
         end
     end
