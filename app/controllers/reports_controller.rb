@@ -5,6 +5,9 @@ class ReportsController < ApplicationController
     ## C[READ]UD - SHOW ALL REPORTS; LINK TO CREATE A NEW REPORT
     get '/reports' do
         @reports = Report.where("bander_id = ?", session[:bander_id]).order(date: :desc)
+        # @bander = Helpers.current_bander ## THIS HASN'T BEEN IMPLEMENTED YET
+        @bander ="Anthony" ## HARD CODED UNTIL IMPLEMENT BANDER LOGIN
+        
         erb :'/reports/index'
     end
 

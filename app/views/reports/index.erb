@@ -1,7 +1,8 @@
 <% if flash.has?(:message) %>
   <h2 style="color:green"><%= flash[:message] %><h2>
 <% end %>
-
+<h1>Welcome <%=@bander%>!</h1>
+<br>
 <h1>AIMS Daily Report Generator</h1>
 <h2>Step 1: Enter the day's banding list</h2>
 <h2>Step 2: Add your write-up (optional)</h2>
@@ -19,3 +20,6 @@
         <%end%>
     </ul>
 <%end%>
+<form action = '/sessions/logout'>
+    <input type="submit" value="Log Out">
+</form>

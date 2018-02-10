@@ -8,6 +8,10 @@ class Helpers
         /[A-Z]{4}/.match?(code.upcase)
     end
 
+    def self.current_bander
+        session[:bander_id]
+    end
+
     def self.create_species(passed_params)
         species=Species.new(passed_params)
         species.code = species.code.upcase

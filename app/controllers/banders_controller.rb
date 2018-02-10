@@ -13,20 +13,17 @@ class BandersController < ApplicationController
         # VALIDATE PASSWORD?
         if !Helpers.validate_email(params[:bander][:email])
             flash[:message] = "Please enter a valid email address."
-            redirect to '/banders/new'
         elsif bander_exists
             flash[:message] = "Error: there is already an account under that name or email address."
-            redirect to '/banders/new'
-        end
-        bander = Bander.new(params[:bander])
-        bander.name = bander.name.titleize
-        bander.email = bander.email.downcase
-        if bander.save
-            redirect to '/banders'
         else
-            #flash message here - email or name missing
-            erb :'/banders/new'
+            bander = Bander.new(params[:bander])
+            bander.name = bander.name.titleize
+            bander.email = bander.email.downcase
+            bander.save
+            session[:bander_id] = @bander.id
+            redirect to :'/reports'
         end
+        redirect to '/banders/new'
     end
 
     # C[Read]UD - ALL BANDERS

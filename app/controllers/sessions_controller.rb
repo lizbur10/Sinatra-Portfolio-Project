@@ -11,5 +11,11 @@ class SessionsController < ApplicationController
         session[:bander_id] = @bander.id
         redirect '/reports'
     end
+
+    get '/sessions/logout' do 
+        session.clear
+        redirect '/'
+    end
+        
     
 end
