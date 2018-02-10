@@ -1,4 +1,7 @@
 <h1>Species List</h1>
+<% if flash.has?(:message) %>
+  <h2 style="color:green"><%= flash[:message] %><h2>
+<% end %>
 <% @all_species.each do |species|%>
 <h3><%=species.code%>: <%= species.name%></h3>
 <% end%>

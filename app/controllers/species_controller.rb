@@ -10,18 +10,25 @@ class SpeciesController < ApplicationController
 
     post '/species' do
         if !Helpers.validate_alpha_code(params[:species][:code])
-            flash[:message] = "Please enter a valid alpha code."
-            redirect to '/species/new'
-        end
-        species = Species.new(params[:species])
-        species.code = species.code.upcase
-        if species.save
-            redirect to :'/species'
+            flash[:message] = "Please enter a valid four-letter alpha code."
+        elsif Species.find_by(:name => params[:species][:name].titleize) && Species.find_by(:name => params[:species][:name].titleize) == Species.find_by(:code => params[:species][:code].upcase) 
+            flash[:message] = "This species already exists in the database."
+        elsif params[:species][:name] == ""
+            flash[:message] = "Please enter both the species name and the alpha code."
+        elsif Species.find_by(:name => params[:species][:name].titleize)
+            flash[:message] = "There is already a species in the database with this name; please verify the alpha code"
+        elsif Species.find_by(:code => params[:species][:code].upcase)
+            flash[:message] = "There is already a species in the database with this alpha code; please verify the species name"
         else
-            #flash message - both fields need to be completed
-            #flash message - duplicate record found
-            redirect to '/species/new'
+            species=Species.new(params[:species])
+            species.code = species.code.upcase
+            species.name = species.name.titleize
+            species.save
+            flash[:message] = "Species successfully added"
+            redirect to '/species'
         end
+        binding.pry
+        redirect to '/species/new'
     end
 
     # C[Read]UD - ALL SPECIES
