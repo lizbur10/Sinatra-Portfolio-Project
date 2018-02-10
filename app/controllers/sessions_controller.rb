@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
 
     post '/sessions' do
         @bander = Bander.find_by(name: params[:username].capitalize, password: params[:password])
-        session[:banderid] = @bander.id
+        session[:bander_id] = @bander.id
         redirect '/reports'
     end
     
