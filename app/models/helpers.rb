@@ -8,16 +8,11 @@ class Helpers
         /[A-Z]{4}/.match?(code.upcase)
     end
 
-    def self.validate_species
-
-    end
-
     def self.create_species(passed_params)
         species=Species.new(passed_params)
         species.code = species.code.upcase
         species.name = species.name.titleize
         species.save
-
     end
     
     def self.slugify(input)
