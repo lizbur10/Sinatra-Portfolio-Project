@@ -9,6 +9,7 @@ class SpeciesController < ApplicationController
     end
 
     post '/species' do
+        ## VALIDATIONS
         if !Helpers.validate_alpha_code(params[:species][:code])
             flash[:message] = "Please enter a valid four-letter alpha code."
         elsif Species.find_by(:name => params[:species][:name].titleize) && Species.find_by(:name => params[:species][:name].titleize) == Species.find_by(:code => params[:species][:code].upcase) 
@@ -19,6 +20,7 @@ class SpeciesController < ApplicationController
             flash[:message] = "There is already a species in the database with this name; please verify the alpha code"
         elsif Species.find_by(:code => params[:species][:code].upcase)
             flash[:message] = "There is already a species in the database with this alpha code; please verify the species name"
+        ## END VALIDATIONS
         else
             species=Species.new(params[:species])
             species.code = species.code.upcase
