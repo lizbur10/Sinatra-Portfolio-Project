@@ -7,6 +7,14 @@ class Helpers
     def self.validate_alpha_code(code)
         /[A-Z]{4}/.match?(code.upcase)
     end
+
+    def self.validate_species
+
+    end
+
+    def self.create_species
+
+    end
     
     def self.slugify(input)
         slug = input.downcase.gsub(/['.]/, "")

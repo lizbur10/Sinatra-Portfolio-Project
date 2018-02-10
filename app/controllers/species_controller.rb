@@ -27,7 +27,6 @@ class SpeciesController < ApplicationController
             flash[:message] = "Species successfully added"
             redirect to '/species'
         end
-        binding.pry
         redirect to '/species/new'
     end
 

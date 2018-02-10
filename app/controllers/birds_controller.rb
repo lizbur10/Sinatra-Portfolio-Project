@@ -17,7 +17,12 @@ class BirdsController < ApplicationController
         elsif params[:bird][:number_banded].to_i <= 0
             flash[:message] = "Number banded must be greater than zero."
             redirect to '/birds/new'
-            
+        elsif !find_species_by_code
+            flash[:message] = "This alpha code is not in the database - please verify"
+            redirect to '/birds/new'
+        elsif !find_species_by_name
+            flash[:message] = "The alpha code and name do not match - please verify"
+            redirect to '/birds/new'
         end
         Helpers.check_date(params, session)
         @session = session
@@ -27,24 +32,9 @@ class BirdsController < ApplicationController
         #report.bander = current_bander
         #report.save
         params[:bird][:number_banded].to_i.times do
-            @bird = Bird.new(:banding_date => params[:date])
-            if find_species
-                # @bird.bander = session[:bander_id]
-                @bird.species = find_species
-            else 
-                # do you want to add this species?
-                # redirect to '/species/new'
-                species = Species.new(params[:bird][:species])
-                species.name = species.name.titleize
-                species.code = species.code.upcase
-                if species.save
-                    @bird.species = species
-                else 
-                    ## THROW ERROR MESSAGE
-                    redirect to '/birds/new'
-                end
-            end
-            @bird.save
+            bird = Bird.new(:banding_date => params[:date])
+            bird.species = find_species_by_code
+            bird.save
         end
         redirect to "/birds/#{Helpers.slugify_date(@session[:date])}"
     end
@@ -95,8 +85,12 @@ class BirdsController < ApplicationController
 
     #  HELPERS
     helpers do
-        def find_species
-            Species.find_by_code(params[:bird][:species][:code])
+        def find_species_by_code
+            Species.find_by(:code => params[:bird][:species][:code])
+        end
+
+        def find_species_by_name
+            Species.find_by(:name => params[:bird][:species][:name])
         end
 
     end
