@@ -12,10 +12,10 @@
 <%if @reports%>
     <h2>Or continue working on a draft report:</h2>
     <ul>
-    <%@reports.each do |report|%>
-        <%if report.status == nil %>
-            <h3><li><a href="/reports/<%=report.date_slug%>"><%=report.date%></a></li></h3>
+        <%@reports.each do |report|%>
+            <%if report.status == nil %>
+                <h3><li><a href="/reports/<%=report.date_slug%>"><%=report.date%></a></li></h3>
+            <%end%>
         <%end%>
-    <%end%>
+    </ul>
 <%end%>
-</ul>
