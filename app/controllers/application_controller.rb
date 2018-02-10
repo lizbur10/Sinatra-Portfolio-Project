@@ -10,6 +10,7 @@ class ApplicationController < Sinatra::Base
   end
 
   get '/' do
+    @reports = Report.all.order(date: :desc)
     erb :'/index'
   end
 

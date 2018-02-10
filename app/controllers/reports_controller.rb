@@ -4,8 +4,7 @@ class ReportsController < ApplicationController
 
     ## C[READ]UD - SHOW ALL REPORTS; LINK TO CREATE A NEW REPORT
     get '/reports' do
-        @reports = Report.where("bander_id = ?", session[:bander_id])
-        binding.pry
+        @reports = Report.where("bander_id = ?", session[:bander_id]).order(date: :desc)
         erb :'/reports/index'
     end
 
