@@ -1,7 +1,7 @@
 <% if flash.has?(:message) %>
   <h2 style="color:green"><%= flash[:message] %><h2>
 <% end %>
-<h1>Welcome <%=@bander%>!</h1>
+<h1>Welcome <%=@bander.name%>!</h1>
 <br>
 <h1>AIMS Daily Report Generator</h1>
 <h2>Step 1: Enter the day's banding list</h2>
@@ -10,7 +10,7 @@
 <br>
 <h2><a href="/birds/new">Start a new report</a></h2>
 <br>
-<%if @reports%>
+<%if @reports.length > 0%>
     <h2>Or continue working on a draft report:</h2>
     <ul>
         <%@reports.each do |report|%>
@@ -20,6 +20,10 @@
         <%end%>
     </ul>
 <%end%>
+
+<form action = "/banders/<%=@bander.slug%>">
+    <input type="submit" value="Your Account">
+</form>
 <form action = '/sessions/logout'>
     <input type="submit" value="Log Out">
 </form>

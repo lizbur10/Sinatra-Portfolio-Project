@@ -20,7 +20,8 @@ class BandersController < ApplicationController
             bander.name = bander.name.titleize
             bander.email = bander.email.downcase
             bander.save
-            session[:bander_id] = @bander.id
+            session[:bander_id] = bander.id
+            # redirect to :"/banders/#{bander.slug}"
             redirect to :'/reports'
         end
         redirect to '/banders/new'
