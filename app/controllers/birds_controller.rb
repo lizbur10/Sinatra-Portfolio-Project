@@ -35,7 +35,6 @@ class BirdsController < ApplicationController
                 bird.bander = Helpers.current_bander(session[:bander_id])
                 bird.save
             end
-            binding.pry
             redirect to "/birds/#{Helpers.slugify_date(@session[:date])}"
         end
         redirect to '/birds/new'
@@ -49,7 +48,10 @@ class BirdsController < ApplicationController
         @date_slug = Helpers.slugify_date(session[:date])
         @date_string = Helpers.date_string(session[:date])
         @count_by_species = Helpers.count_by_species(@date_string)
-
+        @report = Report.find_by(:date => @date_string)
+        if @report.status == "posted"
+            redirect to "/reports/#{@date_slug}"
+        end
         erb :'/birds/index'
     end
 
