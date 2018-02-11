@@ -10,7 +10,13 @@ class SessionsController < ApplicationController
     end
 
     get '/sessions/login' do
-        erb :'sessions/login'
+
+        if Helpers.is_logged_in?(session)
+            redirect to '/home'
+        else
+            binding.pry
+            erb :'sessions/login'
+        end
     end
 
     post '/sessions' do

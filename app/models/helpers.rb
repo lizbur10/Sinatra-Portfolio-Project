@@ -13,7 +13,7 @@ class Helpers
     end
 
     def self.is_logged_in?(session)
-        !!session[:user_id]
+        !!session[:bander_id]
     end
 
     def self.create_species(passed_params)
