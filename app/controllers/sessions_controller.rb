@@ -2,6 +2,13 @@ class SessionsController < ApplicationController
     require 'rack-flash'
     use Rack::Flash
 
+    get '/home' do
+        @reports = Report.where("bander_id = ?", session[:bander_id]).order(date: :desc)
+        @bander = Helpers.current_bander(session[:bander_id])
+        
+        erb :'/sessions/logged_in'
+    end
+
     get '/sessions/login' do
         erb :'sessions/login'
     end
