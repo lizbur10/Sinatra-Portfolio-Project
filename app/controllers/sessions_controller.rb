@@ -14,7 +14,6 @@ class SessionsController < ApplicationController
         if Helpers.is_logged_in?(session)
             redirect to '/home'
         else
-            binding.pry
             erb :'sessions/login'
         end
     end
