@@ -16,7 +16,7 @@ class ReportsController < ApplicationController
         flash[:message] = "***Success! Your report was successfully posted***"
         session.delete("date")
 
-        redirect to :'/reports'
+        redirect to :'/home'
     end
 
     ## [CREATE]RUD - CREATE NARRATIVE
