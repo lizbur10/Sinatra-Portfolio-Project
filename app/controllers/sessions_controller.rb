@@ -7,9 +7,14 @@ class SessionsController < ApplicationController
     end
 
     post '/sessions' do
-        @bander = Bander.find_by(name: params[:username].capitalize, password: params[:password])
-        session[:bander_id] = @bander.id
-        redirect '/reports'
+        if @bander = Bander.find_by(name: params[:username].capitalize, password: params[:password])
+            session[:bander_id] = @bander.id
+            redirect '/reports'
+        else
+            flash[:message] = "Invalid login information"
+            binding.pry
+            redirect '/sessions/login'
+        end
     end
 
     get '/sessions/logout' do 
