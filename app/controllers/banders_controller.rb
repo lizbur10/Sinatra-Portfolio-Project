@@ -22,7 +22,7 @@ class BandersController < ApplicationController
             bander.save
             session[:bander_id] = bander.id
             # redirect to :"/banders/#{bander.slug}"
-            redirect to :'/reports'
+            redirect to :'/home'
         end
         redirect to '/banders/new'
     end
