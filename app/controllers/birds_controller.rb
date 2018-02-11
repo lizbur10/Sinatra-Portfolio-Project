@@ -29,12 +29,13 @@ class BirdsController < ApplicationController
             report.update(:date_slug => Helpers.slugify_date_string(@date_string)) if !report.date_slug
             report.bander = Helpers.current_bander(session[:bander_id]) if !report.bander
             report.save
-            binding.pry
             params[:bird][:number_banded].to_i.times do
                 bird = Bird.new(:banding_date => params[:date])
                 bird.species = find_species_by_code
+                bird.bander = Helpers.current_bander(session[:bander_id])
                 bird.save
             end
+            binding.pry
             redirect to "/birds/#{Helpers.slugify_date(@session[:date])}"
         end
         redirect to '/birds/new'
