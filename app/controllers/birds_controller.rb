@@ -27,8 +27,9 @@ class BirdsController < ApplicationController
             @date_string = Helpers.date_string(session[:date])
             report = Report.find_by(:date => @date_string) || report = Report.create(:date => @date_string, :status => "draft")
             report.update(:date_slug => Helpers.slugify_date_string(@date_string)) if !report.date_slug
-            #report.bander = current_bander
-            #report.save
+            report.bander = Helpers.current_bander(session[:bander_id]) if !report.bander
+            report.save
+            binding.pry
             params[:bird][:number_banded].to_i.times do
                 bird = Bird.new(:banding_date => params[:date])
                 bird.species = find_species_by_code
