@@ -2,6 +2,8 @@
   <h2 style="color:green"><%= flash[:message] %><h2>
 <% end %>
 <h1>Welcome <%=@bander.name%>!</h1>
+<h3><a href="/banders/<%=@bander.slug%>">Your Account</a></h3>
+
 <br>
 <h1>AIMS Daily Report Generator</h1>
 <h2>Step 1: Enter the day's banding list</h2>
@@ -21,9 +23,6 @@
     </ul>
 <%end%>
 
-<form action = "/banders/<%=@bander.slug%>">
-    <input type="submit" value="Your Account">
-</form>
 <form action = '/sessions/logout'>
     <input type="submit" value="Log Out">
 </form>

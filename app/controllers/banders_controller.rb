@@ -46,15 +46,18 @@ class BandersController < ApplicationController
     end
 
     patch '/banders/:slug' do
-        if !Helpers.validate_email(params[:bander][:email])
-            flash[:message] = "Please enter a valid email address."
-            redirect to "/banders/#{params[:slug]}/edit"
-        else
-            @bander = find_bander
-            @bander.update(params[:bander])
+        @bander = find_bander
+        if !params[:cancel_changes]
+        
+            if !Helpers.validate_email(params[:bander][:email])
+                flash[:message] = "Please enter a valid email address."
+                redirect to "/banders/#{params[:slug]}/edit"
+            else
+                @bander.update(params[:bander])
 
-            redirect to "/banders/#{@bander.slug}"
+            end
         end
+        redirect to "/banders/#{@bander.slug}"
     end
 
     # CRU[Delete]
