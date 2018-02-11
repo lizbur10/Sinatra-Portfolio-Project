@@ -49,9 +49,11 @@ class SpeciesController < ApplicationController
 
     patch '/species/:id' do
         @species = Species.find(params[:id]) ## NEED TO IMPLEMENT 'OLD_CODES' FUNCTIONALITY
-        @species.update(params[:species])
-        @species.code = @species.code.upcase
-        @species.save
+        if !params[:cancel_changes]
+            @species.update(params[:species])
+            @species.code = @species.code.upcase
+            @species.save
+        end
         redirect to "/species/#{@species.code}"
     end
 

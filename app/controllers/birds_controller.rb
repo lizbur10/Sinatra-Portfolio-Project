@@ -77,9 +77,8 @@ class BirdsController < ApplicationController
             else
                 redirect to :"/birds/#{Helpers.slugify_date(session[:date])}" ## HAVE TO THINK ABOUT THIS
             end
-        else
-            redirect to :"/birds/#{Helpers.slugify_date(session[:date])}"
         end
+        redirect to :"/birds/#{Helpers.slugify_date(session[:date])}"
     end
 
 
