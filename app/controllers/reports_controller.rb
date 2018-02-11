@@ -12,11 +12,18 @@ class ReportsController < ApplicationController
     ## SUBMIT REPORT
     post '/reports/submit' do
         @date_string = Helpers.date_string(session[:date])
-        report = Report.find_by(:date => @date_string).update(:status => "posted")
-        flash[:message] = "***Success! Your report was successfully posted***"
-        session.delete("date")
+        report = Report.find_by(:date => @date_string)
+        if report.bander_id == session[:bander_id]
+            report.update(:status => "posted")
+            flash[:message] = "***Success! Your report was successfully posted***"
+            session.delete("date")
+    
+            redirect to :'/home'
+        else
+            flash[:message] = "You do not have permission to edit this report"
+            redirect to "/reports/#{slugify_date_string(@date_string)}"
+        end
 
-        redirect to :'/home'
     end
 
     ## [CREATE]RUD - CREATE NARRATIVE
@@ -47,12 +54,11 @@ class ReportsController < ApplicationController
     ## C[READ]UD - SHOW SPECIFIC REPORT
     get '/reports/:date' do
         Helpers.check_date(params, session)
-        @session = session
         @date_string = Helpers.date_string(session[:date])
-        @report = Report.find_by(:date => @date_string)
-        @narrative = @report.content
-        @bander = @report.bander.name
-        @date_slug = Helpers.slugify_date(@session[:date])
+        report = Report.find_by(:date => @date_string)
+        @narrative = report.content
+        @bander = report.bander.name
+        @date_slug = Helpers.slugify_date(session[:date])
         @count_by_species = Helpers.count_by_species(@date_string)
         erb :'/reports/show'
     end
@@ -63,8 +69,15 @@ class ReportsController < ApplicationController
         @session = session
         @date_string = Helpers.date_string(session[:date])
         @count_by_species = Helpers.count_by_species(@date_string)
-        @narrative = Report.find_by(:date => @date_string).content
-        erb :'/reports/edit'
+        report = Report.find_by(:date => @date_string)
+        @narrative = report.content
+        if report.bander_id == session[:bander_id]
+            erb :'/reports/edit'
+        else
+            flash[:message] = "You do not have permission to edit this report"
+            redirect to "/reports/#{slugify_date_string(@date_string)}"
+        end
+
     end
 
     patch '/reports' do
