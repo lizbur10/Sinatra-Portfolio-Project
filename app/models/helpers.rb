@@ -12,6 +12,10 @@ class Helpers
         Bander.find(bander_id)
     end
 
+    def self.is_logged_in?(session)
+        !!session[:user_id]
+    end
+
     def self.create_species(passed_params)
         species=Species.new(passed_params)
         species.code = species.code.upcase
