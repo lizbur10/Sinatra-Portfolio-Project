@@ -60,9 +60,14 @@ class BirdsController < ApplicationController
     get '/birds/:date/edit' do
         Helpers.check_date(params, session)
         @date_string = Helpers.date_string(session[:date])
+        @report = Report.find_by(:date => @date_string)
         @count_by_species = Helpers.count_by_species(@date_string)
-
-        erb :'/birds/edit'
+        if @report.bander_id == session[:bander_id]
+            erb :'/birds/edit'
+        else
+            flash[:message] = "You do not have permission to edit this report"
+            redirect to "/birds/#{slugify_date_string(@date_string)}"
+        end
     end
 
     patch '/birds' do

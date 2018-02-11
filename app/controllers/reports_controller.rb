@@ -48,9 +48,10 @@ class ReportsController < ApplicationController
     get '/reports/:date' do
         Helpers.check_date(params, session)
         @session = session
-        @bander ="Anthony" ## HARD CODED UNTIL IMPLEMENT BANDER LOGIN
         @date_string = Helpers.date_string(session[:date])
-        @narrative = Report.find_by(:date => @date_string).content
+        @report = Report.find_by(:date => @date_string)
+        @narrative = @report.content
+        @bander = @report.bander.name
         @date_slug = Helpers.slugify_date(@session[:date])
         @count_by_species = Helpers.count_by_species(@date_string)
         erb :'/reports/show'
