@@ -73,15 +73,10 @@ class ReportsController < ApplicationController
             if params[:narrative][:content]
                 Report.find_by(:date => @date_string).update(:content => params[:narrative][:content])
             end
-            
             Helpers.update_banding_numbers(params,@date_string)
+            redirect to '/birds/new' if params[:add_more_birds]
         end
-
-        if params[:add_more_birds]
-            redirect to '/birds/new'
-        else
-            redirect to :"/reports/#{Helpers.slugify_date(session[:date])}"
-        end
+        redirect to :"/reports/#{Helpers.slugify_date(session[:date])}"
     end
     
 end

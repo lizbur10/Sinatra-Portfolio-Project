@@ -71,12 +71,7 @@ class BirdsController < ApplicationController
                 end
             end
             Helpers.update_banding_numbers(params,@date_string)
-            
-            if params[:add_more_birds]
-                redirect to '/birds/new'
-            else
-                redirect to :"/birds/#{Helpers.slugify_date(session[:date])}" ## HAVE TO THINK ABOUT THIS
-            end
+            redirect to '/birds/new' if params[:add_more_birds]
         end
         redirect to :"/birds/#{Helpers.slugify_date(session[:date])}"
     end
