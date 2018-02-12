@@ -1,5 +1,4 @@
-<h1>Review and post your Report</h1> 
-<h2>Birds Banded Report for <%=@date_string%></h2>
+<h1>Birds Banded Report for <%=@date_string%></h1>
 <h2>Posted by: <%=@bander%></h2>
 <table>
 <tr><th>Alpha Code</th><th>Species</th><th>Number Banded</th></tr>
@@ -8,23 +7,36 @@
 </tr>
 <%end%>
 </table>
+<form action="/reports/<%=@date_slug%>/edit">
+    <input type="submit" value="Edit banded list" />
+</form>
+<form action="/birds/new">
+    <input type="submit" value="Add more birds" />
+</form>
+<form action="/reports/<%=@date_slug%>" method="POST">
+    <input type="submit" name="list_complete" value="Banding list complete" />
+</form>
+<br><br>
 
-<%if @narrative%>
-    <p><%=@narrative%></p>
-    <br><br>
-    <% ##if logged_in?%>
-    <% ##end%>
+
+<form action="/reports/<%=@date_string%>" method="POST" id="narrative">
+<%if !@narrative%>
+    <h3>Add your write-up (optional):</h3>
+<%else%>
+    <h3>Your write-up:</h3>
 <%end%>
+<textarea cols="100" rows="10" name="narrative[content]" form="narrative"><%=@narrative%></textarea> 
+<p><input type="submit" value="Update"><p>
+</form>
+<br><br>
+
 
 
 <% ##if logged_in?%>
-<form action="/reports/<%=@date_slug%>/edit">
-    <input type="submit" value="Edit report" />
-</form>
 <br><br>
 <% ## SAVE REPORT IN PROGRESS %>
 <form action="/home" method="get">
-    <input type="submit" value="Save as Draft" />
+    <input type="submit" value="Preview Report" />
 </form>
 <form action="/reports/submit" method="post">
     <input type="submit" value="Post Report" />

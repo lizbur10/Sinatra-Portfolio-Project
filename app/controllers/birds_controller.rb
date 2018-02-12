@@ -22,6 +22,7 @@ class BirdsController < ApplicationController
         #     flash[:message] = "This species is not currently in the database - do you wish to enter it?"
         #     ADD CODE TO HANDLE
         ## END VALIDATIONS
+        binding.pry
         else
             Helpers.check_date(params, session)
             @session = session
@@ -95,7 +96,7 @@ class BirdsController < ApplicationController
         end
 
         def find_species_by_name
-            Species.find_by(:name => params[:bird][:species][:name].titleize)
+            Species.find_by(:name => params[:bird][:species][:name].split(" ").map {|part| part.capitalize}.join(" "))
         end
 
     end
