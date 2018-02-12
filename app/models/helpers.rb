@@ -21,6 +21,7 @@ class Helpers
         species.code = species.code.upcase
         species.name = species.name.titleize
         species.save
+        species
     end
     
     def self.slugify(input)
