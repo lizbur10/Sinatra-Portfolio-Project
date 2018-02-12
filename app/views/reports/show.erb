@@ -1,4 +1,4 @@
-<h1>Step 3: Post the Report</h1> 
+<h1>Review your Report</h1> 
 <h2>Birds Banded Report for <%=@date_string%></h2>
 <h2>Posted by: <%=@bander%></h2>
 <%if @narrative%>
@@ -16,14 +16,13 @@
 </table>
 
 <% ##if logged_in?%>
-<br>
 <form action="/reports/<%=@date_slug%>/edit">
     <input type="submit" value="Edit report" />
 </form>
 <br><br>
 <% ## SAVE REPORT IN PROGRESS %>
 <form action="/home" method="get">
-    <input type="submit" value="Save Draft Report" />
+    <input type="submit" value="Save as Draft" />
 </form>
 <form action="/reports/submit" method="post">
     <input type="submit" value="Post Report" />
