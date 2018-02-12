@@ -4,24 +4,23 @@
 <h1>Welcome <%=@bander.name%>!</h1>
 <h3><a href="/banders/<%=@bander.slug%>">Your Account</a></h3>
 
-<br><h1>This app will allow you to:</h1>
+<br>
+<h1>Choose an option:</h1>
 <ul>
-<h2><li>enter the day's banding list</li></h2>
-<h2><li>add your write-up (optional), and</li></h2>
-<h2><li>post the report to the website</li></h2>
-</ul>
-<br>
-<h2><a href="/birds/new">Start a new report</a></h2>
-<br>
+<li><h2><a href="/birds/new">Start a new report</a></h2></li>
 <%if @reports.length > 0%>
-    <h2>Or continue working on a draft report:</h2>
+    <li><h2>Continue working on a draft report:</h2>
     <ul>
         <%@reports.each do |report|%>
             <h3><li><a href="/reports/<%=report.date_slug%>"><%=report.date%></a></li></h3>
         <%end%>
-    </ul>
+    </ul></li>
 <%end%>
-
+<li><h2>View or edit a report you have posted:</h2>
+    <ul>
+        <li><h3>COMING SOON</h3></li>
+    </ul>
+</li></ul>
 <form action = '/sessions/logout'>
     <input type="submit" value="Log Out">
 </form>
