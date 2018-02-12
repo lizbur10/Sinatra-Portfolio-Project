@@ -3,6 +3,7 @@
   <h3 style="color:red"><%= flash[:message] %><h3>
 <% end %>
 <form action='/birds' method="POST">
+<%## SET UP TO FIND NEXT DATE %>
 <% @session[:date] ? date = @session[:date].strftime("%b %d") : date = Time.now.strftime("%b %d")%>
 <h2><label>Date: </label><input type="text" name=date value="<%=date%>"></h2>
 <h2><label>Alpha code: </label><input type="text" name="bird[species][code]" ></h2>

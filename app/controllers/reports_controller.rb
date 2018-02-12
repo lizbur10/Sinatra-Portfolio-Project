@@ -26,17 +26,17 @@ class ReportsController < ApplicationController
 
     end
 
-    # ## [CREATE]RUD - CREATE NARRATIVE
-    # get '/reports/:date/add_narrative' do
-    #     Helpers.check_date(params, session)
-    #     @date_string = Helpers.date_string(session[:date])
-    #     report = Report.find_by(:date => @date_string)
-    #     if report.content && report.content != ""
-    #         redirect to :"/reports/#{Helpers.slugify_date(session[:date])}"
-    #     else
-    #         erb :'/reports/narrative'
-    #     end
-    # end
+    ## [CREATE]RUD - CREATE NARRATIVE
+    get '/reports/:date/add_narrative' do
+        Helpers.check_date(params, session)
+        @date_string = Helpers.date_string(session[:date])
+        report = Report.find_by(:date => @date_string)
+        if report.content && report.content != ""
+            redirect to :"/reports/#{Helpers.slugify_date(session[:date])}"
+        else
+            erb :'/reports/narrative'
+        end
+    end
 
     ## [CREATE]RUD - ADD NARRATIVE TO REPORT
     post '/reports/:date' do
@@ -81,12 +81,17 @@ class ReportsController < ApplicationController
     end
 
     patch '/reports' do
+        binding.pry
         @date_string = Helpers.date_string(session[:date])
         if !params[:cancel_changes]
-            if params[:narrative][:content]
+            if params[:narrative]
                 Report.find_by(:date => @date_string).update(:content => params[:narrative][:content])
+            else
+                Report.find_by(:date => @date_string).update(:content => nil)
             end
-            Helpers.update_banding_numbers(params,@date_string)
+            if params[:birds]
+                Helpers.update_banding_numbers(params,@date_string)
+            end
             redirect to '/birds/new' if params[:add_more_birds]
         end
         redirect to :"/reports/#{Helpers.slugify_date(session[:date])}"

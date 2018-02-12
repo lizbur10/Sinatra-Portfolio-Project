@@ -13,33 +13,27 @@
 <form action="/birds/new">
     <input type="submit" value="Add more birds" />
 </form>
-<form action="/reports/<%=@date_slug%>" method="POST">
-    <input type="submit" name="list_complete" value="Banding list complete" />
-</form>
 <br><br>
 
 
-<form action="/reports/<%=@date_string%>" method="POST" id="narrative">
-<%if !@narrative%>
-    <h3>Add your write-up (optional):</h3>
+<%if !@narrative || @narrative = ""%>
+<form action="/reports/<%=@date_slug%>/add_narrative" >
+    <input type="submit" name="" value="Add a Writeup" />
+</form>
 <%else%>
-    <h3>Your write-up:</h3>
-<%end%>
+<form action="/reports" id="narrative" method="POST">
+<input id="hidden" type="hidden" name="_method" value="patch">
+
+    <h3>Your writeup:</h3>
 <textarea cols="100" rows="10" name="narrative[content]" form="narrative"><%=@narrative%></textarea> 
 <p><input type="submit" value="Update"><p>
+<%end%>
 </form>
-<br><br>
-
-
 
 <% ##if logged_in?%>
-<br><br>
 <% ## SAVE REPORT IN PROGRESS %>
-<form action="/home" method="get">
-    <input type="submit" value="Preview Report" />
-</form>
 <form action="/reports/submit" method="post">
-    <input type="submit" value="Post Report" />
+    <input type="submit" value="Preview Report" />
 </form>
 <% #CONFIRM READY TO POST %>
 <% ##end%>

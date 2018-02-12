@@ -2,13 +2,6 @@
 <h1>Banding report for <%= @date_string%></h1>
 <form action="/reports" method="POST" id="update_report">
 <input id="hidden" type="hidden" name="_method" value="patch">
- <%if @narrative && @narrative != ""%>
-     <h2><label>Edit your description:</label></h2>
-     <textarea cols="100" rows="10" name="narrative[content]" form="update_report"><%=@narrative%></textarea> 
- <%else%>
-     <h2><label>Add a description (optional):</label></h2> 
-     <textarea cols="100" rows="20" name="narrative[content]" form="update_report"></textarea> 
- <%end%>
 <br><br>
 <h2>Edit banded list:</h2>
 <table>
