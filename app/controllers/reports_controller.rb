@@ -4,8 +4,8 @@ class ReportsController < ApplicationController
 
     ## C[READ]UD - SHOW ALL REPORTS; LINK TO CREATE A NEW REPORT
     get '/reports' do
-        @reports = Report.all.order(date: :desc)
-        
+        @reports = Report.all.sort_by {|r| Date.parse(r.date)}.reverse
+
         erb :'/reports/index'
     end
 
