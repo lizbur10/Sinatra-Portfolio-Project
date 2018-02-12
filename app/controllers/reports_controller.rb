@@ -38,6 +38,15 @@ class ReportsController < ApplicationController
         end
     end
 
+    delete '/reports/:date/narrative' do
+        @date_string = Helpers.date_string(session[:date])
+        report = Report.find_by(:date => @date_string)
+        report.content.clear
+        report.save
+        redirect to :"/reports/#{Helpers.slugify_date(session[:date])}"
+    end
+
+
     ## [CREATE]RUD - ADD NARRATIVE TO REPORT
     post '/reports/:date' do
         Helpers.check_date(params, session)
@@ -81,15 +90,13 @@ class ReportsController < ApplicationController
     end
 
     patch '/reports' do
-        binding.pry
         @date_string = Helpers.date_string(session[:date])
+        binding.pry
         if !params[:cancel_changes]
             if params[:narrative]
                 Report.find_by(:date => @date_string).update(:content => params[:narrative][:content])
-            else
-                Report.find_by(:date => @date_string).update(:content => nil)
             end
-            if params[:birds]
+            if params[:species]
                 Helpers.update_banding_numbers(params,@date_string)
             end
             redirect to '/birds/new' if params[:add_more_birds]

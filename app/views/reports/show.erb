@@ -1,5 +1,5 @@
 <h1>Birds Banded Report for <%=@date_string%></h1>
-<h2>Posted by: <%=@bander%></h2>
+<br>
 <table>
 <tr><th>Alpha Code</th><th>Species</th><th>Number Banded</th></tr>
 <%@count_by_species.each do |key,value| %>
@@ -7,35 +7,40 @@
 </tr>
 <%end%>
 </table>
+
 <form action="/reports/<%=@date_slug%>/edit">
     <input type="submit" value="Edit banded list" />
 </form>
+
 <form action="/birds/new">
     <input type="submit" value="Add more birds" />
 </form>
+
 <br><br>
 
-
-<%if !@narrative || @narrative = ""%>
-<form action="/reports/<%=@date_slug%>/add_narrative" >
-    <input type="submit" name="" value="Add a Writeup" />
-</form>
+<%if !@narrative || @narrative == ""%>
+    <form action="/reports/<%=@date_slug%>/add_narrative" >
+        <input type="submit" value="Add a Writeup" />
+    </form>
 <%else%>
-<form action="/reports" id="narrative" method="POST">
-<input id="hidden" type="hidden" name="_method" value="patch">
+    <form action="/reports" id="narrative" method="POST">
+    <input id="hidden" type="hidden" name="_method" value="patch">
 
-    <h3>Your writeup:</h3>
-<textarea cols="100" rows="10" name="narrative[content]" form="narrative"><%=@narrative%></textarea> 
-<p><input type="submit" value="Update"><p>
+    <h3>Writeup:</h3>
+    <textarea cols="100" rows="10" name="narrative[content]" form="narrative"><%=@narrative%></textarea> 
+    <p><input type="submit" value="Update writeup"><p>
+    </form>
+
+    <form action="/reports/<%=@date_slug%>/narrative" method="POST">
+    <input id="hidden" type="hidden" name="_method" value="delete">
+    <input type="submit" value="Delete writeup" />
+    </form>
 <%end%>
-</form>
 
-<% ##if logged_in?%>
-<% ## SAVE REPORT IN PROGRESS %>
+<br><br>
+
 <form action="/reports/submit" method="post">
     <input type="submit" value="Preview Report" />
 </form>
-<% #CONFIRM READY TO POST %>
-<% ##end%>
 
 <%# NEED TO FIGURE OUT HOW TO RETAIN PARAGRAPHS %>
