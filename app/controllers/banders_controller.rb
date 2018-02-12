@@ -36,13 +36,19 @@ class BandersController < ApplicationController
     # C[Read]UD - SPECIFIC BANDER
     get '/banders/:slug' do
         @bander = find_bander
+        @session = session
         erb :"banders/show"
     end
 
     # CR[Update]D 
     get '/banders/:slug/edit' do
         @bander = find_bander
-        erb :'/banders/edit'
+        if @bander.id == session[:bander_id]
+            erb :'/banders/edit'
+        else
+            flash[:message] = "You do not have permission to edit this information"
+            redirect to "/banders/#{@bander.slug}"
+        end
     end
 
     patch '/banders/:slug' do

@@ -1,7 +1,13 @@
+<% if flash.has?(:message) %>
+  <h3 style="color:red"><%= flash[:message] %><h3>
+<% end %>
+
 <h1><%= @bander.name%></h1>
 <h2>Email: <%= @bander.email%></h2>
-<form action = "/banders/<%=@bander.slug%>/edit">
-    <input type="submit" value="Edit">
-</form>
+<% if @bander.id == @session[:bander_id]%>
+    <form action = "/banders/<%=@bander.slug%>/edit">
+        <input type="submit" value="Edit">
+    </form>
+<%end%>
 <br><br>
 <h3><a href="/home">Return to Home Page</a>

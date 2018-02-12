@@ -11,6 +11,10 @@
 <input type="submit" value="Save">
 </form>
 <%#NEED TO ADD LOGIC HERE FOR APPROPRIATE REDIRECT %>
-<form action="/home">
-  <input type="submit" value="Cancel">
+<%if @session[:date]%>
+  <form action="../reports/<%=Helpers.slugify_date(session[:date])%>">
+<%else%>
+  <form action="/home">
+<%end%>
+  <input type="submit" value="Cancel - delete this??">
 </form>
