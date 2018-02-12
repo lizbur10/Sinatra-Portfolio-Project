@@ -1,12 +1,6 @@
 <h1>Review and post your Report</h1> 
 <h2>Birds Banded Report for <%=@date_string%></h2>
 <h2>Posted by: <%=@bander%></h2>
-<%if @narrative%>
-    <p><%=@narrative%></p>
-    <br><br>
-    <% ##if logged_in?%>
-    <% ##end%>
-<%end%>
 <table>
 <tr><th>Alpha Code</th><th>Species</th><th>Number Banded</th></tr>
 <%@count_by_species.each do |key,value| %>
@@ -14,6 +8,14 @@
 </tr>
 <%end%>
 </table>
+
+<%if @narrative%>
+    <p><%=@narrative%></p>
+    <br><br>
+    <% ##if logged_in?%>
+    <% ##end%>
+<%end%>
+
 
 <% ##if logged_in?%>
 <form action="/reports/<%=@date_slug%>/edit">

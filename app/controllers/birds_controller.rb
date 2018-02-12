@@ -32,8 +32,7 @@ class BirdsController < ApplicationController
             report.save
             params[:bird][:number_banded].to_i.times do
                 bird = Bird.new(:banding_date => params[:date])
-                binding.pry
-                bird.species = find_species_by_code ||= Helpers.create_species(params[:bird][:species])
+                bird.species = find_species_by_code || bird.species = Helpers.create_species(params[:bird][:species])
                 bird.bander = Helpers.current_bander(session[:bander_id])
                 bird.save
             end
