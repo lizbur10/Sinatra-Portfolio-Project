@@ -47,7 +47,6 @@ class ReportsController < ApplicationController
         Helpers.check_date(params, session)
         @date_string = Helpers.date_string(session[:date])
         report = Report.find_by(:date => @date_string)
-        ## THROW WARNING IF NARRATIVE ALREADY EXISTS FOR DATE
         if params[:narrative][:content] && params[:narrative][:content] != ""
             report.content = params[:narrative][:content]
             report.save
@@ -66,6 +65,19 @@ class ReportsController < ApplicationController
         @date_slug = Helpers.slugify_date(session[:date])
         @count_by_species = Helpers.count_by_species(@date_string)
         erb :'/reports/show'
+    end
+
+    get '/reports/:date/preview' do
+        Helpers.check_date(params, session)
+        @date_string = Helpers.date_string(session[:date])
+        report = Report.find_by(:date => @date_string)
+        @show_narrative = true if session[:show_narrative]
+        @narrative = report.content
+        @bander = report.bander.name
+        @date_slug = Helpers.slugify_date(session[:date])
+        @count_by_species = Helpers.count_by_species(@date_string)
+        
+        erb :'/reports/preview'
     end
 
     ## CR[UPDATE]D - EDIT REPORT
@@ -87,7 +99,6 @@ class ReportsController < ApplicationController
 
     patch '/reports' do
         @date_string = Helpers.date_string(session[:date])
-        binding.pry
         if !params[:cancel_changes]
             if params[:narrative]
                 Report.find_by(:date => @date_string).update(:content => params[:narrative][:content])

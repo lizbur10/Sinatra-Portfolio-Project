@@ -24,7 +24,7 @@
 
     <h3>Writeup:</h3>
     <textarea cols="100" rows="10" name="narrative[content]" form="narrative"><%=@narrative%></textarea> 
-    <p><input type="submit" value="Update"><p>
+    <p><input type="submit" value="Update writeup"><p>
     </form>
     <%if @narrative && @narrative !=""%>
         <form action="/reports/<%=@date_slug%>/narrative" method="POST">
@@ -40,7 +40,7 @@
 
 <br><br>
 
-<form action="/reports/submit" method="post">
+<form action="/reports/<%=@date_slug%>/preview">
     <input type="submit" value="Preview Report" />
 </form>
 
