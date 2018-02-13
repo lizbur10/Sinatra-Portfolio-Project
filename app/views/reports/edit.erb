@@ -1,8 +1,7 @@
 <% ## SHOW BY DATE RATHER THAN INDIVIDUAL BIRDS %>
-<h1>Banding report for <%= @date_string%></h1>
+<h1>Birds Banded Report for <%= @date_string%></h1>
 <form action="/reports" method="POST" id="update_report">
 <input id="hidden" type="hidden" name="_method" value="patch">
-<br><br>
 <h2>Edit banded list:</h2>
 <table>
 <tr><th>Alpha Code</th><th>Species</th><th>Number Banded</th><th>Delete</th></tr>

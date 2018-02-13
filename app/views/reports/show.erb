@@ -18,22 +18,23 @@
 
 <br><br>
 
-<%if !@narrative || @narrative == ""%>
-    <form action="/reports/<%=@date_slug%>/add_narrative" >
-        <input type="submit" value="Add a Writeup" />
-    </form>
-<%else%>
+<%if (@narrative && @narrative != "") || @show_narrative%>
     <form action="/reports" id="narrative" method="POST">
     <input id="hidden" type="hidden" name="_method" value="patch">
 
     <h3>Writeup:</h3>
     <textarea cols="100" rows="10" name="narrative[content]" form="narrative"><%=@narrative%></textarea> 
-    <p><input type="submit" value="Update writeup"><p>
+    <p><input type="submit" value="Update"><p>
     </form>
-
-    <form action="/reports/<%=@date_slug%>/narrative" method="POST">
-    <input id="hidden" type="hidden" name="_method" value="delete">
-    <input type="submit" value="Delete writeup" />
+    <%if @narrative && @narrative !=""%>
+        <form action="/reports/<%=@date_slug%>/narrative" method="POST">
+        <input id="hidden" type="hidden" name="_method" value="delete">
+        <input type="submit" value="Delete writeup" />
+    <%end%>
+    </form>
+<%else%>
+    <form action="/reports/<%=@date_slug%>/add_narrative" method="POST">
+        <input type="submit" name="add_narrative" value="Add a Writeup" />
     </form>
 <%end%>
 

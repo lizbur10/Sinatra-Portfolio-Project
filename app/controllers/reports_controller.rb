@@ -27,15 +27,9 @@ class ReportsController < ApplicationController
     end
 
     ## [CREATE]RUD - CREATE NARRATIVE
-    get '/reports/:date/add_narrative' do
-        Helpers.check_date(params, session)
-        @date_string = Helpers.date_string(session[:date])
-        report = Report.find_by(:date => @date_string)
-        if report.content && report.content != ""
-            redirect to :"/reports/#{Helpers.slugify_date(session[:date])}"
-        else
-            erb :'/reports/narrative'
-        end
+    post '/reports/:date/add_narrative' do
+        session[:show_narrative] = true
+        redirect to :"/reports/#{Helpers.slugify_date(session[:date])}"
     end
 
     delete '/reports/:date/narrative' do
@@ -43,6 +37,7 @@ class ReportsController < ApplicationController
         report = Report.find_by(:date => @date_string)
         report.content.clear
         report.save
+        session[:show_narrative] = false
         redirect to :"/reports/#{Helpers.slugify_date(session[:date])}"
     end
 
@@ -65,6 +60,7 @@ class ReportsController < ApplicationController
         Helpers.check_date(params, session)
         @date_string = Helpers.date_string(session[:date])
         report = Report.find_by(:date => @date_string)
+        @show_narrative = true if session[:show_narrative]
         @narrative = report.content
         @bander = report.bander.name
         @date_slug = Helpers.slugify_date(session[:date])
