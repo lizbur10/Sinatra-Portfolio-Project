@@ -15,8 +15,9 @@ class ReportsController < ApplicationController
         report = Report.find_by(:date => @date_string)
         if report.bander_id == session[:bander_id]
             report.update(:status => "posted")
-            flash[:message] = "***Success! Your report was successfully posted***"
+            flash[:message] = "***Success! Your report has been posted***"
             session.delete("date")
+            session.delete("show_narrative")
     
             redirect to :'/home'
         else
@@ -108,7 +109,7 @@ class ReportsController < ApplicationController
             end
             redirect to '/birds/new' if params[:add_more_birds]
         end
-        redirect to :"/reports/#{Helpers.slugify_date(session[:date])}"
+        redirect to :"/reports/#{Helpers.slugify_date_string(@date_string)}/preview"
     end
     
 end

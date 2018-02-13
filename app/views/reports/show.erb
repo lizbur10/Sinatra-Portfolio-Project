@@ -24,13 +24,8 @@
 
     <h3>Writeup:</h3>
     <textarea cols="100" rows="10" name="narrative[content]" form="narrative"><%=@narrative%></textarea> 
-    <p><input type="submit" value="Update writeup"><p>
-    </form>
-    <%if @narrative && @narrative !=""%>
-        <form action="/reports/<%=@date_slug%>/narrative" method="POST">
-        <input id="hidden" type="hidden" name="_method" value="delete">
-        <input type="submit" value="Delete writeup" />
-    <%end%>
+    <p><input type="submit" value="Update"><p>
+    
     </form>
 <%else%>
     <form action="/reports/<%=@date_slug%>/add_narrative" method="POST">

@@ -1,3 +1,4 @@
+<h1>**PREVIEW** </h1>
 <h1>Birds Banded Report for <%=@date_string%></h1>
 <h2>Posted by: <%=@bander%></h2>
 <%if (@narrative && @narrative != "") %>
@@ -16,7 +17,7 @@
 <br><br>
 
 <form action="/reports/<%=@date_slug%>">
-    <input type="submit" value="Edit Report" />
+    <input type="submit" value="Continue editing" />
 </form>
 <form action="/reports/submit" method="post">
     <input type="submit" value="Post Report" />
