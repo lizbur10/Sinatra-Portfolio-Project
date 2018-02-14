@@ -55,15 +55,21 @@ class BandersController < ApplicationController
         @bander = find_bander
         if !params[:cancel_changes]
         
-            if !Helpers.validate_email(params[:bander][:email])
+            if params[:bander][:name] == ""
+                flash[:message] = "Error: name cannot be blank"
+            elsif params[:bander][:email] == ""
+                flash[:message] = "Error: email cannot be blank"
+            elsif params[:bander][:password] == ""
+                flash[:message] = "Error: password cannot be blank"                
+            elsif !Helpers.validate_email(params[:bander][:email])
                 flash[:message] = "Please enter a valid email address."
-                redirect to "/banders/#{params[:slug]}/edit"
             else
                 @bander.update(params[:bander])
+                redirect to "/banders/#{@bander.slug}"
 
             end
+            redirect to "/banders/#{params[:slug]}/edit"
         end
-        redirect to "/banders/#{@bander.slug}"
     end
 
     # CRU[Delete]

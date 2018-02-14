@@ -8,7 +8,7 @@ Specs:
 - [x] Include user accounts - banders must register and log in to create reports 
 - [ ] Ensure that users can't modify content created by other users
 - [x] Ensure that the belongs_to resource has routes for Creating, Reading, Updating and Destroying - there are methods for creating, updating, and destroying birds; methods for creating, reading, and updating reports; and methods for creating and reading species.
-- [x] Include user input validations - there are validations for: registration info (name, email, password), login info (name/password correct), species alpha code, and number banded
+- [x] Include user input validations - there are validations for: registration info (name, email, password); login info (name/password correct); edit account info (email valid); species alpha code; and number banded (>=0)
 - [x] Display validation failures to user with error message (example form URL e.g. /posts/new) - there are flash messages but for some reason they are not working consistently
 - [ ] Your README.md includes a short description, install instructions, a contributors guide and a link to the license for your code
 
