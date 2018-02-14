@@ -104,6 +104,7 @@ class ReportsController < ApplicationController
         if !params[:cancel_changes]
             if params[:narrative]
                 Report.find_by(:date => @date_string).update(:content => params[:narrative][:content])
+                session[:show_narrative] = false if params[:narrative][:content] == ""
 
                 redirect to :"/reports/#{Helpers.slugify_date_string(@date_string)}/preview"
             elsif params[:species]
