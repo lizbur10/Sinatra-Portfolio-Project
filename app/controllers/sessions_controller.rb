@@ -9,7 +9,7 @@ class SessionsController < ApplicationController
         erb :'/sessions/logged_in'
     end
 
-    get '/sessions/login' do
+    get '/login' do
 
         if Helpers.is_logged_in?(session)
             redirect to '/home'
@@ -28,7 +28,7 @@ class SessionsController < ApplicationController
         end
     end
 
-    get '/sessions/logout' do 
+    get '/logout' do 
         session.clear
         redirect '/'
     end

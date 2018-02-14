@@ -9,9 +9,9 @@ class BandersController < ApplicationController
     end
 
     post '/banders' do
-        # CHECK THAT NAME/EMAIL ARE NOT TAKEN
-        # VALIDATE PASSWORD?
-        if !Helpers.validate_email(params[:bander][:email])
+        if params[:bander][:name] == "" || params[:bander][:password] == "" || params[:bander][:email] == ""
+            flash[:message] = "Error: all fields required. Please enter your name, email and password."
+        elsif !Helpers.validate_email(params[:bander][:email])
             flash[:message] = "Please enter a valid email address."
         elsif bander_exists
             flash[:message] = "Error: there is already an account under that name or email address."

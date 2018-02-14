@@ -1,5 +1,5 @@
 class Bander < ActiveRecord::Base
-    validates_presence_of :name, :password
+    # validates_presence_of :name, :email, :password
     has_many :birds
     has_many :reports
     has_many :species, through: :birds
