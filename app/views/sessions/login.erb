@@ -1,6 +1,6 @@
 <h1>Bander Login</h1>
 <% if flash.has?(:message) %>
-  <h2 style="color:red"><%= flash[:message] %><h2>
+  <h2 style="color:red"><%= flash[:message] %></h2>
 <% end %>
 <form action="/sessions" method="POST">
 <h3>Username: <input type="text" name="username"></h3>

@@ -18,9 +18,9 @@ class BirdsController < ApplicationController
     post '/birds' do
         # Ask to verify if params[:date] != session[:date] && session[:date] exists
         ## VALIDATIONS
-        if !Helpers.validate_alpha_code(params[:bird][:species][:code])
+        if !Helpers.validate_alpha_code(params[:bird][:species][:code].strip)
             flash[:message] = "Please enter a valid alpha code."
-        elsif params[:bird][:number_banded].to_i < 0
+        elsif params[:bird][:number_banded].to_i < 1
             flash[:message] = "Number banded must be greater than zero."
         elsif (find_species_by_code && !find_species_by_name) || (!find_species_by_code && find_species_by_name)
             flash[:message] = "The alpha code and name do not match - please verify"
@@ -52,11 +52,11 @@ class BirdsController < ApplicationController
     #  HELPERS
     helpers do
         def find_species_by_code
-            Species.find_by(:code => params[:bird][:species][:code].upcase)
+            Species.find_by(:code => params[:bird][:species][:code].strip.upcase)
         end
 
         def find_species_by_name
-            Species.find_by(:name => params[:bird][:species][:name].split(" ").map {|part| part.capitalize}.join(" "))
+            Species.find_by(:name => params[:bird][:species][:name].strip.split(" ").map {|part| part.capitalize}.join(" "))
         end
 
     end

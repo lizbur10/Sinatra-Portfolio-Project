@@ -1,4 +1,7 @@
 <% ## SHOW BY DATE RATHER THAN INDIVIDUAL BIRDS %>
+<% if flash.has?(:message) %>
+  <h3 style="color:red"><%= flash[:message] %><h3>
+<% end %>
 <h1>Birds Banded Report for <%= @date_string%></h1>
 <form action="/reports" method="POST" id="update_report">
 <input id="hidden" type="hidden" name="_method" value="patch">

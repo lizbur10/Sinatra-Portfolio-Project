@@ -10,7 +10,7 @@ class SessionsController < ApplicationController
     end
 
     get '/login' do
-
+        binding.pry
         if Helpers.is_logged_in?(session)
             redirect to '/home'
         else
@@ -21,16 +21,18 @@ class SessionsController < ApplicationController
     post '/sessions' do
         if @bander = Bander.find_by(name: params[:username].capitalize, password: params[:password])
             session[:bander_id] = @bander.id
-            redirect '/home'
+            redirect to '/home'
         else
             flash[:message] = "Invalid login information"
-            redirect '/sessions/login'
+            binding.pry
+            erb :'sessions/login'
+            # redirect to '/login' ## THIS BROKE MY FLASH MESSAGE
         end
     end
 
     get '/logout' do 
         session.clear
-        redirect '/'
+        redirect to '/'
     end
         
     
