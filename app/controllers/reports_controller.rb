@@ -62,9 +62,11 @@ class ReportsController < ApplicationController
         report = Report.find_by(:date => @date_string)
         @show_narrative = true if session[:show_narrative]
         @narrative = report.content
-        @bander = report.bander.name
+        @bander = report.bander
+        @edit_access = true if @bander == Helpers.current_bander(session)
         @date_slug = Helpers.slugify_date(session[:date])
         @count_by_species = Helpers.count_by_species(@date_string)
+        
         erb :'/reports/show'
     end
 
@@ -74,7 +76,8 @@ class ReportsController < ApplicationController
         report = Report.find_by(:date => @date_string)
         @show_narrative = true if session[:show_narrative]
         @narrative = report.content
-        @bander = report.bander.name
+        @bander = report.bander
+        @edit_access = true if @bander == Helpers.current_bander(session)
         @date_slug = Helpers.slugify_date(session[:date])
         @count_by_species = Helpers.count_by_species(@date_string)
         

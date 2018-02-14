@@ -1,6 +1,10 @@
-<h1>**PREVIEW** </h1>
+<%if !@edit_access%>
+    <h3 style="color:red">Note: you do not have permission to edit or post this report.</h3>
+<%else%>
+    <h1>**PREVIEW** </h1>
+<%end%>
 <h1>Birds Banded Report for <%=@date_string%></h1>
-<h2>Posted by: <%=@bander%></h2>
+<h2>Posted by: <%=@bander.name%></h2>
 <%if (@narrative && @narrative != "") %>
     <p><%=@narrative%></p>
 <%end%>
@@ -15,15 +19,15 @@
 </table>
 
 <br><br>
-
-<form action="/reports/<%=@date_slug%>">
-    <input type="submit" value="Edit Report" />
-</form>
-<form action="/home">
-    <input type="submit" value="Save as draft" />
-</form>
-<form action="/reports/submit" method="post">
-    <input type="submit" value="Post Report" />
-</form>
-
+<% if @edit_access%>
+    <form action="/reports/<%=@date_slug%>">
+        <input type="submit" value="Edit Report" />
+    </form>
+    <form action="/home">
+        <input type="submit" value="Save as draft" />
+    </form>
+    <form action="/reports/submit" method="post">
+        <input type="submit" value="Post Report" />
+    </form>
+<%end%>
 <%# NEED TO FIGURE OUT HOW TO RETAIN PARAGRAPHS %>
