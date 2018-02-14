@@ -99,6 +99,7 @@ class ReportsController < ApplicationController
     end
 
     patch '/reports' do
+        binding.pry
         @date_string = Helpers.date_string(session[:date])
         if !params[:cancel_changes]
             if params[:narrative]
