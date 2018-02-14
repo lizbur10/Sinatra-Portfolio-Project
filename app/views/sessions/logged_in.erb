@@ -1,4 +1,4 @@
-<% if flash.has?(:message) %>
+<% if flash[:message] %>
   <h2 style="color:green"><%= flash[:message] %><h2>
 <% end %>
 <h1>Welcome <%=@bander.name%>!</h1>

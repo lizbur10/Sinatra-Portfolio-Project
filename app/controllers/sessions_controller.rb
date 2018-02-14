@@ -10,7 +10,6 @@ class SessionsController < ApplicationController
     end
 
     get '/login' do
-        binding.pry
         if Helpers.is_logged_in?(session)
             redirect to '/home'
         else
@@ -24,9 +23,8 @@ class SessionsController < ApplicationController
             redirect to '/home'
         else
             flash[:message] = "Invalid login information"
-            binding.pry
             erb :'sessions/login'
-            # redirect to '/login' ## THIS BROKE MY FLASH MESSAGE
+            # redirect to '/login' ## DOING IT THIS WAY BROKE MY FLASH MESSAGE
         end
     end
 

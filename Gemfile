@@ -12,7 +12,6 @@ gem 'rake'
 gem 'pry'
 gem 'require_all'
 gem 'sinatra-activerecord'
-gem 'shotgun'
 gem "tux"
 gem 'shotgun'
 gem 'bcrypt'

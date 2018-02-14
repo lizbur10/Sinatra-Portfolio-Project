@@ -1,3 +1,6 @@
+<% if flash.has?(:message) %>
+  <h3 style="color:red"><%= flash[:message] %><h3>
+<% end %>
 <h1>Birds Banded Report for <%=@date_string%></h1>
 <br>
 <table>
