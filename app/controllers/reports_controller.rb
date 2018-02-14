@@ -15,7 +15,7 @@ class ReportsController < ApplicationController
         report = Report.find_by(:date => @date_string)
         if report.bander_id == session[:bander_id]
             report.update(:status => "posted")
-            flash[:message] = "***Success! Your report has been posted***"
+            flash[:message] = "***Success! Your report has been posted"
             session.delete("date")
             session.delete("show_narrative")
     

@@ -3,9 +3,9 @@
   <h3 style="color:red"><%= flash[:message] %><h3>
 <% end %>
 <form action='/banders' method='POST'>
-<h2>Name: <input type="text" name="bander[name]"></h2>
-<h2>Email: <input type="text" name="bander[email]"></h2>
+<h2>Name: <input type="text" name="bander[name]" value="<%=session[:entered_name]%>"></h2>
+<h2>Email: <input type="text" name="bander[email]" value="<%=session[:entered_email]%>"></h2>
 <h2>Password: <input type="password" name="bander[password]"></h2>
 <input type="submit" value="Register">
 
-<h2>This form will only be accessible to people if I give them the link (need to hide)</h2>
+<h2>This form will only be accessible to people if I give them the link (need to obfuscate)</h2>

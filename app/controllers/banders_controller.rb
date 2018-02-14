@@ -24,6 +24,8 @@ class BandersController < ApplicationController
             # redirect to :"/banders/#{bander.slug}"
             redirect to :'/home'
         end
+        session[:entered_name] = params[:bander][:name]
+        session[:entered_email] = params[:bander][:email]
         redirect to '/banders/new'
     end
 

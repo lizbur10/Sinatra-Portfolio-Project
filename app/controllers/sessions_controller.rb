@@ -4,7 +4,7 @@ class SessionsController < ApplicationController
 
     get '/home' do
         @reports = Report.where("bander_id = ? AND status = ?", session[:bander_id], "draft").sort_by {|r| Date.parse(r.date)}.reverse
-        @bander = Helpers.current_bander(session[:bander_id])
+        @bander = Helpers.current_bander(session)
         
         erb :'/sessions/logged_in'
     end
