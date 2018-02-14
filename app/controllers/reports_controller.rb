@@ -63,11 +63,13 @@ class ReportsController < ApplicationController
         @show_narrative = true if session[:show_narrative]
         @narrative = report.content
         @bander = report.bander
-        @edit_access = true if @bander == Helpers.current_bander(session)
         @date_slug = Helpers.slugify_date(session[:date])
         @count_by_species = Helpers.count_by_species(@date_string)
-        
-        erb :'/reports/show'
+        if @bander == Helpers.current_bander(session)
+            erb :'/reports/show'
+        else
+            redirect to "/reports/#{@date_slug}/preview"
+        end
     end
 
     get '/reports/:date/preview' do
