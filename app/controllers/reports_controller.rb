@@ -114,8 +114,9 @@ class ReportsController < ApplicationController
 
                 redirect to :"/reports/#{Helpers.slugify_date_string(@date_string)}/preview"
             elsif params[:species]
+                session[:temp] = {}
                 params[:species].each do |species_code, number|
-                    session["#{species_code}"] = number
+                    session[:temp]["#{species_code}"] = number
                     if number.to_i < 0
                         flash[:message] = "Number banded must be greater than zero."
                         redirect to "/reports/#{Helpers.slugify_date_string(@date_string)}/edit"
@@ -124,6 +125,8 @@ class ReportsController < ApplicationController
                 Helpers.update_banding_numbers(params,@date_string,session)
             end
             redirect to '/birds/new' if params[:add_more_birds]
+        else
+            session.delete(:temp)
         end
         redirect to "/reports/#{slugify_date_string(@date_string)}"
     end

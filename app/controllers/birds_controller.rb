@@ -33,6 +33,7 @@ class BirdsController < ApplicationController
                 # elsif (!find_species_by_code && !find_species_by_name)
         #     flash[:message] = "This species is not currently in the database - do you wish to enter it?"
         #     ADD CODE TO HANDLE
+        ## WARNING IF SPECIES IS ALREADY IN REPORT
         ## END VALIDATIONS
         else
             Helpers.check_date(params, session)
@@ -40,7 +41,7 @@ class BirdsController < ApplicationController
             @date_string = Helpers.date_string(session[:date])
             report = Report.find_by(:date => @date_string) || report = Report.create(:date => @date_string, :status => "draft")
             report.update(:date_slug => Helpers.slugify_date_string(@date_string)) if !report.date_slug
-            report.bander = Helpers.current_bander(session[:bander_id]) if !report.bander
+            report.bander = Helpers.current_bander(session) if !report.bander
             report.save
             params[:bird][:number_banded].to_i.times do
                 bird = Bird.new(:banding_date => params[:date])
@@ -59,10 +60,9 @@ class BirdsController < ApplicationController
     end
 
     post '/birds/cancel' do
-        binding.pry
         session.delete(:temp)
         if session[:date]
-            redirect to "/reports/#{Helpers.slugify_date(@session[:date])}"
+            redirect to "/reports/#{Helpers.slugify_date(session[:date])}"
         else
             redirect to "/home"
         end
