@@ -28,7 +28,8 @@ class SessionsController < ApplicationController
         else
             flash[:message] = "No account exists under that name"
         end
-        session[:entered_name] = params[:username]
+        session[:temp]={}
+        session[:temp][:entered_name] = params[:username]
         
         erb :'sessions/login'
         # redirect to '/login' ## DOING IT THIS WAY BROKE MY FLASH MESSAGE
