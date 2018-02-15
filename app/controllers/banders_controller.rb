@@ -22,6 +22,8 @@ class BandersController < ApplicationController
             bander.save
             session[:bander_id] = bander.id
             # redirect to :"/banders/#{bander.slug}"
+            session.delete(:entered_name)
+            session.delete(:entered_email)
             redirect to :'/home'
         end
         session[:entered_name] = params[:bander][:name]
