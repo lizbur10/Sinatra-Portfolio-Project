@@ -34,7 +34,7 @@ class Helpers
         Bird.group("species").where("banding_date = ?", date_string).count
     end
 
-    def self.update_banding_numbers(passed_params, date_string)
+    def self.update_banding_numbers(passed_params, date_string, session)
         if passed_params[:delete]
             passed_params[:delete].each do | code, value |
                 self.count_by_species(date_string).each do |species, count_from_db|
@@ -51,6 +51,7 @@ class Helpers
             elsif number_change < 0
                 number_change.abs.times {self.delete_bird(species.code,date_string)}
             end
+            session.delete("#{species.code}")
         end
     end
 

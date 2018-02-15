@@ -39,7 +39,7 @@ class BirdsController < ApplicationController
             params[:bird][:number_banded].to_i.times do
                 bird = Bird.new(:banding_date => params[:date])
                 bird.species = find_species_by_code || bird.species = Helpers.create_species(params[:bird][:species])
-                bird.bander = Helpers.current_bander(session[:bander_id])
+                bird.bander = Helpers.current_bander(session)
                 bird.save
             end
             redirect to "/reports/#{Helpers.slugify_date(@session[:date])}"

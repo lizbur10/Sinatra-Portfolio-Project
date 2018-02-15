@@ -12,7 +12,11 @@
 <tr>
     <td><%=species.code%></td>
     <td><%=species.name%></td>
-    <td><input type="number" name="species[<%=species.code%>]" value="<%=value%>"</td>
+    <%if session[species.code]%>
+      <td><input type="number" name="species[<%=species.code%>]" value="<%=session[species.code]%>"</td>
+    <%else%>
+      <td><input type="number" name="species[<%=species.code%>]" value="<%=value%>"</td>
+    <%end%>
     <td><input type="checkbox" name="delete[<%=species.code%>]"></td>
 
 </tr>
