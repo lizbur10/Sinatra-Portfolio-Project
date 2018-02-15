@@ -4,9 +4,15 @@
 <% end %>
 <form action='/banders/<%=@bander.slug%>' method='POST'>
 <input id="hidden" type="hidden" name="_method" value="patch">
-<h2>Name: <input type="text" name="bander[name]" value="<%=@bander.name %>"></h2>
-<h2>Email: <input type="email" name="bander[email]" value="<%=@bander.email %>"></h2>
-<h2>Password: <input type="password" name="bander[password]" value="<%=@bander.password %>"></h2>
+<%if session[:temp]%>
+  <h2>Name: <input type="text" name="bander[name]" value="<%=session[:temp][:entered_name] %>"></h2>
+  <h2>Email: <input type="email" name="bander[email]" value="<%=session[:temp][:entered_email] %>"></h2>
+  <h2>Password: <input type="password" name="bander[password]" value="<%=session[:temp][:entered_password] %>"></h2>
+<%else%>
+  <h2>Name: <input type="text" name="bander[name]" value="<%=@bander.name %>"></h2>
+  <h2>Email: <input type="email" name="bander[email]" value="<%=@bander.email %>"></h2>
+  <h2>Password: <input type="password" name="bander[password]" value="<%=@bander.password %>"></h2>
+<%end%>
 <input type="submit" value="Submit changes">
 <input type="submit" name="cancel_changes" value="Cancel Changes">
 </form>

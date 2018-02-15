@@ -6,7 +6,7 @@ Specs:
 - [x] Include more than one model class (list of model class names e.g. User, Post, Category) - I have 4 models defined 
 - [x] Include at least one has_many relationship (x has_many y e.g. User has_many Posts) - banders have many birds, reports and species through birds; species have many birds and many banders through birds
 - [x] Include user accounts - banders must register and log in to create reports 
-- [ ] Ensure that users can't modify content created by other users - only info belonging to a bander is exposed; if access directly via url, error messages/redirects for: bander account info;
+- [x] Ensure that users can't modify content created by other users - only info belonging to a bander is exposed; if access directly via url, error messages or redirects for: bander account info; reports/edit
 - [x] Ensure that the belongs_to resource has routes for Creating, Reading, Updating and Destroying - there are methods for creating, updating, and destroying birds; methods for creating, reading, and updating reports; and methods for creating and reading species.
 - [x] Include user input validations - there are validations for: registration info (name, email, password); login info (name/password correct); edit account info (email valid); species alpha code; and number banded (>=0) **NEED TO CHECK THOROUGHLY
 - [x] Display validation failures to user with error message (example form URL e.g. /posts/new) - there are flash messages but for some reason they are not working consistently **NEED TO FIX FLASH MESSAGES

@@ -21,12 +21,16 @@ class SessionsController < ApplicationController
         if @bander = Bander.find_by(name: params[:username].capitalize, password: params[:password])
             session[:bander_id] = @bander.id
             redirect to '/home'
-        else
+        elsif @bander = Bander.find_by(name: params[:username].capitalize)
             flash[:message] = "Invalid login information"
-            erb :'sessions/login'
-            # redirect to '/login' ## DOING IT THIS WAY BROKE MY FLASH MESSAGE
+        else
+            flash[:message] = "No account exists with that username"
         end
-    end
+        session[:entered_name] = params[:username]
+        
+        erb :'sessions/login'
+        # redirect to '/login' ## DOING IT THIS WAY BROKE MY FLASH MESSAGE
+        end
 
     get '/logout' do 
         session.clear

@@ -4,7 +4,6 @@ class BandersController < ApplicationController
     
     # [Create]RUD
     get '/banders/new' do
-
         erb :'/banders/new'
     end
 
@@ -22,12 +21,12 @@ class BandersController < ApplicationController
             bander.save
             session[:bander_id] = bander.id
             # redirect to :"/banders/#{bander.slug}"
-            session.delete(:entered_name)
-            session.delete(:entered_email)
+            session.delete(:temp)
             redirect to :'/home'
         end
-        session[:entered_name] = params[:bander][:name]
-        session[:entered_email] = params[:bander][:email]
+        session[:temp]={}
+        session[:temp][:entered_name] = params[:bander][:name]
+        session[:temp][:entered_email] = params[:bander][:email]
         redirect to '/banders/new'
     end
 
@@ -70,11 +69,19 @@ class BandersController < ApplicationController
                 flash[:message] = "Please enter a valid email address."
             else
                 @bander.update(params[:bander])
+                session.delete(:temp)
                 redirect to "/banders/#{@bander.slug}"
 
             end
+            session[:temp]={}
+            session[:temp][:entered_name] = params[:bander][:name] ##if params[:bander][:name]
+            session[:temp][:entered_email] = params[:bander][:email] ##if params[:bander][:email]
+            session[:temp][:entered_password] = params[:bander][:password] ##if params[:bander][:password]
+            redirect to "/banders/#{@bander.slug}/edit"
         end
-        redirect to "/banders/#{params[:slug]}"
+        session.delete(:temp) if session[:temp]
+        redirect to "/banders/#{@bander.slug}"
+
     end
 
     # CRU[Delete]
