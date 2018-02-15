@@ -10,9 +10,8 @@ class ApplicationController < Sinatra::Base
   end
 
   get '/' do
-    binding.pry
     session.delete(:temp) if session[:temp]
-    binding.pry
+
     erb :'/index'
   end
 

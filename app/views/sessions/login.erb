@@ -4,9 +4,9 @@
 <% end %>
 <form action="/sessions" method="POST">
 <%if session[:temp]%>
-  <h3>Username: <input type="text" name="username" value="<%=session[:temp][:entered_name]%>"></h3>
+  <h3>Name: <input type="text" name="username" value="<%=session[:temp][:entered_name]%>"></h3>
 <%else%>
-  <h3>Username: <input type="text" name="username"></h3>
+  <h3>Name: <input type="text" name="username"></h3>
 <%end%>
 <h3>Password: <input type="password" name="password"></h3>
 <p><input type="submit" value="Log In"></p>

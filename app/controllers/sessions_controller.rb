@@ -21,10 +21,12 @@ class SessionsController < ApplicationController
         if @bander = Bander.find_by(name: params[:username].capitalize, password: params[:password])
             session[:bander_id] = @bander.id
             redirect to '/home'
+        elsif params[:username] == "" || params[:password] == ""
+                flash[:message] = "Please enter your name and password"
         elsif @bander = Bander.find_by(name: params[:username].capitalize)
             flash[:message] = "Invalid login information"
         else
-            flash[:message] = "No account exists with that username"
+            flash[:message] = "No account exists under that name"
         end
         session[:entered_name] = params[:username]
         
