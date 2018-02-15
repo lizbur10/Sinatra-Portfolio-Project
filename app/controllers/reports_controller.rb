@@ -21,6 +21,7 @@ class ReportsController < ApplicationController
     
             redirect to :'/home'
         else
+            ## This should never fire
             flash[:message] = "You do not have permission to edit this report"
             redirect to "/reports/#{slugify_date_string(@date_string)}"
         end
@@ -33,6 +34,7 @@ class ReportsController < ApplicationController
         redirect to :"/reports/#{Helpers.slugify_date(session[:date])}"
     end
 
+    ## THIS IS NOT CURRENTLY USED
     delete '/reports/:date/narrative' do
         @date_string = Helpers.date_string(session[:date])
         report = Report.find_by(:date => @date_string)

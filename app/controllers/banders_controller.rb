@@ -50,6 +50,7 @@ class BandersController < ApplicationController
         if @bander.id == session[:bander_id]
             erb :'/banders/edit'
         else
+            ## This is redundant - it should never fire
             flash[:message] = "You do not have permission to edit this information"
             redirect to "/banders/#{@bander.slug}"
         end
@@ -72,8 +73,8 @@ class BandersController < ApplicationController
                 redirect to "/banders/#{@bander.slug}"
 
             end
-            redirect to "/banders/#{params[:slug]}/edit"
         end
+        redirect to "/banders/#{params[:slug]}"
     end
 
     # CRU[Delete]

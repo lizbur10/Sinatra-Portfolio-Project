@@ -54,7 +54,11 @@ class BirdsController < ApplicationController
         redirect to '/birds/new'
     end
 
-
+    get '/birds/:date/edit' do
+        @date_string = Helpers.date_string(session[:date])
+    
+        redirect to "/reports/#{Helpers.slugify_date_string(@date_string)}/edit"
+    end
 
     #  HELPERS
     helpers do
