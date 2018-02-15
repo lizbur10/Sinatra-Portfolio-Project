@@ -4,16 +4,18 @@
 <% end %>
 <form action='/birds' method="POST">
 <h2><label>Date: </label><input type="text" name=date value="<%=@date%>"></h2>
-<h2><label>Alpha code: </label><input type="text" name="bird[species][code]" value="<%=@session[:entered_alpha_code]%>"></h2>
-<h2><label>Species name: </label><input type="text" name="bird[species][name]" value="<%=@session[:entered_species_name]%>" ></h2>
-<h2><label>Number banded: </label><input type="number" name="bird[number_banded]" value="<%=@session[:entered_number_banded]%>" ></h2>
+<%if session[:temp]%>
+  <h2><label>Alpha code: </label><input type="text" name="bird[species][code]" value="<%=@session[:temp][:entered_alpha_code]%>"></h2>
+  <h2><label>Species name: </label><input type="text" name="bird[species][name]" value="<%=@session[:temp][:entered_species_name]%>" ></h2>
+  <h2><label>Number banded: </label><input type="number" name="bird[number_banded]" value="<%=@session[:temp][:entered_number_banded]%>" ></h2>
+<%else%>
+  <h2><label>Alpha code: </label><input type="text" name="bird[species][code]" ></h2>
+  <h2><label>Species name: </label><input type="text" name="bird[species][name]" ></h2>
+  <h2><label>Number banded: </label><input type="number" name="bird[number_banded]" ></h2>
+<%end%>
 <input type="submit" value="Save">
 </form>
 <%#NEED TO ADD LOGIC HERE FOR APPROPRIATE REDIRECT %>
-<%if @session[:date]%>
-  <form action="../reports/<%=Helpers.slugify_date(session[:date])%>">
-<%else%>
-  <form action="/home">
-<%end%>
+<form action="/birds/cancel" method="POST">
   <input type="submit" value="Cancel">
 </form>

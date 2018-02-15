@@ -5,10 +5,13 @@ class BirdsController < ApplicationController
     # [Create]RUD
     get '/birds/new' do
         @session = session
-        ## CONTROL FOR SITUATION WHERE NO REPORTS EXIST YET
         if !session[:date]
-            @date = Report.all.map{|r| Date.parse(r.date)}.max + 1.day
-            @date = @date.strftime("%b %d")
+            if Report.all ## &CURRENT SEASON
+                @date = Report.all.map{|r| Date.parse(r.date)}.max + 1.day
+                @date = @date.strftime("%b %d")
+            else
+                @date = Time.now.strftime("%b %d") 
+            end
         else
             @date = session[:date].strftime("%b %d")
         end
@@ -16,9 +19,12 @@ class BirdsController < ApplicationController
     end
 
     post '/birds' do
-        # Ask to verify if params[:date] != session[:date] && session[:date] exists
+        params
+        # Warning if params[:date] != session[:date] && session[:date] exists
         ## VALIDATIONS
-        if !Helpers.validate_alpha_code(params[:bird][:species][:code].strip)
+        if params[:bird][:species][:code] == "" || params[:bird][:species][:name] == "" || params[:bird][:number_banded] == ""
+            flash[:message] = "Please complete all fields"
+        elsif !Helpers.validate_alpha_code(params[:bird][:species][:code].strip)
             flash[:message] = "Please enter a valid alpha code."
         elsif params[:bird][:number_banded].to_i < 1
             flash[:message] = "Number banded must be greater than zero."
@@ -42,16 +48,24 @@ class BirdsController < ApplicationController
                 bird.bander = Helpers.current_bander(session)
                 bird.save
             end
-            session.delete(:entered_alpha_code)
-            session.delete(:entered_species_name)
-            session.delete(:entered_number_banded)
+            session.delete(:temp)
             redirect to "/reports/#{Helpers.slugify_date(@session[:date])}"
         end
-        session[:entered_alpha_code] = params[:bird][:species][:code].strip
-        session[:entered_species_name] = params[:bird][:species][:name]
-        session[:entered_number_banded] = params[:bird][:number_banded]
-        binding.pry
+        session[:temp] = {}
+        session[:temp][:entered_alpha_code] = params[:bird][:species][:code].strip
+        session[:temp][:entered_species_name] = params[:bird][:species][:name]
+        session[:temp][:entered_number_banded] = params[:bird][:number_banded]
         redirect to '/birds/new'
+    end
+
+    post '/birds/cancel' do
+        binding.pry
+        session.delete(:temp)
+        if session[:date]
+            redirect to "/reports/#{Helpers.slugify_date(@session[:date])}"
+        else
+            redirect to "/home"
+        end
     end
 
     get '/birds/:date/edit' do
