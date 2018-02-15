@@ -24,7 +24,7 @@ class BirdsController < ApplicationController
             flash[:message] = "Number banded must be greater than zero."
         elsif (find_species_by_code && !find_species_by_name) || (!find_species_by_code && find_species_by_name)
             flash[:message] = "The alpha code and name do not match - please verify"
-        # elsif (!find_species_by_code && !find_species_by_name)
+                # elsif (!find_species_by_code && !find_species_by_name)
         #     flash[:message] = "This species is not currently in the database - do you wish to enter it?"
         #     ADD CODE TO HANDLE
         ## END VALIDATIONS
@@ -42,8 +42,15 @@ class BirdsController < ApplicationController
                 bird.bander = Helpers.current_bander(session)
                 bird.save
             end
+            session.delete(:entered_alpha_code)
+            session.delete(:entered_species_name)
+            session.delete(:entered_number_banded)
             redirect to "/reports/#{Helpers.slugify_date(@session[:date])}"
         end
+        session[:entered_alpha_code] = params[:bird][:species][:code].strip
+        session[:entered_species_name] = params[:bird][:species][:name]
+        session[:entered_number_banded] = params[:bird][:number_banded]
+        binding.pry
         redirect to '/birds/new'
     end
 

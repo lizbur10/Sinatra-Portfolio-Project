@@ -121,7 +121,6 @@ class ReportsController < ApplicationController
                 end
                 Helpers.update_banding_numbers(params,@date_string,session)
             end
-            binding.pry
             redirect to '/birds/new' if params[:add_more_birds]
         end
         redirect to "/reports/#{slugify_date_string(@date_string)}"
