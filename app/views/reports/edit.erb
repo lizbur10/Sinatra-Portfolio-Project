@@ -7,7 +7,7 @@
 <input id="hidden" type="hidden" name="_method" value="patch">
 <h2>Edit banded list:</h2>
 <table>
-<tr><th>Alpha Code</th><th>Species</th><th>Number Banded</th><th>Delete</th></tr>
+<tr><th>Alpha<br>Code</th><th><br>Species Name</th><th>Number<br>Banded</th><th><br>Delete</th></tr>
 <%@count_by_species.each do |species,value| %>
 <tr>
     <td><%=species.code%></td>
@@ -26,11 +26,12 @@
 </tr>
 <%end%>
 </table>
+<br>
 <input type="submit" name="add_more_birds" value="Add more birds" />
 <% #PENDING CHANGES WARNING %>
 
 <br><br>
-<input type="submit" value="Submit Changes">
-<input type="submit" name="cancel_changes" value="Cancel Changes">
+<input class="button" type="submit" value="Submit Changes">
+<input class="button" type="submit" name="cancel_changes" value="Cancel Changes">
 <br><br>
 </form>
