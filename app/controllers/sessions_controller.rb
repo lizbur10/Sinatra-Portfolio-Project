@@ -3,10 +3,15 @@ class SessionsController < ApplicationController
     use Rack::Flash
 
     get '/home' do
-        @reports = Report.where("bander_id = ? AND status = ?", session[:bander_id], "draft").sort_by {|r| Date.parse(r.date)}.reverse
-        @bander = Helpers.current_bander(session)
-        
-        erb :'/sessions/logged_in'
+        if Helpers.is_logged_in?(session)
+            @reports = Report.where("bander_id = ? AND status = ?", session[:bander_id], "draft").sort_by {|r| Date.parse(r.date)}.reverse
+            @bander = Helpers.current_bander(session)
+            
+            erb :'/sessions/logged_in'
+        else
+            redirect to '/login'
+        end
+
     end
 
     get '/login' do

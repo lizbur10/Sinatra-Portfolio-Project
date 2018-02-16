@@ -4,9 +4,14 @@ class ReportsController < ApplicationController
 
     ## C[READ]UD - SHOW ALL REPORTS; LINK TO CREATE A NEW REPORT
     get '/reports' do
-        @reports = Report.all.sort_by {|r| Date.parse(r.date)}.reverse
+        if Helpers.is_logged_in?(session)
+            @reports = Report.all.sort_by {|r| Date.parse(r.date)}.reverse
 
-        erb :'/reports/index'
+            erb :'/reports/index'
+        else
+            redirect to '/login'
+        end
+
     end
 
     ## SUBMIT REPORT
@@ -34,7 +39,7 @@ class ReportsController < ApplicationController
         redirect to :"/reports/#{Helpers.slugify_date(session[:date])}"
     end
 
-    ## THIS IS NOT CURRENTLY USED
+    ## OBSOLETE
     delete '/reports/:date/narrative' do
         @date_string = Helpers.date_string(session[:date])
         report = Report.find_by(:date => @date_string)
@@ -43,6 +48,7 @@ class ReportsController < ApplicationController
         session[:show_narrative] = false
         redirect to :"/reports/#{Helpers.slugify_date(session[:date])}"
     end
+    ##
 
 
     ## [CREATE]RUD - ADD NARRATIVE TO REPORT
@@ -59,48 +65,62 @@ class ReportsController < ApplicationController
 
     ## C[READ]UD - SHOW SPECIFIC REPORT
     get '/reports/:date' do
-        Helpers.check_date(params, session)
-        @date_string = Helpers.date_string(session[:date])
-        report = Report.find_by(:date => @date_string)
-        @show_narrative = true if session[:show_narrative]
-        @narrative = report.content
-        @bander = report.bander
-        @date_slug = Helpers.slugify_date(session[:date])
-        @count_by_species = Helpers.count_by_species(@date_string)
-        if @bander == Helpers.current_bander(session)
-            erb :'/reports/show'
+        if Helpers.is_logged_in?(session)
+            Helpers.check_date(params, session)
+            @date_string = Helpers.date_string(session[:date])
+            report = Report.find_by(:date => @date_string)
+            @show_narrative = true if session[:show_narrative]
+            @narrative = report.content
+            @bander = report.bander
+            @date_slug = Helpers.slugify_date(session[:date])
+            @count_by_species = Helpers.count_by_species(@date_string)
+            if @bander == Helpers.current_bander(session)
+                erb :'/reports/show'
+            else
+                redirect to "/reports/#{@date_slug}/preview"
+            end
         else
-            redirect to "/reports/#{@date_slug}/preview"
+            redirect to '/login'
         end
+
     end
 
     get '/reports/:date/preview' do
-        Helpers.check_date(params, session)
-        @date_string = Helpers.date_string(session[:date])
-        report = Report.find_by(:date => @date_string)
-        @show_narrative = true if session[:show_narrative]
-        @narrative = report.content
-        @bander = report.bander
-        @edit_access = true if @bander == Helpers.current_bander(session)
-        @date_slug = Helpers.slugify_date(session[:date])
-        @count_by_species = Helpers.count_by_species(@date_string)
-        
-        erb :'/reports/preview'
+        if Helpers.is_logged_in?(session)
+            Helpers.check_date(params, session)
+            @date_string = Helpers.date_string(session[:date])
+            report = Report.find_by(:date => @date_string)
+            @show_narrative = true if session[:show_narrative]
+            @narrative = report.content
+            @bander = report.bander
+            @edit_access = true if @bander == Helpers.current_bander(session)
+            @date_slug = Helpers.slugify_date(session[:date])
+            @count_by_species = Helpers.count_by_species(@date_string)
+            
+            erb :'/reports/preview'
+        else
+            redirect to '/login'
+        end
+            
     end
 
     ## CR[UPDATE]D - EDIT REPORT
     get '/reports/:date/edit' do
-        Helpers.check_date(params, session)
-        @session = session
-        @date_string = Helpers.date_string(session[:date])
-        @count_by_species = Helpers.count_by_species(@date_string)
-        report = Report.find_by(:date => @date_string)
-        @narrative = report.content
-        if report.bander_id == session[:bander_id]
-            erb :'/reports/edit'
+        if Helpers.is_logged_in?(session)
+            Helpers.check_date(params, session)
+            @session = session
+            @date_string = Helpers.date_string(session[:date])
+            @count_by_species = Helpers.count_by_species(@date_string)
+            report = Report.find_by(:date => @date_string)
+            @narrative = report.content
+            if report.bander_id == session[:bander_id]
+                erb :'/reports/edit'
+            else
+                flash[:message] = "You do not have permission to edit this report"
+                redirect to "/reports/#{slugify_date_string(@date_string)}"
+            end
         else
-            flash[:message] = "You do not have permission to edit this report"
-            redirect to "/reports/#{slugify_date_string(@date_string)}"
+            redirect to '/login'
         end
 
     end

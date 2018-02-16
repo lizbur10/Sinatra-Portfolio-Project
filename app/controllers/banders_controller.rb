@@ -32,26 +32,38 @@ class BandersController < ApplicationController
 
     # C[Read]UD - ALL BANDERS
     get '/banders' do
-        @banders = Bander.all
-        erb :'banders/index'
+        if Helpers.is_logged_in?(session)
+            @banders = Bander.all
+            erb :'banders/index'
+        else
+            redirect to '/login'
+        end
     end
 
     # C[Read]UD - SPECIFIC BANDER
     get '/banders/:slug' do
-        @bander = find_bander
-        @session = session
-        erb :"banders/show"
+        if Helpers.is_logged_in?(session)
+            @bander = find_bander
+            @session = session
+            erb :"banders/show"
+        else
+            redirect to '/login'
+        end
     end
 
     # CR[Update]D 
     get '/banders/:slug/edit' do
-        @bander = find_bander
-        if @bander.id == session[:bander_id]
-            erb :'/banders/edit'
+        if Helpers.is_logged_in?(session)        
+            @bander = find_bander
+            if @bander.id == session[:bander_id]
+                erb :'/banders/edit'
+            else
+                ## This is redundant - it should never fire
+                flash[:message] = "You do not have permission to edit this information"
+                redirect to "/banders/#{@bander.slug}"
+            end
         else
-            ## This is redundant - it should never fire
-            flash[:message] = "You do not have permission to edit this information"
-            redirect to "/banders/#{@bander.slug}"
+            redirect to '/login'
         end
     end
 

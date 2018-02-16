@@ -4,8 +4,12 @@ class SpeciesController < ApplicationController
 
     # [Create]RUD
     get '/species/new' do
+        if Helpers.is_logged_in?(session)
 
-        erb :'/species/new'
+            erb :'/species/new'
+        else
+            redirect to '/login'
+        end
     end
 
     post '/species' do
@@ -31,20 +35,33 @@ class SpeciesController < ApplicationController
 
     # C[Read]UD - ALL SPECIES
     get '/species' do
-        @all_species = Species.all
-        erb :'/species/index'
+        if Helpers.is_logged_in?(session)
+            @all_species = Species.all
+            erb :'/species/index'
+        else
+            redirect to '/login'
+        end
+
     end
 
     # C[Read]UD - SPECIFIC SPECIES
     get '/species/:code' do
-        @species = find_species_by_code
-        erb :'/species/show'
+        if Helpers.is_logged_in?(session)
+            @species = find_species_by_code
+            erb :'/species/show'
+        else
+            redirect to '/login'
+        end
     end
 
     # CR[Update]D
     get '/species/:code/edit' do
-        @species = find_species_by_code
-        erb :'/species/edit'
+        if Helpers.is_logged_in?(session)
+            @species = find_species_by_code
+            erb :'/species/edit'
+        else
+            redirect to '/login'
+        end
     end
 
     patch '/species/:id' do

@@ -4,18 +4,22 @@ class BirdsController < ApplicationController
 
     # [Create]RUD
     get '/birds/new' do
-        @session = session
-        if !session[:date]
-            if Report.all ## &CURRENT SEASON
-                @date = Report.all.map{|r| Date.parse(r.date)}.max + 1.day
-                @date = @date.strftime("%b %d")
+        if Helpers.is_logged_in?(session)
+            @session = session
+            if !session[:date]
+                if Report.all ## &CURRENT SEASON
+                    @date = Report.all.map{|r| Date.parse(r.date)}.max + 1.day
+                    @date = @date.strftime("%b %d")
+                else
+                    @date = Time.now.strftime("%b %d") 
+                end
             else
-                @date = Time.now.strftime("%b %d") 
+                @date = session[:date].strftime("%b %d")
             end
+            erb :'/birds/new'
         else
-            @date = session[:date].strftime("%b %d")
+            redirect to '/login'
         end
-        erb :'/birds/new'
     end
 
     post '/birds' do
@@ -73,11 +77,13 @@ class BirdsController < ApplicationController
 
     end
 
+    ## OBSOLETE
     get '/birds/:date/edit' do
         @date_string = Helpers.date_string(session[:date])
     
         redirect to "/reports/#{Helpers.slugify_date_string(@date_string)}/edit"
     end
+    ##
 
     #  HELPERS
     helpers do
