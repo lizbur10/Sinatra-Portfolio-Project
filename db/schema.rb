@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180208123202) do
+ActiveRecord::Schema.define(version: 20180216165252) do
 
   create_table "all_species", force: :cascade do |t|
     t.string "code"
@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(version: 20180208123202) do
   create_table "banders", force: :cascade do |t|
     t.string "name"
     t.string "email"
-    t.string "password"
+    t.string "password_digest"
   end
 
   create_table "birds", force: :cascade do |t|
@@ -31,10 +31,10 @@ ActiveRecord::Schema.define(version: 20180208123202) do
 
   create_table "reports", force: :cascade do |t|
     t.string "date"
+    t.string "date_slug"
+    t.string "content"
+    t.string "status"
     t.integer "bander_id"
-    t.text "content"
-    t.text "status"
-    t.text "date_slug"
   end
 
 end

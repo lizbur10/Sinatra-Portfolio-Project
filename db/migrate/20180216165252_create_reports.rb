@@ -6,5 +6,6 @@ class CreateReports < ActiveRecord::Migration[5.1]
       t.string :content
       t.string :status
       t.integer :bander_id
+    end
   end
 end
