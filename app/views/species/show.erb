@@ -1,10 +1,15 @@
 <h2>Species: <%= @species.name%> </h2>
 <h2>Alpha code: <%= @species.code%></h2>
-<form action="/species/<%= @species.code%>/edit">
-    <input type="submit" value="Edit species" />
+<form class="button" action="/species/<%= @species.code%>/edit">
+    <input class="button" type="submit" value="Edit species" />
 </form>
-<form action="/reports">
-    <input type="submit" value="Home" />
+<br><br><br>
+<%if session[:bander_id]%>
+<form class="button main" action="/home">
+<%else%>
+<form class="button main" action="/">
+<%end%>
+    <input class="button" type="submit" value="Return Home" />
 </form>
 
 

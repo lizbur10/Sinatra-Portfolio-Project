@@ -1,7 +1,9 @@
-<h1>Edit a Species</h1>
-<form action='/species/<%=@species.id%>' method='POST'>
+<h1>Edit a Species:</h1>
+<form class="button" action='/species/<%=@species.id%>' method='POST'>
 <input id="hidden" type="hidden" name="_method" value="patch">
-<h2>Species Name: <input type="text" name="species[name]" value="<%=@species.name %>"></h2>
-<h2>Alpha Code: <input type="text" name="species[code]" value="<%=@species.code %>"></h2>
-<input type="submit" value="Submit Changes">
-<input type="submit" name="cancel_changes" value="Cancel Changes">
+<h3>Species Name: <input type="text" name="species[name]" value="<%=@species.name %>"></h3>
+<h3>Alpha Code: <input type="text" name="species[code]" value="<%=@species.code %>"></h3>
+<br><br>
+<input type="submit" value="Submit">
+<input type="submit" name="cancel_changes" value="Cancel">
+</form>

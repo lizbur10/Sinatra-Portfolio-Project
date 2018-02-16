@@ -5,7 +5,7 @@
 <h1><%= @bander.name%></h1>
 <h2>Email: <%= @bander.email%></h2>
 <% if @bander.id == @session[:bander_id]%>
-    <form action = "/banders/<%=@bander.slug%>/edit">
+    <form class="button" action = "/banders/<%=@bander.slug%>/edit">
         <input type="submit" value="Edit">
     </form>
 <%end%>

@@ -2,17 +2,14 @@
   <h2 style="color:green"><%= flash[:message] %><h2>
 <% end %>
 <h1>Welcome <%=@bander.name%>!</h1>
-<h3><a href="/banders/<%=@bander.slug%>">Your Account</a></h3>
 
-<br>
-<h1>Choose an option:</h1>
-<ul>
+<ul class="flush-left">
 <li><h2><a href="/birds/new">Start a new report</a></h2></li>
 <%if @reports.length > 0%>
     <li><h2>Continue working on a draft report:</h2>
     <ul>
         <%@reports.each do |report|%>
-            <h3><li><a href="/reports/<%=report.date_slug%>"><%=report.date%></a></li></h3>
+            <li><h3><a href="/reports/<%=report.date_slug%>"><%=report.date%></a></h3></li>
         <%end%>
     </ul></li>
 <%end%>
@@ -21,6 +18,10 @@
         <li><h3>COMING SOON</h3></li>
     </ul>
 </li></ul>
-<form action = '/logout'>
+<br>
+<form class="button" action = "/banders/<%=@bander.slug%>">
+    <input type="submit" value="Your Account">
+</form>
+<form class="button" action = '/logout'>
     <input type="submit" value="Log Out">
 </form>
