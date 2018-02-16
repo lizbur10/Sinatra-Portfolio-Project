@@ -23,7 +23,8 @@ class SessionsController < ApplicationController
     end
 
     post '/sessions' do
-        if @bander = Bander.find_by(name: params[:username].capitalize, password: params[:password])
+        @bander = Bander.find_by(name: params[:username].capitalize) 
+        if @bander && @bander.authenticate(params[:password])
             session[:bander_id] = @bander.id
             redirect to '/home'
         elsif params[:username] == "" || params[:password] == ""
@@ -39,6 +40,7 @@ class SessionsController < ApplicationController
         erb :'sessions/login'
         # redirect to '/login' ## DOING IT THIS WAY BROKE MY FLASH MESSAGE
         end
+    
 
     get '/logout' do 
         session.clear
