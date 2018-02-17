@@ -86,6 +86,7 @@ class ReportsController < ApplicationController
     end
 
     get '/reports/:date/preview' do
+        ## ADD MARGINAL TOTALS AND GRAND TOTAL TO POSTED REPORT
         if Helpers.is_logged_in?(session)
             Helpers.check_date(params, session)
             @date_string = Helpers.date_string(session[:date])

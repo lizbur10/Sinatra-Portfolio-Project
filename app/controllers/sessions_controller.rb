@@ -26,6 +26,7 @@ class SessionsController < ApplicationController
         @bander = Bander.find_by(name: params[:username].capitalize) 
         if @bander && @bander.authenticate(params[:password])
             session[:bander_id] = @bander.id
+            flash[:message].clear if flash[:message]
             redirect to '/home'
         elsif params[:username] == "" || params[:password] == ""
                 flash[:message] = "Please enter your name and password"
@@ -36,9 +37,8 @@ class SessionsController < ApplicationController
         end
         session[:temp]={}
         session[:temp][:entered_name] = params[:username]
-        
-        erb :'sessions/login'
-        # redirect to '/login' ## DOING IT THIS WAY BROKE MY FLASH MESSAGE
+        # erb :'sessions/login' ## DOING IT THIS WAY RETAINS FLASH MESSAGE
+        redirect to '/login' ## DOING IT THIS WAY BREAKS THE FLASH MESSAGE
         end
     
 

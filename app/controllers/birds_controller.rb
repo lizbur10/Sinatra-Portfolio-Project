@@ -7,7 +7,7 @@ class BirdsController < ApplicationController
         if Helpers.is_logged_in?(session)
             @session = session
             if !session[:date]
-                if Report.all ## &CURRENT SEASON
+                if Report.all.length > 0 ## &CURRENT SEASON
                     @date = Report.all.map{|r| Date.parse(r.date)}.max + 1.day
                     @date = @date.strftime("%b %d")
                 else
@@ -23,7 +23,6 @@ class BirdsController < ApplicationController
     end
 
     post '/birds' do
-        params
         # Warning if params[:date] != session[:date] && session[:date] exists
         ## VALIDATIONS
         if !params[:cancel_changes]
@@ -61,6 +60,7 @@ class BirdsController < ApplicationController
             session[:temp][:entered_alpha_code] = params[:bird][:species][:code].strip
             session[:temp][:entered_species_name] = params[:bird][:species][:name]
             session[:temp][:entered_number_banded] = params[:bird][:number_banded]
+
             redirect to '/birds/new'
         else
             redirect to '/birds/cancel'

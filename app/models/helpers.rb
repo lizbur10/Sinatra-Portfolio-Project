@@ -31,6 +31,7 @@ class Helpers
     end
 
     def self.count_by_species(date_string)
+        ## MODIFY THIS TO USE ACTIVE RECORD
         Bird.group("species").where("banding_date = ?", date_string).count
     end
 
