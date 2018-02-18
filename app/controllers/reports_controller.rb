@@ -138,17 +138,17 @@ class ReportsController < ApplicationController
                         flash[:message] = "Number banded must be greater than zero."
                     end
                 end
-                session[:temp][:delete] = {}
-                params[:delete].each do |species_code, value|
-                    session[:temp][:delete]["#{species_code}"] = value
+                if params[:delete]
+                    session[:temp][:delete] = {}
+                    params[:delete].each do |species_code, value|
+                        session[:temp][:delete]["#{species_code}"] = value
+                    end
                 end
-                binding.pry
                 if flash[:message]
-                    binding.pry
                     redirect to "/reports/#{Helpers.slugify_date_string(@date_string)}/edit"
                 else    
                     Helpers.update_banding_numbers(params,@date_string,session)
-                    session.delete(:temp)
+                    session.delete(:temp) if session[:temp]
                 end
             elsif params[:narrative]
                 Report.find_by(:date => @date_string).update(:content => params[:narrative][:content])
@@ -156,9 +156,9 @@ class ReportsController < ApplicationController
 
                 redirect to :"/reports/#{Helpers.slugify_date_string(@date_string)}/preview"
             end
+            session.delete(:temp) if session[:temp]  ## DOUBLE-CHECK PLACEMENT
             redirect to '/birds/new' if params[:add_more_birds]
         end
-        session.delete(:temp)
         redirect to "/reports/#{slugify_date_string(@date_string)}"
     end
     

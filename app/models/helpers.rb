@@ -32,6 +32,7 @@ class Helpers
 
     def self.count_by_species(date_string)
         report=Report.find_by(:date => date_string)
+        binding.pry
         report.birds.group(:species).count
     end
 
@@ -52,7 +53,7 @@ class Helpers
             elsif number_change < 0
                 number_change.abs.times {self.delete_bird(species.code,date_string)}
             end
-            session.delete("#{species.code}")
+            session.delete("#{species.code}") ## THIS LOOKS LIKE OLD CODE - OBSOLETE??
         end
     end
 
@@ -65,7 +66,7 @@ class Helpers
     def self.delete_bird(code, date_string)
         find_species = Species.find_by_code(code)
         bird_to_delete = Bird.find_by(:banding_date => date_string, :species_id => find_species.id) 
-        bird_to_delete.delete
+        bird_to_delete.delete if bird_to_delete
     end
 
     def self.check_date(passed_params, session)

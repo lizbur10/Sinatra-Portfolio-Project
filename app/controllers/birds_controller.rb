@@ -6,11 +6,16 @@ class BirdsController < ApplicationController
     get '/birds/new' do
         if Helpers.is_logged_in?(session)
             @session = session
-            if Report.all.length > 0 ## &CURRENT SEASON
-                @date = Report.all.map{|r| Date.parse(r.date)}.max + 1.day
-                @date = @date.strftime("%b %d")
+            if !session[:date]
+                binding.pry
+                if Report.all.length > 0 ## &CURRENT SEASON
+                    @date = Report.all.map{|r| Date.parse(r.date)}.max + 1.day
+                    @date = @date.strftime("%b %d")
+                else
+                    @date = Time.now.strftime("%b %d") 
+                end
             else
-                @date = Time.now.strftime("%b %d") 
+                @date = session[:date].strftime("%b %d")
             end
             erb :'/birds/new'
         else
@@ -47,6 +52,7 @@ class BirdsController < ApplicationController
                     bird = Bird.new(:banding_date => params[:date])
                     bird.species = find_species_by_code || Helpers.create_species(params[:bird][:species])
                     bird.bander = Helpers.current_bander(session)
+                    bird.report = report
                     bird.save
                 end
                 session.delete(:temp)

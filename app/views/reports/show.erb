@@ -11,15 +11,15 @@
 <%end%>
 </table>
 <br>
+<form class="button" action="/birds/new">
+    <input type="submit" value="Add more birds" />
+</form>
 <form class="button" action="/reports/<%=@date_slug%>/edit">
     <input type="submit" value="Edit banded list" />
 </form>
 
-<form class="button" action="/birds/new">
-    <input type="submit" value="Add more birds" />
-</form>
 
-<br><br>
+<br><br><br>
 
 <%if (@narrative && @narrative != "") || @show_narrative%>
     <form class="button" action="/reports" id="narrative" method="POST">
@@ -42,7 +42,7 @@
     <input type="submit" value="Preview Report" />
 </form>
 <form class="button" action="/home">
-    <input type="submit" value="Save as draft" />
+    <input type="submit" name="save_draft" value="Save as draft" />
 </form>
 
 

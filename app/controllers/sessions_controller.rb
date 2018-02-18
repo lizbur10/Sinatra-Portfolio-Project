@@ -4,6 +4,9 @@ class SessionsController < ApplicationController
 
     get '/home' do
         if Helpers.is_logged_in?(session)
+            if params[:save_draft]
+                session.delete(:date)
+            end
             @reports = Report.where("bander_id = ? AND status = ?", session[:bander_id], "draft").sort_by {|r| Date.parse(r.date)}.reverse
             @bander = Helpers.current_bander(session)
             
