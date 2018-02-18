@@ -18,10 +18,15 @@
       <%else%>
         <td><input type="number" name="species[<%=species.code%>]" value="<%=value%>"</td>
       <%end%>
+      <%if session[:temp][:delete][species.code]%>
+        <td><input type="checkbox" checked name="delete[<%=species.code%>]"></td>
+      <%else%>
+        <td><input type="checkbox" name="delete[<%=species.code%>]"></td>
+      <%end%>      
     <%else%>
       <td><input type="number" name="species[<%=species.code%>]" value="<%=value%>"</td>
+      <td><input type="checkbox" name="delete[<%=species.code%>]"></td>
     <%end%>
-    <td><input type="checkbox" name="delete[<%=species.code%>]"></td>
 
 </tr>
 <%end%>

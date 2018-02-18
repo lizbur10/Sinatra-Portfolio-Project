@@ -138,13 +138,17 @@ class ReportsController < ApplicationController
                         flash[:message] = "Number banded must be greater than zero."
                     end
                 end
+                session[:temp][:delete] = {}
+                params[:delete].each do |species_code, value|
+                    session[:temp][:delete]["#{species_code}"] = value
+                end
+                binding.pry
                 if flash[:message]
                     binding.pry
                     redirect to "/reports/#{Helpers.slugify_date_string(@date_string)}/edit"
                 else    
                     Helpers.update_banding_numbers(params,@date_string,session)
                     session.delete(:temp)
-                    binding.pry
                 end
             elsif params[:narrative]
                 Report.find_by(:date => @date_string).update(:content => params[:narrative][:content])
