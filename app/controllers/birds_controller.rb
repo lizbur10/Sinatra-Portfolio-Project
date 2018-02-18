@@ -6,15 +6,11 @@ class BirdsController < ApplicationController
     get '/birds/new' do
         if Helpers.is_logged_in?(session)
             @session = session
-            if !session[:date]
-                if Report.all.length > 0 ## &CURRENT SEASON
-                    @date = Report.all.map{|r| Date.parse(r.date)}.max + 1.day
-                    @date = @date.strftime("%b %d")
-                else
-                    @date = Time.now.strftime("%b %d") 
-                end
+            if Report.all.length > 0 ## &CURRENT SEASON
+                @date = Report.all.map{|r| Date.parse(r.date)}.max + 1.day
+                @date = @date.strftime("%b %d")
             else
-                @date = session[:date].strftime("%b %d")
+                @date = Time.now.strftime("%b %d") 
             end
             erb :'/birds/new'
         else

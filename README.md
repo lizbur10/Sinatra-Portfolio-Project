@@ -10,15 +10,15 @@ The purpose of this app is to generate the daily reports created by the Appledor
 
 To install this gem, fork and clone the github repo here: 
 
-Type ```bundle install``` to install needed gems.
+Type ```bundle install``` to install required gems.
 
 ## Usage
 
-Start up a local server to run the app.
+To run the app, start up your local server and navigate to the root url.
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/'lizbur10'/boston_events. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/lizbur10/sinatra-portfolio-project. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
 
