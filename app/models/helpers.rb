@@ -32,7 +32,7 @@ class Helpers
 
     def self.count_by_species(date_string)
         report=Report.find_by(:date => date_string)
-        report.birds.group_by(:species).count
+        report.birds.group(:species).count
     end
 
     def self.update_banding_numbers(passed_params, date_string, session)

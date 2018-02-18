@@ -129,26 +129,32 @@ class ReportsController < ApplicationController
     patch '/reports' do
         @date_string = Helpers.date_string(session[:date])
         if !params[:cancel_changes]
-            if params[:narrative]
+            if params[:species]
+                session[:temp] = {}
+                params[:species].each do |species_code, number|
+                    # NEED TO ADD DELETE CHECKBOXES TO SAVED PARAMS
+                    session[:temp]["#{species_code}"] = number
+                    if number.to_i < 0
+                        flash[:message] = "Number banded must be greater than zero."
+                    end
+                end
+                if flash[:message]
+                    binding.pry
+                    redirect to "/reports/#{Helpers.slugify_date_string(@date_string)}/edit"
+                else    
+                    Helpers.update_banding_numbers(params,@date_string,session)
+                    session.delete(:temp)
+                    binding.pry
+                end
+            elsif params[:narrative]
                 Report.find_by(:date => @date_string).update(:content => params[:narrative][:content])
                 session[:show_narrative] = false if params[:narrative][:content] == ""
 
                 redirect to :"/reports/#{Helpers.slugify_date_string(@date_string)}/preview"
-            elsif params[:species]
-                session[:temp] = {}
-                params[:species].each do |species_code, number|
-                    session[:temp]["#{species_code}"] = number
-                    if number.to_i < 0
-                        flash[:message] = "Number banded must be greater than zero."
-                        redirect to "/reports/#{Helpers.slugify_date_string(@date_string)}/edit"
-                    end
-                end
-                Helpers.update_banding_numbers(params,@date_string,session)
             end
             redirect to '/birds/new' if params[:add_more_birds]
-        else
-            session.delete(:temp)
         end
+        session.delete(:temp)
         redirect to "/reports/#{slugify_date_string(@date_string)}"
     end
     
