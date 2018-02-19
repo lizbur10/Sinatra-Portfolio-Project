@@ -94,9 +94,14 @@ class ReportsController < ApplicationController
             @show_narrative = true if session[:show_narrative]
             @narrative = report.content
             @bander = report.bander
-            @edit_access = true if @bander == Helpers.current_bander(session)
             @date_slug = Helpers.slugify_date(session[:date])
             @count_by_species = Helpers.count_by_species(@date_string)
+            if @bander == Helpers.current_bander(session)
+                @edit_access = true
+            else
+                session.delete(:date)
+            end
+            binding.pry
             
             erb :'/reports/preview'
         else
@@ -117,8 +122,7 @@ class ReportsController < ApplicationController
             if report.bander_id == session[:bander_id]
                 erb :'/reports/edit'
             else
-                flash[:message] = "You do not have permission to edit this report"
-                redirect to "/reports/#{slugify_date_string(@date_string)}"
+                redirect to "/reports/#{slugify_date_string(@date_string)}/preview"
             end
         else
             redirect to '/login'

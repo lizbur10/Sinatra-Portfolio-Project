@@ -41,7 +41,6 @@ class BirdsController < ApplicationController
             ## END VALIDATIONS
             else
                 Helpers.check_date(params, session)
-                @session = session
                 @date_string = Helpers.date_string(session[:date])
                 report = Report.find_by(:date => @date_string) || report = Report.create(:date => @date_string, :status => "draft")
                 report.update(:date_slug => Helpers.slugify_date_string(@date_string)) if !report.date_slug
@@ -56,7 +55,7 @@ class BirdsController < ApplicationController
                     bird.save
                 end
                 session.delete(:temp)
-                redirect to "/reports/#{Helpers.slugify_date(@session[:date])}"
+                redirect to "/reports/#{Helpers.slugify_date(session[:date])}"
             end
             session[:temp] = {}
             session[:temp][:entered_alpha_code] = params[:bird][:species][:code].strip
