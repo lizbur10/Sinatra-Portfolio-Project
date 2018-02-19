@@ -101,7 +101,6 @@ class ReportsController < ApplicationController
             else
                 session.delete(:date)
             end
-            binding.pry
             
             erb :'/reports/preview'
         else
