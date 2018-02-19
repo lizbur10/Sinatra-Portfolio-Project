@@ -146,7 +146,7 @@ class ReportsController < ApplicationController
                 end
                 if flash[:message]
                     redirect to "/reports/#{Helpers.slugify_date_string(@date_string)}/edit"
-                else    
+                else
                     Helpers.update_banding_numbers(params,@date_string,session)
                     session.delete(:temp) if session[:temp]
                 end

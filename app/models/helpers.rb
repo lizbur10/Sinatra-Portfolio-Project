@@ -32,7 +32,6 @@ class Helpers
 
     def self.count_by_species(date_string)
         report=Report.find_by(:date => date_string)
-        binding.pry
         report.birds.group(:species).count
     end
 
@@ -49,7 +48,7 @@ class Helpers
         self.count_by_species(date_string).each do |species, count_from_db|
             number_change = passed_params[:species][species.code].to_i - count_from_db
             if number_change > 0
-                number_change.times {self.add_bird(species.code,date_string)}
+                number_change.times {self.add_bird(species.code,date_string,session)}
             elsif number_change < 0
                 number_change.abs.times {self.delete_bird(species.code,date_string)}
             end
@@ -57,9 +56,11 @@ class Helpers
         end
     end
 
-    def self.add_bird(code, date_string)
+    def self.add_bird(code, date_string,session)
         add_bird = Bird.create(:banding_date => date_string)
         add_bird.species = Species.find_by_code(code)
+        add_bird.bander = self.current_bander(session)
+        add_bird.report = Report.find_by(:date => date_string)
         add_bird.save
     end
 
