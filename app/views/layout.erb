@@ -7,6 +7,10 @@
   </head>
 
   <body>
+  <% if flash.has?(:message) %>
+    <h3 style="color:red"><%= flash[:message] %><h3>
+  <% end %>
+
     <%= yield %>
   </body>
 </html>

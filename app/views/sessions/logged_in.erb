@@ -22,6 +22,7 @@
 <form class="button" action = "/banders/<%=@bander.slug%>">
     <input type="submit" value="Your Account">
 </form>
-<form class="button" action = '/logout'>
+<form class="button" method='POST' action='/logout' >
+    <input id="hidden" type="hidden" name="_method" value="delete">
     <input type="submit" value="Log Out">
 </form>

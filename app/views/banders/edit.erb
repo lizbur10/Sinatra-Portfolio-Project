@@ -1,7 +1,4 @@
 <h1>Update Bander Information:</h1>
-<% if flash.has?(:message) %>
-  <h3 style="color:red"><%= flash[:message] %><h3>
-<% end %>
 <form class="button" action='/banders/<%=@bander.slug%>' method='POST'>
 <input id="hidden" type="hidden" name="_method" value="patch">
 <%if session[:temp]%>

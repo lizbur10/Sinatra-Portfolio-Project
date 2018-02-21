@@ -1,7 +1,4 @@
 <h1>Add a Bird to the Day's Banding List</h1>
-<% if flash.has?(:message) %>
-  <h3 style="color:red"><%= flash[:message] %><h3>
-<% end %>
 <form action='/birds' method="POST">
 <h2><label>Date: </label><input type="text" name=date value="<%=@date%>"></h2>
 <%if session[:temp]%>

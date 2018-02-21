@@ -131,38 +131,43 @@ class ReportsController < ApplicationController
 
     patch '/reports' do
         @date_string = Helpers.date_string(session[:date])
-        if !params[:cancel_changes]
-            if params[:species]
-                session[:temp] = {}
-                params[:species].each do |species_code, number|
-                    # NEED TO ADD DELETE CHECKBOXES TO SAVED PARAMS
-                    session[:temp]["#{species_code}"] = number
-                    if number.to_i < 0
-                        flash[:message] = "Number banded must be greater than zero."
-                    end
-                end
-                if params[:delete]
-                    session[:temp][:delete] = {}
-                    params[:delete].each do |species_code, value|
-                        session[:temp][:delete]["#{species_code}"] = value
-                    end
-                end
-                if flash[:message]
-                    redirect to "/reports/#{Helpers.slugify_date_string(@date_string)}/edit"
-                else
-                    Helpers.update_banding_numbers(params,@date_string,session)
-                    session.delete(:temp) if session[:temp]
-                end
-            elsif params[:narrative]
-                Report.find_by(:date => @date_string).update(:content => params[:narrative][:content])
-                session[:show_narrative] = false if params[:narrative][:content] == ""
+        if @bander == Helpers.current_bander(session)
 
-                redirect to :"/reports/#{Helpers.slugify_date_string(@date_string)}/preview"
+            if !params[:cancel_changes]
+                if params[:species]
+                    session[:temp] = {}
+                    params[:species].each do |species_code, number|
+                        # NEED TO ADD DELETE CHECKBOXES TO SAVED PARAMS
+                        session[:temp]["#{species_code}"] = number
+                        if number.to_i < 0
+                            flash[:message] = "Number banded must be greater than zero."
+                        end
+                    end
+                    if params[:delete]
+                        session[:temp][:delete] = {}
+                        params[:delete].each do |species_code, value|
+                            session[:temp][:delete]["#{species_code}"] = value
+                        end
+                    end
+                    if flash[:message]
+                        redirect to "/reports/#{Helpers.slugify_date_string(@date_string)}/edit"
+                    else
+                        Helpers.update_banding_numbers(params,@date_string,session)
+                        session.delete(:temp) if session[:temp]
+                    end
+                elsif params[:narrative]
+                    Report.find_by(:date => @date_string).update(:content => params[:narrative][:content])
+                    session[:show_narrative] = false if params[:narrative][:content] == ""
+
+                    redirect to :"/reports/#{Helpers.slugify_date_string(@date_string)}/preview"
+                end
+                session.delete(:temp) if session[:temp]  ## DOUBLE-CHECK PLACEMENT
+                redirect to '/birds/new' if params[:add_more_birds]
             end
-            session.delete(:temp) if session[:temp]  ## DOUBLE-CHECK PLACEMENT
-            redirect to '/birds/new' if params[:add_more_birds]
+            redirect to "/reports/#{slugify_date_string(@date_string)}"
         end
-        redirect to "/reports/#{slugify_date_string(@date_string)}"
-    end
+        redirect to "/reports/#{slugify_date_string(@date_string)}/preview"
     
+    end
+
 end

@@ -1,7 +1,4 @@
 <h1>Bander Login</h1>
-<% if flash.has?(:message) %>
-  <h2 style="color:red"><%= flash[:message] %></h2>
-<% end %>
 <form action="/sessions" method="POST">
 <%if session[:temp]%>
   <h3>Name: <input type="text" name="username" value="<%=session[:temp][:entered_name]%>"></h3>

@@ -1,7 +1,4 @@
 <h1>Create Your Bander Account:</h1>
-<% if flash.has?(:message) %>
-  <h3 style="color:red"><%= flash[:message] %><h3>
-<% end %>
 <form class="button" action='/banders' method='POST'>
 <%if session[:temp]%>
   <h3>Name: <input type="text" name="bander[name]" value="<%=session[:temp][:entered_name]%>"></h3>
