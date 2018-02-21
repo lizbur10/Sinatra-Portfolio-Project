@@ -131,6 +131,8 @@ class ReportsController < ApplicationController
 
     patch '/reports' do
         @date_string = Helpers.date_string(session[:date])
+        report = Report.find_by(:date => @date_string)
+        @bander = report.bander
         if @bander == Helpers.current_bander(session)
 
             if !params[:cancel_changes]
